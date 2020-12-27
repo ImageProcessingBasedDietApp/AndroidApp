@@ -1,38 +1,43 @@
-package com.example.imageprocessingbaseddietapp
+
+package com.ilaydaBerna.imageprocessingbaseddietapp
 
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Matrix
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.util.Size
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
-import java.util.concurrent.Executors
-import androidx.recyclerview.widget.RecyclerView
+import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.example.imageprocessingbaseddietapp.ui.RecognitionAdapter
-import com.example.imageprocessingbaseddietapp.viewmodel.RecognitionListViewModel
-import com.example.imageprocessingbaseddietapp.viewmodel.Recognition
 import androidx.lifecycle.Observer
-import androidx.camera.lifecycle.ProcessCameraProvider
-import com.example.imageprocessingbaseddietapp.ml.PlateModel
-import com.example.imageprocessingbaseddietapp.util.YuvToRgbConverter
+import androidx.recyclerview.widget.RecyclerView
+import com.ilaydaBerna.imageprocessingbaseddietapp.ml.PlateModel
+import com.ilaydaBerna.imageprocessingbaseddietapp.ui.RecognitionAdapter
+import com.ilaydaBerna.imageprocessingbaseddietapp.util.YuvToRgbConverter
+import com.ilaydaBerna.imageprocessingbaseddietapp.viewmodel.Recognition
+import com.ilaydaBerna.imageprocessingbaseddietapp.viewmodel.RecognitionListViewModel
 import org.tensorflow.lite.support.image.TensorImage
+import java.io.File
+import java.util.concurrent.Executors
 
 
 // Constants
 private const val MAX_RESULT_DISPLAY = 3 // Maximum number of results displayed
 private const val TAG = "TFL Classify" // Name for logging
 private const val REQUEST_CODE_PERMISSIONS = 999 // Return code after asking for permission
-private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA) // permission needed
+ val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA) // permission needed
 
 // Listener for the result of the ImageAnalyzer
 typealias RecognitionListener = (recognition: List<Recognition>) -> Unit
@@ -61,12 +66,15 @@ class CameraActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_camera)
 
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
+        }
         // Request camera permissions
         if (allPermissionsGranted()) {
             startCamera()
         } else {
             ActivityCompat.requestPermissions(
-                this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS
+                    this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS
             )
         }
 
@@ -82,9 +90,9 @@ class CameraActivity : AppCompatActivity() {
         // This will notify the recycler view to update every time when a new list is set on the
         // LiveData field of recognitionList.
         recogViewModel.recognitionList.observe(this,
-            Observer {
-                viewAdapter.submitList(it)
-            }
+                Observer {
+                    viewAdapter.submitList(it)
+                }
         )
     }
 
@@ -93,7 +101,7 @@ class CameraActivity : AppCompatActivity() {
      */
     private fun allPermissionsGranted(): Boolean = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(
-            baseContext, it
+                baseContext, it
         ) == PackageManager.PERMISSION_GRANTED
     }
 
@@ -101,9 +109,9 @@ class CameraActivity : AppCompatActivity() {
      * This gets called after the Camera permission pop up is shown.
      */
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
+            requestCode: Int,
+            permissions: Array<String>,
+            grantResults: IntArray
     ) {
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
             if (allPermissionsGranted()) {
@@ -114,9 +122,9 @@ class CameraActivity : AppCompatActivity() {
                 // scope in this sample. More details:
                 // https://developer.android.com/training/permissions/usage-notes
                 Toast.makeText(
-                    this,
-                    getString(R.string.permission_deny_text),
-                    Toast.LENGTH_SHORT
+                        this,
+                        getString(R.string.permission_deny_text),
+                        Toast.LENGTH_SHORT
                 ).show()
                 finish()
             }
@@ -139,29 +147,29 @@ class CameraActivity : AppCompatActivity() {
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
 
             preview = Preview.Builder()
-                .build()
+                    .build()
 
             imageAnalyzer = ImageAnalysis.Builder()
-                // This sets the ideal size for the image to be analyse, CameraX will choose the
-                // the most suitable resolution which may not be exactly the same or hold the same
-                // aspect ratio
-                .setTargetResolution(Size(224, 224))
-                // How the Image Analyser should pipe in input, 1. every frame but drop no frame, or
-                // 2. go to the latest frame and may drop some frame. The default is 2.
-                // STRATEGY_KEEP_ONLY_LATEST. The following line is optional, kept here for clarity
-                .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-                .build()
-                .also { analysisUseCase: ImageAnalysis ->
-                    analysisUseCase.setAnalyzer(cameraExecutor, ImageAnalyzer(this) { items ->
-                        // updating the list of recognised objects
-                        recogViewModel.updateData(items)
-                    })
-                }
+                    // This sets the ideal size for the image to be analyse, CameraX will choose the
+                    // the most suitable resolution which may not be exactly the same or hold the same
+                    // aspect ratio
+                    .setTargetResolution(Size(224, 224))
+                    // How the Image Analyser should pipe in input, 1. every frame but drop no frame, or
+                    // 2. go to the latest frame and may drop some frame. The default is 2.
+                    // STRATEGY_KEEP_ONLY_LATEST. The following line is optional, kept here for clarity
+                    .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                    .build()
+                    .also { analysisUseCase: ImageAnalysis ->
+                        analysisUseCase.setAnalyzer(cameraExecutor, ImageAnalyzer(this) { items ->
+                            // updating the list of recognised objects
+                            recogViewModel.updateData(items)
+                        })
+                    }
 
             // Select camera, back is the default. If it is not available, choose front camera
             val cameraSelector =
-                if (cameraProvider.hasCamera(CameraSelector.DEFAULT_BACK_CAMERA))
-                    CameraSelector.DEFAULT_BACK_CAMERA else CameraSelector.DEFAULT_FRONT_CAMERA
+                    if (cameraProvider.hasCamera(CameraSelector.DEFAULT_BACK_CAMERA))
+                        CameraSelector.DEFAULT_BACK_CAMERA else CameraSelector.DEFAULT_FRONT_CAMERA
 
             try {
                 // Unbind use cases before rebinding
@@ -170,7 +178,7 @@ class CameraActivity : AppCompatActivity() {
                 // Bind use cases to camera - try to bind everything at once and CameraX will find
                 // the best combination.
                 camera = cameraProvider.bindToLifecycle(
-                    this, cameraSelector, preview, imageAnalyzer
+                        this, cameraSelector, preview, imageAnalyzer
                 )
 
                 // Attach the preview to preview view, aka View Finder
@@ -182,7 +190,7 @@ class CameraActivity : AppCompatActivity() {
         }, ContextCompat.getMainExecutor(this))
     }
 
-    private class ImageAnalyzer(ctx: Context, private val listener: RecognitionListener) :
+    private inner class ImageAnalyzer(ctx: Context, private val listener: RecognitionListener) :
         ImageAnalysis.Analyzer {
 
         // TODO 6. Optional GPU acceleration
@@ -211,6 +219,11 @@ class CameraActivity : AppCompatActivity() {
             // TODO 4: Converting the top probability items into a list of recognitions
             for(output in outputs){
                 items.add(Recognition(output.label, output.score))
+            }
+
+            if(outputs[1].score < 0.5) {
+
+               // takePlateFrame()
             }
 
             /*
@@ -246,7 +259,7 @@ class CameraActivity : AppCompatActivity() {
                 rotationMatrix = Matrix()
                 rotationMatrix.postRotate(imageProxy.imageInfo.rotationDegrees.toFloat())
                 bitmapBuffer = Bitmap.createBitmap(
-                    imageProxy.width, imageProxy.height, Bitmap.Config.ARGB_8888
+                        imageProxy.width, imageProxy.height, Bitmap.Config.ARGB_8888
                 )
             }
 
@@ -255,16 +268,32 @@ class CameraActivity : AppCompatActivity() {
 
             // Create the Bitmap in the correct orientation
             return Bitmap.createBitmap(
-                bitmapBuffer,
-                0,
-                0,
-                bitmapBuffer.width,
-                bitmapBuffer.height,
-                rotationMatrix,
-                false
+                    bitmapBuffer,
+                    0,
+                    0,
+                    bitmapBuffer.width,
+                    bitmapBuffer.height,
+                    rotationMatrix,
+                    false
             )
         }
+        public fun takePlateFrame() {
+            var x = 5
+            val REQUEST_IMAGE_CAPTURE = 0
+            //val callCameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            //startActivity( callCameraIntent)
+            //startActivityForResult(callCameraIntent, REQUEST_IMAGE_CAPTURE)
+
+            val camera = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            val uriSavedImage: Uri = Uri.fromFile(File("/sdcard/flashCropped.png"))
+            camera.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage)
+            startActivityForResult(camera, 1)
+        }
+
+
+
 
     }
+
 
 }

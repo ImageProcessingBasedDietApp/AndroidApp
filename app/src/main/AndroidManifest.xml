@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.imageprocessingbaseddietapp">
+    package="com.ilaydaBerna.imageprocessingbaseddietapp">
 
     <!-- Make sure the device has a camera. If you use android.hardware.camera without .any,
     it will not work if you have a device without a back camera, such as most Chromebooks. -->
@@ -8,6 +8,7 @@
 
     <!-- Specifying that the app will need camera permission -->
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -16,8 +17,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ImageProcessingBasedDietApp">
-        <activity android:name=".MainActivity"/>
-        <activity android:name=".CameraActivity">
+        <activity android:name="com.ilaydaBerna.imageprocessingbaseddietapp.MainActivity"/>
+        <activity android:name="com.ilaydaBerna.imageprocessingbaseddietapp.CameraActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

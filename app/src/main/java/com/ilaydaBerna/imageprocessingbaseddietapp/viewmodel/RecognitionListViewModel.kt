@@ -1,4 +1,4 @@
-package com.example.imageprocessingbaseddietapp.viewmodel
+package com.ilaydaBerna.imageprocessingbaseddietapp.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.LiveData

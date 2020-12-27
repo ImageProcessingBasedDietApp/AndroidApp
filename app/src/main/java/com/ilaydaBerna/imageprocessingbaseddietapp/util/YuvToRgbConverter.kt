@@ -1,4 +1,4 @@
-package com.example.imageprocessingbaseddietapp.util
+package com.ilaydaBerna.imageprocessingbaseddietapp.util
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -10,7 +10,7 @@ import android.renderscript.Element
 import android.renderscript.RenderScript
 import android.renderscript.ScriptIntrinsicYuvToRGB
 import android.renderscript.Type
-import com.example.imageprocessingbaseddietapp.BuildConfig
+import com.ilaydaBerna.imageprocessingbaseddietapp.BuildConfig
 import java.nio.ByteBuffer
 
 class YuvToRgbConverter(context: Context) {

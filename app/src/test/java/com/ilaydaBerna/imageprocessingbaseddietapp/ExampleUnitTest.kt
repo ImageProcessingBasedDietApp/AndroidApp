@@ -1,4 +1,4 @@
-package com.example.imageprocessingbaseddietapp
+package com.ilaydaBerna.imageprocessingbaseddietapp
 
 import org.junit.Test
 
