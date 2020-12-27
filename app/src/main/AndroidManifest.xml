@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.ilaydaBerna.imageprocessingbaseddietapp">
+    package="com.ilaydaberna.imageprocessingbaseddietapp">
 
     <!-- Make sure the device has a camera. If you use android.hardware.camera without .any,
     it will not work if you have a device without a back camera, such as most Chromebooks. -->
@@ -17,8 +17,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ImageProcessingBasedDietApp">
-        <activity android:name="com.ilaydaBerna.imageprocessingbaseddietapp.MainActivity"/>
-        <activity android:name="com.ilaydaBerna.imageprocessingbaseddietapp.CameraActivity">
+        <activity android:name="com.ilaydaberna.imageprocessingbaseddietapp.MainActivity"/>
+        <activity android:name="com.ilaydaberna.imageprocessingbaseddietapp.CameraActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -1,5 +1,5 @@
 
-package com.ilaydaBerna.imageprocessingbaseddietapp
+package com.ilaydaberna.imageprocessingbaseddietapp
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -23,11 +23,11 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
-import com.ilaydaBerna.imageprocessingbaseddietapp.ml.PlateModel
-import com.ilaydaBerna.imageprocessingbaseddietapp.ui.RecognitionAdapter
-import com.ilaydaBerna.imageprocessingbaseddietapp.util.YuvToRgbConverter
-import com.ilaydaBerna.imageprocessingbaseddietapp.viewmodel.Recognition
-import com.ilaydaBerna.imageprocessingbaseddietapp.viewmodel.RecognitionListViewModel
+import com.ilaydaberna.imageprocessingbaseddietapp.ml.PlateModel
+import com.ilaydaberna.imageprocessingbaseddietapp.ui.RecognitionAdapter
+import com.ilaydaberna.imageprocessingbaseddietapp.util.YuvToRgbConverter
+import com.ilaydaberna.imageprocessingbaseddietapp.viewmodel.Recognition
+import com.ilaydaberna.imageprocessingbaseddietapp.viewmodel.RecognitionListViewModel
 import org.tensorflow.lite.support.image.TensorImage
 import java.io.File
 import java.util.concurrent.Executors

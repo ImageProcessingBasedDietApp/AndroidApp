@@ -1,4 +1,4 @@
-package com.ilaydaBerna.imageprocessingbaseddietapp
+package com.ilaydaberna.imageprocessingbaseddietapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

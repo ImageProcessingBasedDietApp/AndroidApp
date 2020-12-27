@@ -1,4 +1,4 @@
-package com.ilaydaBerna.imageprocessingbaseddietapp.ui
+package com.ilaydaberna.imageprocessingbaseddietapp.ui
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,8 +6,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.ilaydaBerna.imageprocessingbaseddietapp.viewmodel.Recognition
-import com.ilaydaBerna.imageprocessingbaseddietapp.databinding.RecognitionItemBinding
+import com.ilaydaberna.imageprocessingbaseddietapp.viewmodel.Recognition
+import com.ilaydaberna.imageprocessingbaseddietapp.databinding.RecognitionItemBinding
 
 
 
