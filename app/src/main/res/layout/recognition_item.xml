@@ -18,10 +18,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="recognitionItem"
-            type="com.ilaydaberna.imageprocessingbaseddietapp.viewmodel.Recognition" />
+            type="com.ilaydaberna.imageprocessingbaseddietapp.ui.component.camera.Recognition" />
     </data>
 
     <LinearLayout

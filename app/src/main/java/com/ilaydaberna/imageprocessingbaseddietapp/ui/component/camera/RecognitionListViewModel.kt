@@ -1,4 +1,4 @@
-package com.ilaydaberna.imageprocessingbaseddietapp.viewmodel
+package com.ilaydaberna.imageprocessingbaseddietapp.ui.component.camera
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.LiveData

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "29533437707",
+    "project_id": "imageprocessingbaseddiet-51d2d",
+    "storage_bucket": "imageprocessingbaseddiet-51d2d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:29533437707:android:f1ddc0dccbaa0e9f60ec0e",
+        "android_client_info": {
+          "package_name": "com.ilaydaberna.imageprocessingbaseddietapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "29533437707-hjkfj9vbem14jo6armdfk5pk5798u5ge.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQuyQRso41TqYAyD8k4XD0I2L_R9Stnvg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "29533437707-hjkfj9vbem14jo6armdfk5pk5798u5ge.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

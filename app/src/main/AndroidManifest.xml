@@ -2,11 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ilaydaberna.imageprocessingbaseddietapp">
 
-    <!-- Make sure the device has a camera. If you use android.hardware.camera without .any,
-    it will not work if you have a device without a back camera, such as most Chromebooks. -->
-    <uses-feature android:name="android.hardware.camera.any" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
-    <!-- Specifying that the app will need camera permission -->
+    <uses-feature android:name="android.hardware.camera.any" /> <!-- Specifying that the app will need camera permission -->
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -17,11 +15,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ImageProcessingBasedDietApp">
-        <activity android:name="com.ilaydaberna.imageprocessingbaseddietapp.MainActivity"/>
-        <activity android:name="com.ilaydaberna.imageprocessingbaseddietapp.CameraActivity">
+        <activity android:name=".ui.component.login.LoginActivity"></activity>
+        <activity android:name=".ui.component.camera.CameraActivity" />
+        <activity android:name=".ui.component.main.MainActivity" />
+        <activity
+            android:name=".ui.component.splash.SplashActivity"
+            android:label="@string/title_activity_splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

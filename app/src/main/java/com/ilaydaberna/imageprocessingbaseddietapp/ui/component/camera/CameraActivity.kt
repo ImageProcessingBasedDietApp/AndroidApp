@@ -1,5 +1,5 @@
 
-package com.ilaydaberna.imageprocessingbaseddietapp
+package com.ilaydaberna.imageprocessingbaseddietapp.ui.component.camera
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -24,14 +24,14 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.ilaydaberna.imageprocessingbaseddietapp.ml.PlateModel
-import com.ilaydaberna.imageprocessingbaseddietapp.ui.RecognitionAdapter
 import com.ilaydaberna.imageprocessingbaseddietapp.util.YuvToRgbConverter
-import com.ilaydaberna.imageprocessingbaseddietapp.viewmodel.Recognition
-import com.ilaydaberna.imageprocessingbaseddietapp.viewmodel.RecognitionListViewModel
 import org.tensorflow.lite.support.image.TensorImage
 import java.io.File
 import java.util.concurrent.Executors
-
+import com.ilaydaberna.imageprocessingbaseddietapp.R
+import com.ilaydaberna.imageprocessingbaseddietapp.ui.component.camera.RecognitionAdapter
+import com.ilaydaberna.imageprocessingbaseddietapp.ui.component.camera.Recognition
+import com.ilaydaberna.imageprocessingbaseddietapp.ui.component.camera.RecognitionListViewModel
 
 // Constants
 private const val MAX_RESULT_DISPLAY = 3 // Maximum number of results displayed

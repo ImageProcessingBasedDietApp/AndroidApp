@@ -1,4 +1,4 @@
-package com.ilaydaberna.imageprocessingbaseddietapp.ui
+package com.ilaydaberna.imageprocessingbaseddietapp.ui.component.camera
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,9 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.ilaydaberna.imageprocessingbaseddietapp.viewmodel.Recognition
 import com.ilaydaberna.imageprocessingbaseddietapp.databinding.RecognitionItemBinding
-
 
 
 class RecognitionAdapter(private val ctx: Context) :
