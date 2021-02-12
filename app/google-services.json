@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "29533437707",
-    "project_id": "imageprocessingbaseddiet-51d2d",
-    "storage_bucket": "imageprocessingbaseddiet-51d2d.appspot.com"
+    "project_number": "677189994894",
+    "project_id": "diet-app-8dea6",
+    "storage_bucket": "diet-app-8dea6.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:29533437707:android:f1ddc0dccbaa0e9f60ec0e",
+        "mobilesdk_app_id": "1:677189994894:android:d576639e6393292337bcdf",
         "android_client_info": {
           "package_name": "com.ilaydaberna.imageprocessingbaseddietapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "29533437707-hjkfj9vbem14jo6armdfk5pk5798u5ge.apps.googleusercontent.com",
+          "client_id": "677189994894-bl4db3jtd6gqhbdv5gbo1gluuv04tmt6.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCQuyQRso41TqYAyD8k4XD0I2L_R9Stnvg"
+          "current_key": "AIzaSyAxiDnrDC-WRYeLzt4GakTAIW5XXU9o4sw"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "29533437707-hjkfj9vbem14jo6armdfk5pk5798u5ge.apps.googleusercontent.com",
+              "client_id": "677189994894-bl4db3jtd6gqhbdv5gbo1gluuv04tmt6.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

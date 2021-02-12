@@ -29,9 +29,6 @@ import org.tensorflow.lite.support.image.TensorImage
 import java.io.File
 import java.util.concurrent.Executors
 import com.ilaydaberna.imageprocessingbaseddietapp.R
-import com.ilaydaberna.imageprocessingbaseddietapp.ui.component.camera.RecognitionAdapter
-import com.ilaydaberna.imageprocessingbaseddietapp.ui.component.camera.Recognition
-import com.ilaydaberna.imageprocessingbaseddietapp.ui.component.camera.RecognitionListViewModel
 
 // Constants
 private const val MAX_RESULT_DISPLAY = 3 // Maximum number of results displayed
@@ -51,6 +48,11 @@ class CameraActivity : AppCompatActivity() {
     private lateinit var camera: Camera
     private val cameraExecutor = Executors.newSingleThreadExecutor()
 
+    private lateinit var imageCapture: ImageCapture
+
+    private lateinit var cameraProvider: ProcessCameraProvider
+
+
     // Views attachment
     private val resultRecyclerView by lazy {
         findViewById<RecyclerView>(R.id.recognitionResults) // Display the result of analysis
@@ -69,6 +71,7 @@ class CameraActivity : AppCompatActivity() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
         }
+
         // Request camera permissions
         if (allPermissionsGranted()) {
             startCamera()
@@ -142,9 +145,14 @@ class CameraActivity : AppCompatActivity() {
     private fun startCamera() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
 
+        imageCapture = ImageCapture.Builder()
+            .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
+            .build()
+        
+
         cameraProviderFuture.addListener(Runnable {
             // Used to bind the lifecycle of cameras to the lifecycle owner
-            val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
+            cameraProvider = cameraProviderFuture.get()
 
             preview = Preview.Builder()
                     .build()

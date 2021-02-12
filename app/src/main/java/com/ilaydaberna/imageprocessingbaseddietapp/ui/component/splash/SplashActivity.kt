@@ -1,22 +1,15 @@
 package com.ilaydaberna.imageprocessingbaseddietapp.ui.component.splash
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import com.ilaydaberna.imageprocessingbaseddietapp.R
-import com.ilaydaberna.imageprocessingbaseddietapp.ui.base.BaseActivity
 import com.ilaydaberna.imageprocessingbaseddietapp.ui.component.login.LoginActivity
 
 
-class SplashActivity : BaseActivity() {
+class SplashActivity : Activity() {
     private val SPLASH_DISPLAY_LENGTH = 4000
-    override fun observeViewModel() {
-        TODO("Not yet implemented")
-    }
-
-    override fun initViewBinding() {
-        TODO("Not yet implemented")
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
