@@ -3,9 +3,9 @@ package com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main
 import android.os.Bundle
 import com.ilaydaberna.imageprocessingbaseddietapp.R
 import com.ilaydaberna.imageprocessingbaseddietapp.ui.base.BaseActivity
+import org.kodein.di.Kodein
 
 class MainActivity : BaseActivity() {
-
     override fun initViewBinding() {
         TODO("Not yet implemented")
     }
@@ -14,4 +14,17 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
     }
+
+    override fun onStarted() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onSuccess() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onFailure(message: String) {
+        TODO("Not yet implemented")
+    }
+
 }

@@ -7,7 +7,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.ilaydaberna.imageprocessingbaseddietapp.ui.component.login.LoginViewModel" />
+            type="com.ilaydaberna.imageprocessingbaseddietapp.ui.component.login.AuthViewModel" />
     </data>
 
     <ScrollView
