@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.ilaydaberna.imageprocessingbaseddietapp.databinding.ActivityLoginBinding
 import com.ilaydaberna.imageprocessingbaseddietapp.ui.base.BaseActivity
+import com.ilaydaberna.imageprocessingbaseddietapp.util.startHomeActivity
 import io.reactivex.internal.operators.maybe.MaybeToPublisher.instance
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
@@ -23,8 +24,6 @@ class LoginActivity : BaseActivity(), KodeinAware {
 
     private lateinit var viewModel: AuthViewModel
 
-
-
     override fun initViewBinding() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -35,12 +34,13 @@ class LoginActivity : BaseActivity(), KodeinAware {
         super.onCreate(savedInstanceState)
 
         viewModel = ViewModelProviders.of(this, factory).get(AuthViewModel::class.java)
-
         initViewBinding()
         binding.viewModel = this.viewModel
+        viewModel.authListener = this
+
+
         binding.tablayout.addTab(binding.tablayout.newTab().setText("GİRİŞ"))
         binding.tablayout.addTab(binding.tablayout.newTab().setText("KAYIT"))
-
 
         binding.button2.setOnClickListener {
             Toast.makeText(applicationContext, "Firebase Register", Toast.LENGTH_LONG).show()
@@ -54,6 +54,7 @@ class LoginActivity : BaseActivity(), KodeinAware {
 
     override fun onSuccess() {
         binding.progressbar.visibility = View.GONE
+        Toast.makeText(applicationContext, "Success", Toast.LENGTH_LONG).show()
     }
 
     override fun onFailure(message: String) {
@@ -63,8 +64,8 @@ class LoginActivity : BaseActivity(), KodeinAware {
 
     override fun onStart() {
         super.onStart()
-      //  viewModel.user?.let {
-       //     startHomeActivity()
-       // }
+        viewModel.user?.let {
+            startHomeActivity()
+        }
     }
 }
