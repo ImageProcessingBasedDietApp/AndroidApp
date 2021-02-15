@@ -4,14 +4,25 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import com.ilaydaberna.imageprocessingbaseddietapp.databinding.ActivityLoginBinding
 import com.ilaydaberna.imageprocessingbaseddietapp.ui.base.BaseActivity
+import io.reactivex.internal.operators.maybe.MaybeToPublisher.instance
+import org.kodein.di.Kodein
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.kodein
+import org.kodein.di.generic.instance
 
 
-
-class LoginActivity : BaseActivity() {
+class LoginActivity : BaseActivity(), KodeinAware {
     //TODO: https://www.simplifiedcoding.net/firebase-mvvm-example/
     private lateinit var binding: ActivityLoginBinding
+
+    override val kodein: Kodein by kodein()
+    private val factory : AuthViewModelFactory by instance()
+
+    private lateinit var viewModel: AuthViewModel
+
 
 
     override fun initViewBinding() {
@@ -23,8 +34,10 @@ class LoginActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        initViewBinding()
+        viewModel = ViewModelProviders.of(this, factory).get(AuthViewModel::class.java)
 
+        initViewBinding()
+        binding.viewModel = this.viewModel
         binding.tablayout.addTab(binding.tablayout.newTab().setText("GİRİŞ"))
         binding.tablayout.addTab(binding.tablayout.newTab().setText("KAYIT"))
 
