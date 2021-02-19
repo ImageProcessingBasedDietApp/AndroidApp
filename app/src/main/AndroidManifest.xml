@@ -21,7 +21,7 @@
         <activity android:name=".ui.component.main.MainActivity" />
         <activity
             android:name=".ui.component.splash.SplashActivity"
-            android:label="@string/title_activity_splash">
+            android:label="Diet App">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
