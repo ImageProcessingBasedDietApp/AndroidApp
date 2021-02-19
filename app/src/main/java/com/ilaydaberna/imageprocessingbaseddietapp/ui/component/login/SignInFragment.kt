@@ -12,7 +12,6 @@ class SignInFragment: Fragment() {
 
     private lateinit var binding: FragmentSignInBinding
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_sign_in, container, false)
 
         val model = ViewModelProvider(requireActivity()).get(AuthViewModel::class.java)
         binding = FragmentSignInBinding.inflate(inflater)

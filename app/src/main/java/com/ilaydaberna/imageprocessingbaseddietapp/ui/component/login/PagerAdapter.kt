@@ -9,7 +9,6 @@ class PagerAdapter(private val myContext: Context, fm: FragmentManager, internal
     override fun getItem(position: Int): Fragment {
         when (position) {
             0 -> {
-                //  val homeFragment: HomeFragment = HomeFragment()
                 return SignInFragment()
             }
             1 -> {

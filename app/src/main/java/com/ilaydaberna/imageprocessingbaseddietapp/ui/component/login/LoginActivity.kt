@@ -14,27 +14,26 @@ import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
 
 
-class LoginActivity : BaseActivity(), KodeinAware {
-    //TODO: https://www.simplifiedcoding.net/firebase-mvvm-example/
+class LoginActivity : BaseActivity(), KodeinAware, AuthListener{
     private lateinit var binding: ActivityLoginBinding
     override val kodein: Kodein by kodein()
     private val factory : AuthViewModelFactory by instance()
     private lateinit var viewModel: AuthViewModel
 
     override fun initViewBinding() {
+        // https://www.simplifiedcoding.net/firebase-mvvm-example/
+        viewModel = ViewModelProviders.of(this, factory).get(AuthViewModel::class.java)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.viewModel = this.viewModel
+        viewModel.authListener = this
 
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel = ViewModelProviders.of(this, factory).get(AuthViewModel::class.java)
         initViewBinding()
-        binding.viewModel = this.viewModel
-        viewModel.authListener = this
-
 
         binding.tablayout.addTab(binding.tablayout.newTab().setText("GİRİŞ YAP"))
         binding.tablayout.addTab(binding.tablayout.newTab().setText("KAYIT OL"))
@@ -58,8 +57,6 @@ class LoginActivity : BaseActivity(), KodeinAware {
 
             }
         })
-
-
     }
 
     override fun onStarted() {
@@ -76,7 +73,7 @@ class LoginActivity : BaseActivity(), KodeinAware {
     }
 
     override fun onSuccessSendEmail(message: String) {
-        binding.progressbar.visibility = View.GONE
+
         binding.viewpager.currentItem = 0
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
