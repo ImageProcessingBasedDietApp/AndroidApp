@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.component.login.SignInFragment">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.ilaydaberna.imageprocessingbaseddietapp.ui.component.login.AuthViewModel" />
+    </data>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/email_text_input_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="E-posta"
+        android:theme="@style/EditTextStyle"
+        android:textColorHint="@color/colorHint">
+
+        <EditText
+            android:id="@+id/editTextEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:ems="10"
+            android:singleLine="true"
+            android:text="@={viewModel.email}"
+            android:textColor="@color/green_700"
+            android:textColorHint="@color/colorHint" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/password_text_input_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:passwordToggleEnabled="true"
+        android:hint="Şifre"
+        android:theme="@style/EditTextStyle"
+        android:paddingBottom="10dp"
+        android:textColorHint="@color/colorHint"
+        app:passwordToggleTint="@color/colorHint">
+
+        <EditText
+            android:id="@+id/editTextPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:ems="10"
+            android:text="@={viewModel.password}"
+            android:singleLine="true"
+            android:inputType="textPassword"
+            android:textColor="@color/green_700"/>
+
+        <Button
+            android:id="@+id/buttonLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_default"
+            android:onClick="@{() -> viewModel.login()}"
+            android:textColor="@color/white"
+            android:text="GİRİŞ YAP" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/textViewForgotPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:clickable="true"
+        android:onClick="@{() -> viewModel.gotoForgotPassword()}"
+        android:textColor="@color/green_500"
+        android:text="Şifremi Unuttum" />
+
+</LinearLayout>
+
+</layout>

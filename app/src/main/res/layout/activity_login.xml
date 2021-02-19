@@ -48,39 +48,12 @@
                 app:tabSelectedTextColor="@color/green_700"
                 app:tabTextColor="@color/green_700" />
 
-            <LinearLayout
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/viewpager"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <EditText
-                    android:id="@+id/editTextTextPersonName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="E-posta"
-                    android:text="@={viewModel.email}"
-                    android:textColor="@color/green_700"
-                    android:textColorHint="@color/green_500"
-                    android:inputType="textPersonName" />
-                <EditText
-                    android:id="@+id/editTextTextPassword"
-                    android:layout_width="match_parent"
-                    android:hint="Şifre"
-                    android:text="@={viewModel.password}"
-                    android:textColor="@color/green_700"
-                    android:textColorHint="@color/green_500"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:inputType="textPassword" />
-
-                <Button
-                    android:id="@+id/buttonSignin"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:onClick="@{() -> viewModel.login()}"
-                    android:text="GİRİŞ YAP" />
-            </LinearLayout>
+                android:layout_height="300dp" />
 
         </LinearLayout>
         <LinearLayout
@@ -90,18 +63,18 @@
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/slider_layout">
             <Button
-                android:id="@+id/button"
+                android:id="@+id/buttonFacebook"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="FACEBOOK" />
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/buttonGoogle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="LINKEDIN" />
+                android:text="Google" />
         </LinearLayout>
         <ProgressBar
             android:id="@+id/progressbar"
