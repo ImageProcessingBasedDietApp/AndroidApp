@@ -17,11 +17,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ImageProcessingBasedDietApp">
         <activity android:name=".ui.component.login.LoginActivity"></activity>
-        <activity android:name=".ui.component.splash.SplashActivity" />
+        <activity android:name=".ui.component.camera.CameraActivity" />
         <activity android:name=".ui.component.main.MainActivity" />
         <activity
-            android:name=".ui.component.camera.CameraActivity"
-            android:label="@string/title_activity_splash">
+            android:name=".ui.component.splash.SplashActivity"
+            android:label="Diet App">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

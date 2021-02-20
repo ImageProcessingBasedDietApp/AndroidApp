@@ -53,6 +53,7 @@ class AuthViewModel (private val repository: UserRepository) : ViewModel() {
         disposables.add(disposable)
     }
 
+    //function perform to signup
     fun signup() {
         if (email.isNullOrEmpty() || password.isNullOrEmpty() || passwordCntrl.isNullOrEmpty()) {
             authListener?.onFailure("Lütfen tüm alanları doldurunuz")
@@ -78,7 +79,7 @@ class AuthViewModel (private val repository: UserRepository) : ViewModel() {
         disposables.add(disposable)
     }
 
-
+    //function perform to send email reset password
     fun sendEmailForgotPassword(){
         if (email.isNullOrEmpty()) {
             authListener?.onFailure("Lütfen email alanını doldurunuz")
@@ -90,6 +91,8 @@ class AuthViewModel (private val repository: UserRepository) : ViewModel() {
         }
 
         authListener?.onStarted()
+
+        //Asıl iş Firebase Source'da yapılıyor. Ona ise UserRepository üzerinden ulaşılıyor.
         val disposable = repository.sendPasswordResetEmail(email!!)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

@@ -30,6 +30,14 @@ class LoginActivity : BaseActivity(), KodeinAware, AuthListener{
 
     }
 
+    //Sayfa ilk başladığında kullanıcı var ise HomeActivity'e gönderiliyor.
+    override fun onStart() {
+        super.onStart()
+        viewModel.user?.let {
+            startHomeActivity()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -59,34 +67,31 @@ class LoginActivity : BaseActivity(), KodeinAware, AuthListener{
         })
     }
 
+    //AuthViewModelde işlem başlıyor. Progress bar görünür oluyor.
     override fun onStarted() {
         binding.progressbar.visibility = View.VISIBLE
     }
 
+    //AuthViewModelde işlem başarılı bitiyor. Home Activity yönlendirmesi yapılıyor.
     override fun onSuccess() {
         binding.progressbar.visibility = View.GONE
         startHomeActivity()
     }
 
+    //AuthViewModelde gotoForgotPassword fonksiyonu buna düşüyor. Şifremi unuttum bu sayede açılıyor.
     override fun forgotPassword() {
         binding.viewpager.currentItem = 2
     }
 
+    //AuthViewModelde şifre sıfırlama fonksiyonu success durumunda buna düşüyor.
     override fun onSuccessSendEmail(message: String) {
-
         binding.viewpager.currentItem = 0
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
+    //AuthViewModeldeki tüm hatalar buna düşüyor. Hata mesajını yayınlayıp progress barı kapatıyor.
     override fun onFailure(message: String) {
         binding.progressbar.visibility = View.GONE
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        viewModel.user?.let {
-            startHomeActivity()
-        }
     }
 }

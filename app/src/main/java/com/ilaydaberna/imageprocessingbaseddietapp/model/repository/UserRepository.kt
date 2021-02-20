@@ -2,6 +2,7 @@ package com.ilaydaberna.imageprocessingbaseddietapp.model.repository
 
 import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.FirebaseSource
 
+//Bu class ile FirebaseSource erişimi oluyor.
 class UserRepository (private val firebase: FirebaseSource){
     fun login(email: String, password: String) = firebase.login(email, password)
 

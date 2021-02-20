@@ -3,11 +3,11 @@ package com.ilaydaberna.imageprocessingbaseddietapp.model.firebase
 import com.google.firebase.auth.FirebaseAuth
 import io.reactivex.Completable
 
+//Asıl Firebase işlerinin yapıldığı class.
 class FirebaseSource {
     private val firebaseAuth: FirebaseAuth by lazy {
         FirebaseAuth.getInstance()
     }
-
 
     fun login(email: String, password: String) = Completable.create { emitter ->
         firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
