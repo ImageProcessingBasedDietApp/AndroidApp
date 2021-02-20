@@ -9,5 +9,7 @@ class UserRepository (private val firebase: FirebaseSource){
 
     fun currentUser() = firebase.currentUser()
 
+    fun sendPasswordResetEmail(email: String) = firebase.sendPasswordResetEmail(email)
+
     fun logout() = firebase.logout()
 }

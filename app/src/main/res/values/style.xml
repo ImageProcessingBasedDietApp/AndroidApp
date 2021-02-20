@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="EditTextStyle" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorControlNormal">@color/colorHint</item>
+        <item name="colorControlActivated">@color/green_500</item>
+        <item name="colorControlHighlight">@color/colorHint</item>
+    </style>
+</resources>

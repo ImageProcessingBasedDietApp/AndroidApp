@@ -1,8 +1,8 @@
 package com.ilaydaberna.imageprocessingbaseddietapp.ui.component.login
 
-import android.view.View
 import androidx.lifecycle.ViewModel
 import com.ilaydaberna.imageprocessingbaseddietapp.model.repository.UserRepository
+import com.ilaydaberna.imageprocessingbaseddietapp.util.isEmailValid
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -11,6 +11,7 @@ class AuthViewModel (private val repository: UserRepository) : ViewModel() {
     //email and password for the input
     var email: String? = null
     var password: String? = null
+    var passwordCntrl: String? = null
 
     //auth listener
     var authListener: AuthListener? = null
@@ -24,10 +25,14 @@ class AuthViewModel (private val repository: UserRepository) : ViewModel() {
 
     //function to perform login
     fun login() {
-
         //validating email and password
         if (email.isNullOrEmpty() || password.isNullOrEmpty()) {
-            authListener?.onFailure("Invalid email or password")
+            authListener?.onFailure("Lütfen tüm alanları doldurunuz")
+            return
+        }
+
+        if(email!!.isEmailValid()){
+            authListener?.onFailure("Lütfen geçerli bir email giriniz")
             return
         }
 
@@ -43,14 +48,22 @@ class AuthViewModel (private val repository: UserRepository) : ViewModel() {
                 authListener?.onSuccess()
             }, {
                 //sending a failure callback
-                authListener?.onFailure(it.message!!)
+                authListener?.onFailure("E-posta ya da şifre doğru değil")
             })
         disposables.add(disposable)
     }
 
     fun signup() {
-        if (email.isNullOrEmpty() || password.isNullOrEmpty()) {
-            authListener?.onFailure("Please input all values")
+        if (email.isNullOrEmpty() || password.isNullOrEmpty() || passwordCntrl.isNullOrEmpty()) {
+            authListener?.onFailure("Lütfen tüm alanları doldurunuz")
+            return
+        }
+        if(email!!.isEmailValid()){
+            authListener?.onFailure("Lütfen geçerli bir email giriniz")
+            return
+        }
+        if(!password.equals(passwordCntrl)){
+            authListener?.onFailure("Şifreler uyuşmuyor")
             return
         }
         authListener?.onStarted()
@@ -60,26 +73,44 @@ class AuthViewModel (private val repository: UserRepository) : ViewModel() {
                 .subscribe({
                     authListener?.onSuccess()
                 }, {
-                    authListener?.onFailure(it.message!!)
+                    authListener?.onFailure("Bu mail zaten kayıtlı")
                 })
         disposables.add(disposable)
     }
 
-    fun goToSignup(view: View) {
-        //TODO go sign up
+
+    fun sendEmailForgotPassword(){
+        if (email.isNullOrEmpty()) {
+            authListener?.onFailure("Lütfen email alanını doldurunuz")
+            return
+        }
+        if(email!!.isEmailValid()){
+            authListener?.onFailure("Lütfen geçerli bir email giriniz")
+            return
+        }
+
+        authListener?.onStarted()
+        val disposable = repository.sendPasswordResetEmail(email!!)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    authListener?.onSuccessSendEmail("Şifre sıfırlama maili gönderildi")
+                }, {
+                    authListener?.onFailure("Bu mail kayıtlı değil")
+                })
+        disposables.add(disposable)
+
     }
 
-    fun goToLogin(view: View) {
-        //TODO go login
+    fun gotoForgotPassword(){
+        authListener?.forgotPassword()
     }
-
 
     //disposing the disposables
     override fun onCleared() {
         super.onCleared()
         disposables.dispose()
     }
-
 
 
 }

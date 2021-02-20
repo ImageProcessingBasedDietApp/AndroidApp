@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.ilaydaberna.imageprocessingbaseddietapp.ui.component.login.AuthListener
 import org.kodein.di.KodeinAware
 
-abstract class BaseActivity : AppCompatActivity(), AuthListener {
+abstract class BaseActivity : AppCompatActivity() {
 
     protected abstract fun initViewBinding()
 
