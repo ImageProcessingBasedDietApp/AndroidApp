@@ -4,15 +4,16 @@ package com.ilaydaberna.imageprocessingbaseddietapp.ui.component.camera
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Matrix
-import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.util.Size
+import android.view.View
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -23,12 +24,14 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
+import com.ilaydaberna.imageprocessingbaseddietapp.R
+import com.ilaydaberna.imageprocessingbaseddietapp.ml.FoodClassificationModel
 import com.ilaydaberna.imageprocessingbaseddietapp.ml.PlateModel
 import com.ilaydaberna.imageprocessingbaseddietapp.util.YuvToRgbConverter
+import org.tensorflow.lite.DataType
+import org.tensorflow.lite.Interpreter
 import org.tensorflow.lite.support.image.TensorImage
-import java.io.File
 import java.util.concurrent.Executors
-import com.ilaydaberna.imageprocessingbaseddietapp.R
 
 // Constants
 private const val MAX_RESULT_DISPLAY = 3 // Maximum number of results displayed
@@ -52,13 +55,39 @@ class CameraActivity : AppCompatActivity() {
 
     private lateinit var cameraProvider: ProcessCameraProvider
 
+    private var imageBitmap: Bitmap? = null
+
 
     // Views attachment
     private val resultRecyclerView by lazy {
         findViewById<RecyclerView>(R.id.recognitionResults) // Display the result of analysis
     }
+
+    private  val foodImage by lazy {
+        findViewById<ImageView>(R.id.foodImage)
+    }
     private val viewFinder by lazy {
         findViewById<PreviewView>(R.id.viewFinder) // Display the preview image from Camera
+    }
+
+    private val recognatedFoodList by lazy {
+        findViewById<LinearLayout>(R.id.linearLayoutFoodButtons)
+    }
+
+    private val btnRecognatedFood1 by lazy {
+        findViewById<Button>(R.id.btnRecognatedFood1)
+    }
+
+    private val btnRecognatedFood2 by lazy {
+        findViewById<Button>(R.id.btnRecognatedFood2)
+    }
+
+    private val btnRecognatedFood3 by lazy {
+        findViewById<Button>(R.id.btnRecognatedFood3)
+    }
+
+    val btnBackToCamera by lazy {
+        findViewById<Button>(R.id.btnBackToCamera)
     }
 
     // Contains the recognition result. Since  it is a viewModel, it will survive screen rotations
@@ -74,6 +103,7 @@ class CameraActivity : AppCompatActivity() {
 
         // Request camera permissions
         if (allPermissionsGranted()) {
+            viewFinder.visibility = View.VISIBLE
             startCamera()
         } else {
             ActivityCompat.requestPermissions(
@@ -97,6 +127,22 @@ class CameraActivity : AppCompatActivity() {
                     viewAdapter.submitList(it)
                 }
         )
+
+        btnBackToCamera.setOnClickListener {
+            Log.i("camera", "cameraaa")
+            if (allPermissionsGranted()) {
+                viewFinder.visibility = View.VISIBLE
+                //resultRecyclerView.visibility = View.VISIBLE
+                foodImage.visibility = View.GONE
+                recognatedFoodList.visibility = View.GONE
+                btnBackToCamera.visibility = View.GONE
+                startCamera()
+            } else {
+                ActivityCompat.requestPermissions(
+                    this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS
+                )
+            }
+        }
     }
 
     /**
@@ -207,41 +253,60 @@ class CameraActivity : AppCompatActivity() {
         // TODO 1: Add class variable TensorFlow Lite Model
 
         private val plateModel = PlateModel.newInstance(ctx)
+        private val foodModel = FoodClassificationModel.newInstance(ctx)
 
         override fun analyze(imageProxy: ImageProxy) {
 
             val items = mutableListOf<Recognition>()
+            val foods = mutableListOf<Recognition>()
 
             // TODO 2: Convert Image to Bitmap then to TensorImage
 
             //If you want to image as an input, then use only bitmap here.
             val tfImage = TensorImage.fromBitmap(toBitmap(imageProxy))
+            //var x = TensorImage.createFrom(tfImage, DataType.UINT8)
+            imageBitmap = toBitmap(imageProxy)
 
             // TODO 3: Process the image using the trained model, sort and pick out the top results
             val outputs = plateModel.process(tfImage)
                 .probabilityAsCategoryList.apply {
                     sortByDescending { it.score }
                 }.take(MAX_RESULT_DISPLAY)
+
+            Log.i("OUTPUTS: ", outputs.toString())
+
+            //foodModel.close()
+
             //You can change the count of results from MAx_RESULT_DISPLAY
 
             // TODO 4: Converting the top probability items into a list of recognitions
             for(output in outputs){
                 items.add(Recognition(output.label, output.score))
+                if(output.label == "resized-plate" && output.score > 0.95) {
+                    runOnUiThread {
+                        cameraProvider.unbindAll()
+                        foodImage.setImageBitmap(imageBitmap)
+                        viewFinder.visibility = View.GONE
+                        //resultRecyclerView.visibility = View.GONE
+                        foodImage.visibility = View.VISIBLE
+                        recognatedFoodList.visibility = View.VISIBLE
+                        btnBackToCamera.visibility = View.VISIBLE
+
+                        val tfImage2 = TensorImage.fromBitmap(imageBitmap)
+                        val foodOutputs = foodModel.process(tfImage2)
+                                .probabilityAsCategoryList.apply{
+                                sortByDescending { it.score }
+                            }.take(MAX_RESULT_DISPLAY)
+                        for(foodOutput in foodOutputs){
+                            foods.add(Recognition(foodOutput.label, foodOutput.score))
+                        }
+                        btnRecognatedFood1.setText(foods[0].toString())
+                        btnRecognatedFood2.setText(foods[1].toString())
+                        btnRecognatedFood3.setText(foods[2].toString())
+                    }
+                }
             }
 
-            if(outputs[1].score < 0.5) {
-
-               // takePlateFrame()
-            }
-
-            /*
-            // START - Placeholder code at the start of the codelab. Comment this block of code out.
-            for (i in 0 until MAX_RESULT_DISPLAY){
-                items.add(Recognition("Fake label $i", Random.nextFloat()))
-            }
-            // END - Placeholder code at the start of the codelab. Comment this block of code out.
-            */
-            // Return the result
             listener(items.toList())
 
             // Close the image,this tells CameraX to feed the next image to the analyzer
@@ -285,23 +350,5 @@ class CameraActivity : AppCompatActivity() {
                     false
             )
         }
-        public fun takePlateFrame() {
-            var x = 5
-            val REQUEST_IMAGE_CAPTURE = 0
-            //val callCameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            //startActivity( callCameraIntent)
-            //startActivityForResult(callCameraIntent, REQUEST_IMAGE_CAPTURE)
-
-            val camera = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            val uriSavedImage: Uri = Uri.fromFile(File("/sdcard/flashCropped.png"))
-            camera.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage)
-            startActivityForResult(camera, 1)
-        }
-
-
-
-
     }
-
-
 }

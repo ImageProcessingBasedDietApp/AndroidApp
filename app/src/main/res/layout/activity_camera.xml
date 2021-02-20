@@ -15,30 +15,88 @@
   ~ limitations under the License.
   -->
 
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.component.camera.CameraActivity">
+    android:orientation="vertical"
+    tools:context=".ui.component.camera.CameraActivity"
+    android:background="@color/ic_launcher_background">
+
+
+        <ImageView
+            android:id="@+id/foodImage"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:visibility="gone"
+            app:srcCompat="@android:drawable/ic_menu_gallery" />
+
 
         <androidx.camera.view.PreviewView
             android:id="@+id/viewFinder"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:layout_gravity="top"
-            android:background="#8000" />
+            android:layout_height="400dp">
+        </androidx.camera.view.PreviewView>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recognitionResults"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="217dp"
             android:layout_gravity="bottom"
             android:orientation="vertical"
-            app:layoutManager="LinearLayoutManager" />
-</merge>
+            app:layoutManager="LinearLayoutManager"
+            android:visibility="gone"/>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutFoodButtons"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+                <Button
+                    android:id="@+id/btnRecognatedFood1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Button"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    app:strokeWidth="2dp"
+                    android:backgroundTint="@color/green_700"/>
+
+                <Button
+                    android:id="@+id/btnRecognatedFood2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Button"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    app:strokeWidth="2dp"
+                    android:backgroundTint="@color/green_700"/>
+
+                <Button
+                    android:id="@+id/btnRecognatedFood3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Button"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    app:strokeWidth="2dp"
+                    android:backgroundTint="@color/green_700"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnBackToCamera"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Kameraya Geri Dön"
+            android:visibility="gone"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:strokeWidth="2dp"
+            android:backgroundTint="@color/wineRed"
+
+            />
+
+</LinearLayout>
