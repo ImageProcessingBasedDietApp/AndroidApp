@@ -8,6 +8,8 @@
 
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="yellow">#FFC107</color>
+
 
     <color name="colorBottomNavigationPressed">#008D3D</color>
     <color name="colorBottomNavigationDefault">#828282</color>

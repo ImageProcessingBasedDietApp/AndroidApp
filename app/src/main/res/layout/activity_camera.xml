@@ -22,8 +22,24 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".ui.component.camera.CameraActivity"
-    android:background="@color/ic_launcher_background">
+    android:background="@color/black">
 
+        <LinearLayout
+            android:id="@+id/layoutCamera"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorError"
+            android:orientation="vertical">
+
+                <androidx.camera.view.PreviewView
+                    android:id="@+id/viewFinder"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="10dp" />
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/foodImage"
@@ -31,22 +47,6 @@
             android:layout_height="400dp"
             android:visibility="gone"
             app:srcCompat="@android:drawable/ic_menu_gallery" />
-
-
-        <androidx.camera.view.PreviewView
-            android:id="@+id/viewFinder"
-            android:layout_width="match_parent"
-            android:layout_height="400dp">
-        </androidx.camera.view.PreviewView>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recognitionResults"
-            android:layout_width="match_parent"
-            android:layout_height="217dp"
-            android:layout_gravity="bottom"
-            android:orientation="vertical"
-            app:layoutManager="LinearLayoutManager"
-            android:visibility="gone"/>
 
         <LinearLayout
             android:id="@+id/linearLayoutFoodButtons"
@@ -95,8 +95,6 @@
             android:textColor="@color/white"
             android:textStyle="bold"
             app:strokeWidth="2dp"
-            android:backgroundTint="@color/wineRed"
-
-            />
+            android:backgroundTint="@color/wineRed" />
 
 </LinearLayout>

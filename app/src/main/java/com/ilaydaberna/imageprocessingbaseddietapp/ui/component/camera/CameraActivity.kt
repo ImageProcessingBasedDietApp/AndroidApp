@@ -28,8 +28,6 @@ import com.ilaydaberna.imageprocessingbaseddietapp.R
 import com.ilaydaberna.imageprocessingbaseddietapp.ml.FoodClassificationModel
 import com.ilaydaberna.imageprocessingbaseddietapp.ml.PlateModel
 import com.ilaydaberna.imageprocessingbaseddietapp.util.YuvToRgbConverter
-import org.tensorflow.lite.DataType
-import org.tensorflow.lite.Interpreter
 import org.tensorflow.lite.support.image.TensorImage
 import java.util.concurrent.Executors
 
@@ -50,22 +48,24 @@ class CameraActivity : AppCompatActivity() {
     private lateinit var imageAnalyzer: ImageAnalysis // Analysis use case, for running ML code
     private lateinit var camera: Camera
     private val cameraExecutor = Executors.newSingleThreadExecutor()
-
     private lateinit var imageCapture: ImageCapture
-
     private lateinit var cameraProvider: ProcessCameraProvider
-
     private var imageBitmap: Bitmap? = null
 
 
     // Views attachment
-    private val resultRecyclerView by lazy {
+   /* private val resultRecyclerView by lazy {
         findViewById<RecyclerView>(R.id.recognitionResults) // Display the result of analysis
+    }*/
+
+    private  val layoutCamera by lazy {
+        findViewById<LinearLayout>(R.id.layoutCamera)
     }
 
     private  val foodImage by lazy {
         findViewById<ImageView>(R.id.foodImage)
     }
+
     private val viewFinder by lazy {
         findViewById<PreviewView>(R.id.viewFinder) // Display the preview image from Camera
     }
@@ -103,7 +103,8 @@ class CameraActivity : AppCompatActivity() {
 
         // Request camera permissions
         if (allPermissionsGranted()) {
-            viewFinder.visibility = View.VISIBLE
+            layoutCamera.visibility = View.VISIBLE
+            //viewFinder.visibility = View.VISIBLE
             startCamera()
         } else {
             ActivityCompat.requestPermissions(
@@ -113,11 +114,11 @@ class CameraActivity : AppCompatActivity() {
 
         // Initialising the resultRecyclerView and its linked viewAdaptor
         val viewAdapter = RecognitionAdapter(this)
-        resultRecyclerView.adapter = viewAdapter
+        //resultRecyclerView.adapter = viewAdapter
 
         // Disable recycler view animation to reduce flickering, otherwise items can move, fade in
         // and out as the list change
-        resultRecyclerView.itemAnimator = null
+        //resultRecyclerView.itemAnimator = null
 
         // Attach an observer on the LiveData field of recognitionList
         // This will notify the recycler view to update every time when a new list is set on the
@@ -131,8 +132,10 @@ class CameraActivity : AppCompatActivity() {
         btnBackToCamera.setOnClickListener {
             Log.i("camera", "cameraaa")
             if (allPermissionsGranted()) {
-                viewFinder.visibility = View.VISIBLE
+                layoutCamera.visibility = View.VISIBLE
+                //viewFinder.visibility = View.VISIBLE
                 //resultRecyclerView.visibility = View.VISIBLE
+
                 foodImage.visibility = View.GONE
                 recognatedFoodList.visibility = View.GONE
                 btnBackToCamera.visibility = View.GONE
@@ -282,12 +285,29 @@ class CameraActivity : AppCompatActivity() {
             // TODO 4: Converting the top probability items into a list of recognitions
             for(output in outputs){
                 items.add(Recognition(output.label, output.score))
+                if(output.label == "resized-plate" && output.score < 0.70){
+                    runOnUiThread {
+                        layoutCamera.setBackgroundColor(resources.getColor(R.color.colorError))
+                    }
+                }
+                if(output.label == "resized-plate" && output.score > 0.70){
+                    runOnUiThread {
+                        layoutCamera.setBackgroundColor(resources.getColor(R.color.yellow))
+                    }
+                }
+                if(output.label == "resized-plate" && output.score > 0.85){
+                    runOnUiThread {
+                        layoutCamera.setBackgroundColor(resources.getColor(R.color.green_200))
+                    }
+                }
                 if(output.label == "resized-plate" && output.score > 0.95) {
                     runOnUiThread {
                         cameraProvider.unbindAll()
                         foodImage.setImageBitmap(imageBitmap)
-                        viewFinder.visibility = View.GONE
+                        //viewFinder.visibility = View.GONE
+                        layoutCamera.visibility = View.GONE
                         //resultRecyclerView.visibility = View.GONE
+
                         foodImage.visibility = View.VISIBLE
                         recognatedFoodList.visibility = View.VISIBLE
                         btnBackToCamera.visibility = View.VISIBLE
