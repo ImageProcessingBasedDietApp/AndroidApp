@@ -6,12 +6,7 @@ import com.ilaydaberna.imageprocessingbaseddietapp.R
 import com.ilaydaberna.imageprocessingbaseddietapp.ui.base.BaseActivity
 import org.kodein.di.Kodein
 
-class MainActivity : BaseActivity() {
-
-
-    override fun initViewBinding() {
-        TODO("Not yet implemented")
-    }
+class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -295,7 +295,7 @@ class CameraActivity : AppCompatActivity() {
                         layoutCamera.setBackgroundColor(resources.getColor(R.color.yellow))
                     }
                 }
-                if(output.label == "resized-plate" && output.score > 0.85){
+                if(output.label == "resized-plate" && output.score > 0.90){
                     runOnUiThread {
                         layoutCamera.setBackgroundColor(resources.getColor(R.color.green_200))
                     }

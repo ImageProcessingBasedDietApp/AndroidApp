@@ -29,6 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/colorError"
+            android:visibility="visible"
             android:orientation="vertical">
 
                 <androidx.camera.view.PreviewView
@@ -53,6 +54,8 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:visibility="gone">
 
                 <Button
@@ -60,41 +63,47 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Button"
+                    android:layout_marginTop="10dp"
                     android:textColor="@color/white"
                     android:textStyle="bold"
                     app:strokeWidth="2dp"
-                    android:backgroundTint="@color/green_700"/>
+                    android:background="@drawable/button_default" />
 
                 <Button
                     android:id="@+id/btnRecognatedFood2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Button"
+                    android:layout_marginTop="10dp"
                     android:textColor="@color/white"
                     android:textStyle="bold"
                     app:strokeWidth="2dp"
-                    android:backgroundTint="@color/green_700"/>
+                    android:background="@drawable/button_default" />
 
                 <Button
                     android:id="@+id/btnRecognatedFood3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Button"
+                    android:layout_marginTop="10dp"
                     android:textColor="@color/white"
                     android:textStyle="bold"
                     app:strokeWidth="2dp"
-                    android:backgroundTint="@color/green_700"/>
+                    android:background="@drawable/button_default" />
         </LinearLayout>
 
         <Button
             android:id="@+id/btnBackToCamera"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:text="Kameraya Geri Dön"
-            android:visibility="gone"
             android:textColor="@color/white"
             android:textStyle="bold"
-            app:strokeWidth="2dp"
-            android:backgroundTint="@color/wineRed" />
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/button_red"
+            android:visibility="gone"
+            app:strokeWidth="2dp" />
 
 </LinearLayout>
