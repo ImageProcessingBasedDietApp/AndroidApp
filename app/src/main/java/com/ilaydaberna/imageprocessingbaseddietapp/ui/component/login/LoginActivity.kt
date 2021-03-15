@@ -53,6 +53,10 @@ class LoginActivity : BaseActivity(), KodeinAware, AuthListener{
             Toast.makeText(applicationContext, "Google Register", Toast.LENGTH_LONG).show()
         }
 
+        binding.buttonFacebook.setOnClickListener {
+            Toast.makeText(applicationContext, "Facebook Register", Toast.LENGTH_LONG).show()
+        }
+
         binding.viewpager!!.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(binding.tablayout))
         binding.tablayout!!.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
@@ -93,5 +97,9 @@ class LoginActivity : BaseActivity(), KodeinAware, AuthListener{
     override fun onFailure(message: String) {
         binding.progressbar.visibility = View.GONE
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    fun facebookBtnClicked() {
+        Toast.makeText(this, "Facebook Login", Toast.LENGTH_LONG).show()
     }
 }
