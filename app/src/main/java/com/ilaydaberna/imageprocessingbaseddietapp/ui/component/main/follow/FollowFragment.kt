@@ -1,4 +1,4 @@
-package com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main
+package com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.follow
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -20,7 +20,7 @@ class FollowFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.follow_fragment, container, false)
+        return inflater.inflate(R.layout.fragment_follow, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

@@ -22,8 +22,8 @@
 
 
     <fragment
-        android:id="@+id/fragment"
-        android:name="com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.HomeFragment"
+        android:id="@+id/fragment_maim"
+        android:name="com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.home.HomeFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="50dp"
