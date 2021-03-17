@@ -11,6 +11,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.ilaydaberna.imageprocessingbaseddietapp.R
 import com.ilaydaberna.imageprocessingbaseddietapp.databinding.ActivityMainBinding
+import com.ilaydaberna.imageprocessingbaseddietapp.util.startCameraActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -27,6 +28,10 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         setupViews()
+
+        binding.btnAddMeal.setOnClickListener {
+            this.startCameraActivity()
+        }
     }
 
     fun setupViews() {

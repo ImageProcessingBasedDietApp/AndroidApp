@@ -28,6 +28,7 @@ import com.ilaydaberna.imageprocessingbaseddietapp.R
 import com.ilaydaberna.imageprocessingbaseddietapp.ml.FoodClassificationModel
 import com.ilaydaberna.imageprocessingbaseddietapp.ml.PlateModel
 import com.ilaydaberna.imageprocessingbaseddietapp.util.YuvToRgbConverter
+import com.ilaydaberna.imageprocessingbaseddietapp.util.startHomeActivity
 import org.tensorflow.lite.support.image.TensorImage
 import java.util.concurrent.Executors
 
@@ -370,5 +371,9 @@ class CameraActivity : AppCompatActivity() {
                     false
             )
         }
+    }
+
+    override fun onBackPressed() {
+        this.startHomeActivity()
     }
 }
