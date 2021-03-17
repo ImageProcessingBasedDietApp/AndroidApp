@@ -10,23 +10,8 @@ import com.ilaydaberna.imageprocessingbaseddietapp.R
 
 class FollowFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = FollowFragment()
-    }
-
-    private lateinit var viewModel: FollowViewModel
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_follow, container, false)
     }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(FollowViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
-
 }

@@ -1,14 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.component.main.home.HomeFragment">
-
-    <TextView
+<layout>
+    <data>
+        <variable
+            name="viewModel"
+            type="com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.home.HomeViewModel" />
+    </data>
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textSize="50dp"
-        android:text="HOME FRAGMENT" />
+        tools:context=".ui.component.main.home.HomeFragment">
 
-</FrameLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="@color/black"
+            android:textSize="40dp"
+            android:text="HOME FRAGMENT" />
+
+    </FrameLayout>
+</layout>

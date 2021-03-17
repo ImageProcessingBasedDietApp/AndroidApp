@@ -7,43 +7,21 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.home.HomeFragment"
-        android:label="home_fragment"
-        tools:layout="@layout/fragment_home" >
-        <action
-            android:id="@+id/action_homeFragment_to_followFragment"
-            app:destination="@id/followFragment" />
-        <action
-            android:id="@+id/action_homeFragment_to_chartFragment"
-            app:destination="@id/chartFragment" />
-        <action
-            android:id="@+id/action_homeFragment_to_settingsFragment"
-            app:destination="@id/settingsFragment" />
-    </fragment>
+        android:label="Ana Sayfa"
+        tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/followFragment"
         android:name="com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.follow.FollowFragment"
-        android:label="fragment_follow"
-        tools:layout="@layout/fragment_follow" >
-        <action
-            android:id="@+id/action_followFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
-    </fragment>
+        android:label="Takip"
+        tools:layout="@layout/fragment_follow" />
     <fragment
         android:id="@+id/chartFragment"
-        android:name="com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.ChartFragment"
-        android:label="fragment_chart"
-        tools:layout="@layout/fragment_chart" >
-        <action
-            android:id="@+id/action_chartFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
-    </fragment>
+        android:name="com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.chart.ChartFragment"
+        android:label="Grafikler"
+        tools:layout="@layout/fragment_chart" />
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.SettingsFragment"
-        android:label="fragment_settings"
-        tools:layout="@layout/fragment_settings" >
-        <action
-            android:id="@+id/action_settingsFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
-    </fragment>
+        android:name="com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.settings.SettingsFragment"
+        android:label="Ayarlar"
+        tools:layout="@layout/fragment_settings" />
 </navigation>

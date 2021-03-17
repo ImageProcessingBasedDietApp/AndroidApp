@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".ui.component.main.MainActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
@@ -15,7 +11,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:context=".ui.component.main.MainActivity">
 
         <RelativeLayout
             android:id="@+id/rl_toolbar"
@@ -30,30 +27,44 @@
                 layout="@layout/main_toolbar" />
         </RelativeLayout>
 
-        <fragment
-            android:id="@+id/fragment_maim"
-            android:name="com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.home.HomeFragment"
+        <FrameLayout
+            android:id="@+id/frameLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="50dp"
-            android:layout_marginBottom="60dp"
-            app:layout_constraintBottom_toTopOf="@+id/bottom_nav"
-            app:layout_constraintTop_toBottomOf="@+id/rl_toolbar" />
+            android:background="@color/colorBackgroundLight"
+            app:layout_constraintBottom_toTopOf="@+id/bottomNavView"
+            app:layout_constraintTop_toTopOf="@id/rl_toolbar">
+
+            <fragment
+                android:id="@+id/fragNavHost"
+                android:name="androidx.navigation.fragment.NavHostFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:defaultNavHost="true"
+                app:navGraph="@navigation/nav_main" />
+
+        </FrameLayout>
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Button"
+            app:layout_constraintBottom_toTopOf="@+id/bottomNavView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottom_nav"
+            android:id="@+id/bottomNavView"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:background="@color/white"
-            app:itemBackground="@color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            android:layout_gravity="start"
+            android:background="@color/colorBackgroundLight"
             app:itemIconTint="@color/bottom_navigation_color"
             app:itemTextColor="@color/bottom_navigation_text_color"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:menu="@menu/menu_bottom_main" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </layout>

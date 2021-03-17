@@ -1,26 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
     <item
-        android:id="@+id/bottom_nav_item_home"
+        android:id="@+id/homeFragment"
         android:icon="@drawable/icon_home"
-        android:onClick="@{}"
         android:title="Ana Sayfa" />
     <item
-        android:id="@+id/bottom_nav_item_follow"
+        android:id="@+id/followFragment"
         android:icon="@drawable/icon_follow"
         android:title="Takip" />
     <item
-        android:id="@+id/bottom_nav_item_camera"
-        android:icon="@drawable/icon_camera"
-        android:title="Kamera" />
-    <item
-        android:id="@+id/bottom_nav_item_charts"
+        android:id="@+id/chartFragment"
         android:icon="@drawable/icon_chart"
-        android:title="Takip" />
+        android:title="Grafik" />
     <item
-        android:id="@+id/bottom_nav_item_settings"
+        android:id="@+id/settingsFragment"
         android:icon="@drawable/icon_settings"
         android:title="Ayarlar" />
 </menu>
