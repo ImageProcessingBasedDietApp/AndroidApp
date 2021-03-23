@@ -179,7 +179,7 @@ class CameraActivity : AppCompatActivity() {
                         getString(R.string.permission_deny_text),
                         Toast.LENGTH_SHORT
                 ).show()
-                finish()
+               // finish()
             }
         }
     }

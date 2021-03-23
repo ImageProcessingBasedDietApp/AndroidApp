@@ -23,6 +23,13 @@ class AuthViewModel (private val repository: UserRepository) : ViewModel() {
         repository.currentUser()
     }
 
+    fun facebookLogin(){
+        authListener?.onStarted()
+
+        //facebook login yap...
+
+    }
+
     //function to perform login
     fun login() {
         //validating email and password

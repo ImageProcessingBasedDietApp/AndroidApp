@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "677189994894-icotb27q3p71f06jhs2idda6d5dde0k7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ilaydaberna.imageprocessingbaseddietapp",
+            "certificate_hash": "2b58f70cc7f8cd5be6761da3a84b7bbea9d6cf50"
+          }
+        },
+        {
           "client_id": "677189994894-bl4db3jtd6gqhbdv5gbo1gluuv04tmt6.apps.googleusercontent.com",
           "client_type": 3
         }
