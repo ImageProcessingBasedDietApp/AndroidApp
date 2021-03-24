@@ -60,15 +60,6 @@ class LoginActivity : BaseActivity(), KodeinAware, AuthListener{
         val mAdapter = PagerAdapter(this, supportFragmentManager, 3)
         binding.viewpager.adapter = mAdapter
 
-        binding.buttonGoogle.setOnClickListener {
-            signIn()
-            Toast.makeText(applicationContext, "Google Register", Toast.LENGTH_LONG).show()
-        }
-
-        binding.buttonFacebook.setOnClickListener {
-            Toast.makeText(applicationContext, "Facebook Register", Toast.LENGTH_LONG).show()
-        }
-
         binding.viewpager!!.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(binding.tablayout))
         binding.tablayout!!.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
@@ -89,6 +80,16 @@ class LoginActivity : BaseActivity(), KodeinAware, AuthListener{
             .build()
 
         googleSignInClient = GoogleSignIn.getClient(this, gso)
+
+        binding.buttonGoogle.setOnClickListener {
+            signInGoogle()
+            Toast.makeText(applicationContext, "Google Register", Toast.LENGTH_LONG).show()
+        }
+
+        binding.buttonFacebook.setOnClickListener {
+            Toast.makeText(applicationContext, "Facebook Register", Toast.LENGTH_LONG).show()
+        }
+
     }
 
     //AuthViewModelde işlem başlıyor. Progress bar görünür oluyor.
@@ -121,11 +122,7 @@ class LoginActivity : BaseActivity(), KodeinAware, AuthListener{
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
-    fun facebookBtnClicked() {
-        Toast.makeText(this, "Facebook Login", Toast.LENGTH_LONG).show()
-    }
-
-    private fun signIn() {
+    private fun signInGoogle() {
         val signInIntent = googleSignInClient.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }
@@ -157,11 +154,12 @@ class LoginActivity : BaseActivity(), KodeinAware, AuthListener{
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("firebaseAuthWithGoogle", "signInWithCredential:success")
                     val user = auth.currentUser
+                    startHomeActivity()
                     //updateUI(user)
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w("firebaseAuthWithGoogle", "signInWithCredential:failure", task.exception)
-                    //updateUI(null)
+                    Toast.makeText(this, "Giriş yapılamadı", Toast.LENGTH_SHORT).show()
                 }
             }
     }

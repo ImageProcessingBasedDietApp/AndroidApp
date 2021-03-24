@@ -15,12 +15,14 @@
 
     <color name="colorBackgroundLight">#FFFFFF</color>
     <color name="colorBackgroundDark">#000000</color>
+    <color name="colorCardViewBackgroundLight">#DFDFDF</color>
 
     <color name="colorBottomNavigationPressed">#008D3D</color>
     <color name="colorBottomNavigationDefault">#828282</color>
 
     <color name="ic_launcher_background">#ffffff</color>
 
+    <color name="colorTextGreen">#008D3D</color>
 
     <color name="colorError">#FF0000</color>
     <color name="colorHint">#828282</color>
