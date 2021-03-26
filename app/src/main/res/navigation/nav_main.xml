@@ -8,7 +8,11 @@
         android:id="@+id/homeFragment"
         android:name="com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.home.HomeFragment"
         android:label="Ana Sayfa"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_addMealFragment"
+            app:destination="@id/addMealFragment" />
+    </fragment>
     <fragment
         android:id="@+id/followFragment"
         android:name="com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.follow.FollowFragment"
@@ -24,4 +28,9 @@
         android:name="com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.settings.SettingsFragment"
         android:label="Ayarlar"
         tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/addMealFragment"
+        android:name="com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.home.AddMealFragment"
+        android:label="fragment_add_meal"
+        tools:layout="@layout/fragment_add_meal" />
 </navigation>
