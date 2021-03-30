@@ -26,28 +26,14 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/icon_add" />
 
-        <RelativeLayout
-            android:id="@+id/rl_toolbar"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <include
-                android:id="@+id/main_toolbar"
-                layout="@layout/main_toolbar" />
-        </RelativeLayout>
-
         <FrameLayout
             android:id="@+id/frameLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="50dp"
             android:layout_marginBottom="60dp"
             android:background="@color/colorBackgroundLight"
             app:layout_constraintBottom_toTopOf="@+id/bottomNavView"
-            app:layout_constraintTop_toTopOf="@id/rl_toolbar">
+            app:layout_constraintTop_toTopOf="parent">
 
             <fragment
                 android:id="@+id/fragNavHost"
