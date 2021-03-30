@@ -14,7 +14,7 @@
         android:icon="@drawable/icon_chart"
         android:title="Grafik" />
     <item
-        android:id="@+id/settingsFragment"
-        android:icon="@drawable/icon_settings"
-        android:title="Ayarlar" />
+        android:id="@+id/profileFragment"
+        android:icon="@drawable/icon_profile"
+        android:title="Profilim" />
 </menu>

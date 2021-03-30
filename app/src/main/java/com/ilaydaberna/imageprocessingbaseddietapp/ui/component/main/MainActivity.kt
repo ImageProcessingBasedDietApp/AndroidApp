@@ -1,5 +1,6 @@
 package com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main
 
+import android.opengl.Visibility
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -39,6 +40,15 @@ class MainActivity : AppCompatActivity() {
         binding.btnAddMeal.setOnClickListener {
             this.startCameraActivity()
         }
+
+    }
+
+    public fun hideBtnAddMeal(){
+        binding.btnAddMeal.visibility = View.GONE
+    }
+
+    public fun showBtnAddMeal(){
+        binding.btnAddMeal.visibility = View.VISIBLE
     }
 
     fun setupViews() {

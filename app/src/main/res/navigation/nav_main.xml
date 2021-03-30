@@ -24,10 +24,10 @@
         android:label="Grafikler"
         tools:layout="@layout/fragment_chart" />
     <fragment
-        android:id="@+id/settingsFragment"
-        android:name="com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.settings.SettingsFragment"
-        android:label="Ayarlar"
-        tools:layout="@layout/fragment_settings" />
+        android:id="@+id/profileFragment"
+        android:name="com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.profile.ProfileFragment"
+        android:label="Profilim"
+        tools:layout="@layout/fragment_profile" />
     <fragment
         android:id="@+id/addMealFragment"
         android:name="com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.home.AddMealFragment"
