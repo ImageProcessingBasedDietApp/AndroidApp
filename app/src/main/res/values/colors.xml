@@ -30,6 +30,12 @@
     <color name="colorError">#FF0000</color>
     <color name="colorHint">#828282</color>
     <color name="wineRed">#951B1B</color>
+    <color name="blue">#E10099CC</color>
+    <color name="blueLight">#2AB8E8</color>
+
+    <color name="greenLight">#E92DDC87</color>
+    <color name="greenDark">#19B66A</color>
+
 
 
 </resources>
