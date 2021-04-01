@@ -20,12 +20,56 @@ import kotlinx.android.synthetic.main.fragment_profile.view.*
 
 class ProfileFragment : Fragment(){
 
+    var isEditGoals = false
+    var isEditUserInfo = false
+    var isEditSettings = false
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
         view.iv_profile_photo.setOnClickListener {
             selectImage()
         }
-        
+
+        view.tv_edit_goals.setOnClickListener {
+            if(!isEditGoals){
+                view.layout_goals.visibility = View.GONE
+                view.layout_edit_goals.visibility = View.VISIBLE
+                isEditGoals = true
+            }
+            else{
+                view.layout_goals.visibility = View.VISIBLE
+                view.layout_edit_goals.visibility = View.GONE
+                isEditGoals = false
+            }
+        }
+
+        view.tv_edit_user_info.setOnClickListener {
+            if(!isEditUserInfo){
+                view.layout_user_info.visibility = View.GONE
+                view.layout_edit_user_info.visibility = View.VISIBLE
+                isEditUserInfo = true
+            }
+            else{
+                view.layout_user_info.visibility = View.VISIBLE
+                view.layout_edit_user_info.visibility = View.GONE
+                isEditUserInfo = false
+            }
+        }
+
+        view.tv_edit_settings.setOnClickListener{
+            if(!isEditSettings){
+                view.layout_settings.visibility = View.GONE
+                view.layout_edit_settings.visibility = View.VISIBLE
+                isEditSettings = true
+            }
+            else{
+                view.layout_settings.visibility = View.VISIBLE
+                view.layout_edit_settings.visibility = View.GONE
+                isEditSettings = false
+            }
+        }
+
+
         return view
     }
 

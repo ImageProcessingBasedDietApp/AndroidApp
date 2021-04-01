@@ -22,12 +22,6 @@
         android:gravity="center_vertical"
         android:padding="16dp">
 
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:padding="5dp"
-            android:src="@drawable/icon_arrow_back" />
-
         <Space
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -44,7 +38,7 @@
         <Space
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1.5" />
+            android:layout_weight="1" />
 
 
 
@@ -100,17 +94,18 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
+                        android:layout_gravity="center"
                         android:text="Ad Soyad"
                         android:textColor="#424242"
                         android:textSize="21sp"
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/tv_username"
+                        android:id="@+id/tv_email"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="kullanıcı adı"
+                        android:text="example@example.com"
                         android:textColor="@color/goodgrey"
                         android:textSize="14sp" />
                 </LinearLayout>
@@ -125,7 +120,6 @@
 
                 <!--Hedeflerim-->
                 <LinearLayout
-                    android:id="@+id/layout_goals"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/circular_border_white"
@@ -168,6 +162,8 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/layout_goals"
+                            android:visibility="visible"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="vertical">
@@ -293,6 +289,154 @@
                             </LinearLayout>
 
                         </LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/layout_edit_goals"
+                            android:visibility="gone"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:layout_marginTop="10dp"
+                                android:paddingRight="8dp">
+
+                                <ImageView
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:background="@drawable/circular_border_grey"
+                                    android:padding="5dp"
+                                    android:src="@drawable/icon_goal" />
+                                <EditText
+                                    android:id="@+id/et_goal_weight"
+                                    android:hint="65"
+                                    android:textSize="15sp"
+                                    android:layout_marginLeft="20dp"
+                                    android:inputType="number"
+                                    android:textColor="@color/goodgrey"
+                                    android:textColorHint="@color/colorHint"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"/>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:layout_marginTop="10dp"
+                                android:paddingRight="8dp">
+
+                                <ImageView
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:background="@drawable/circular_border_grey"
+                                    android:padding="5dp"
+                                    android:src="@drawable/icon_water" />
+
+                                <EditText
+                                    android:id="@+id/ed_goal_water"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginLeft="20dp"
+                                    android:hint="10"
+                                    android:inputType="number"
+                                    android:textColor="@color/goodgrey"
+                                    android:textColorHint="@color/colorHint"
+                                    android:textSize="15sp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:layout_marginTop="10dp"
+                                android:paddingRight="8dp">
+
+                                <ImageView
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:background="@drawable/circular_border_grey"
+                                    android:padding="5dp"
+                                    android:src="@drawable/icon_coffee" />
+
+                                <EditText
+                                    android:id="@+id/et_goal_coffee"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginLeft="20dp"
+                                    android:hint="3"
+                                    android:inputType="number"
+                                    android:textColor="@color/goodgrey"
+                                    android:textColorHint="@color/colorHint"
+                                    android:textSize="15sp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:layout_marginTop="10dp"
+                                android:paddingRight="8dp">
+
+                                <ImageView
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:background="@drawable/circular_border_grey"
+                                    android:padding="5dp"
+                                    android:src="@drawable/icon_tea" />
+
+                                <EditText
+                                    android:id="@+id/et_goal_tea"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginLeft="20dp"
+                                    android:hint="3"
+                                    android:inputType="number"
+                                    android:textColor="@color/goodgrey"
+                                    android:textColorHint="@color/colorHint"
+                                    android:textSize="15sp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:layout_marginTop="10dp"
+                                android:paddingRight="8dp">
+
+                                <ImageView
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:background="@drawable/circular_border_grey"
+                                    android:padding="5dp"
+                                    android:src="@drawable/icon_spor" />
+
+                                <EditText
+                                    android:id="@+id/et_goal_step"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginLeft="20dp"
+                                    android:hint="10.000"
+                                    android:inputType="number"
+                                    android:textColor="@color/goodgrey"
+                                    android:textColorHint="@color/colorHint"
+                                    android:textSize="15sp" />
+                            </LinearLayout>
+
+                            <Button
+                                android:id="@+id/button_save_user_info"
+                                android:layout_marginTop="10dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/button_default"
+                                android:textColor="@color/white"
+                                android:text="Kaydet" />
+
+                        </LinearLayout>
+
 
                     </LinearLayout>
 
@@ -301,7 +445,6 @@
 
                 <!--Bilgilerim-->
                 <LinearLayout
-                    android:id="@+id/layout_user_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -339,6 +482,8 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/layout_user_info"
+                        android:visibility="visible"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
@@ -395,30 +540,6 @@
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:layout_marginTop="10dp"
-                            android:paddingRight="8dp">
-
-                            <ImageView
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
-                                android:background="@drawable/circular_border_grey"
-                                android:padding="5dp"
-                                android:src="@drawable/icon_email" />
-
-                            <TextView
-                                android:id="@+id/tv_email"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="20dp"
-                                android:text="example@example.com"
-                                android:textColor="@color/goodgrey"
-                                android:textSize="15sp" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:gravity="center_vertical"
                             android:paddingRight="8dp">
@@ -465,11 +586,133 @@
                         </LinearLayout>
 
                     </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layout_edit_user_info"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:layout_marginTop="10dp"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:layout_marginTop="10dp"
+                            android:paddingRight="8dp">
+
+                            <ImageView
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:background="@drawable/circular_border_grey"
+                                android:padding="5dp"
+                                android:src="@drawable/icon_weight" />
+
+                            <EditText
+                                android:id="@+id/et_weight"
+                                android:hint="65"
+                                android:textSize="15sp"
+                                android:layout_marginLeft="20dp"
+                                android:inputType="number"
+                                android:textColor="@color/goodgrey"
+                                android:textColorHint="@color/colorHint"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:layout_marginTop="10dp"
+                            android:paddingRight="8dp">
+
+                            <ImageView
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:background="@drawable/circular_border_grey"
+                                android:padding="5dp"
+                                android:src="@drawable/icon_height" />
+
+                            <EditText
+                                android:id="@+id/et_height"
+                                android:hint="165"
+                                android:textSize="15sp"
+                                android:layout_marginLeft="20dp"
+                                android:inputType="number"
+                                android:textColor="@color/goodgrey"
+                                android:textColorHint="@color/colorHint"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center_vertical"
+                            android:paddingRight="8dp">
+
+                            <ImageView
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:background="@drawable/circular_border_grey"
+                                android:padding="5dp"
+                                android:src="@drawable/icon_birthday" />
+
+                            <EditText
+                                android:id="@+id/ed_birthdate"
+                                android:hint="22/02/1996"
+                                android:textSize="15sp"
+                                android:layout_marginLeft="20dp"
+                                android:inputType="date"
+                                android:textColor="@color/goodgrey"
+                                android:textColorHint="@color/colorHint"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center_vertical"
+                            android:paddingRight="8dp">
+
+                            <ImageView
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:background="@drawable/circular_border_grey"
+                                android:padding="5dp"
+                                android:src="@drawable/icon_gender" />
+
+                            <EditText
+                                android:id="@+id/et_gender"
+                                android:hint="Kadın/Erkek"
+                                android:textSize="15sp"
+                                android:layout_marginLeft="20dp"
+                                android:textColor="@color/goodgrey"
+                                android:textColorHint="@color/colorHint"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"/>
+                        </LinearLayout>
+
+                        <Button
+                            android:id="@+id/button_save_goals"
+                            android:layout_marginTop="10dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/button_default"
+                            android:textColor="@color/white"
+                            android:text="Kaydet" />
+
+                    </LinearLayout>
+
                 </LinearLayout>
 
                 <!--Ayarlar-->
                 <LinearLayout
-                    android:id="@+id/layout_settings"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -507,28 +750,78 @@
                             android:textSize="15sp" />
 
                     </LinearLayout>
+
                     <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:gravity="center_vertical"
-                        android:paddingRight="8dp">
+                        android:id="@+id/layout_settings"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
 
-                        <ImageView
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:background="@drawable/circular_border_grey"
-                            android:padding="5dp"
-                            android:src="@drawable/icon_notification" />
-
-                        <TextView
-                            android:id="@+id/tv_notification"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="20dp"
-                            android:text="Bildirimlere izin verildi"
-                            android:textColor="@color/goodgrey"
-                            android:textSize="15sp" />
+                            android:layout_marginTop="10dp"
+                            android:gravity="center_vertical"
+                            android:paddingRight="8dp">
+
+                            <ImageView
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:background="@drawable/circular_border_grey"
+                                android:padding="5dp"
+                                android:src="@drawable/icon_notification" />
+
+                            <TextView
+                                android:id="@+id/tv_notification"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="20dp"
+                                android:text="Bildirimler açık"
+                                android:textColor="@color/goodgrey"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layout_edit_settings"
+                        android:layout_width="match_parent"
+                        android:visibility="gone"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center_vertical"
+                            android:paddingRight="8dp">
+
+                            <ImageView
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:background="@drawable/circular_border_grey"
+                                android:padding="5dp"
+                                android:src="@drawable/icon_notification" />
+
+                            <Switch
+                                android:id="@+id/sw_notification"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="20dp"
+                                android:text="Bildirimlere izin ver"
+                                android:textColor="@color/goodgrey"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+                        <Button
+                            android:id="@+id/button_save_settings"
+                            android:layout_marginTop="10dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/button_default"
+                            android:textColor="@color/white"
+                            android:text="Kaydet" />
+
                     </LinearLayout>
 
                 </LinearLayout>
