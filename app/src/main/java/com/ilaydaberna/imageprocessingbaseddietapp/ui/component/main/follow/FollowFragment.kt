@@ -21,7 +21,7 @@ class FollowFragment : Fragment() {
         var weight: Double = 49.0 //Kullanıcıdan alınan kiloya setlenecek.
         var newWeight: String? = null
 
-        view.tv_weight.setText(weight.toString())
+        view.tv_weight.text = weight.toString()
 
         view.iv_minus.setOnClickListener(){
             if(weight >= 0.1){

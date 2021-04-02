@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="200dp"
     android:orientation="vertical"
-    android:padding="30dp">
+    android:padding="30dp"
+    android:background="@color/white"
+    android:elevation="100dp">
 
     <TextView
         android:id="@+id/tv_dialog_header"
@@ -13,14 +15,18 @@
         android:textStyle="bold"
         android:text="Lütfen Kilonuzu Giriniz"
         android:textSize="25dp"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:textColor="@color/green_500"/>
 
     <EditText
         android:id="@+id/et_dialog_weight"
         android:hint="Kilonuzu Giriniz.."
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="numberDecimal"/>
+        android:inputType="numberDecimal"
+        android:textColor="@color/green_500"
+        android:backgroundTint="@color/green_500"
+        android:textColorHint="#CACACA"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -33,12 +39,14 @@
             android:text="İptal Et"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="40dp"/>
+            android:layout_marginRight="40dp"
+            android:background="@color/green_500"/>
         <Button
             android:id="@+id/btn_dialog_save"
             android:text="Kaydet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"/>
+            android:layout_marginLeft="40dp"
+            android:background="@color/green_500"/>
     </LinearLayout>
 </LinearLayout>
