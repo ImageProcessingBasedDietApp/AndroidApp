@@ -211,7 +211,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="20dp"
-                                    android:text="10 bardak su"
+                                    android:text="X bardak su"
                                     android:textColor="@color/goodgrey"
                                     android:textSize="15sp" />
                             </LinearLayout>
@@ -235,7 +235,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="20dp"
-                                    android:text="3 bardak Türk Kahvesi "
+                                    android:text="X bardak Türk Kahvesi "
                                     android:textColor="@color/goodgrey"
                                     android:textSize="15sp" />
                             </LinearLayout>
@@ -259,7 +259,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="20dp"
-                                    android:text="3 bardak çay"
+                                    android:text="X bardak çay"
                                     android:textColor="@color/goodgrey"
                                     android:textSize="15sp" />
                             </LinearLayout>
@@ -283,7 +283,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="20dp"
-                                    android:text="10.000 adım"
+                                    android:text="XX.XXX adım"
                                     android:textColor="@color/goodgrey"
                                     android:textSize="15sp" />
                             </LinearLayout>
@@ -337,7 +337,7 @@
                                     android:src="@drawable/icon_water" />
 
                                 <EditText
-                                    android:id="@+id/ed_goal_water"
+                                    android:id="@+id/et_goal_water"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:layout_marginLeft="20dp"
@@ -427,7 +427,7 @@
                             </LinearLayout>
 
                             <Button
-                                android:id="@+id/button_save_user_info"
+                                android:id="@+id/button_save_goals"
                                 android:layout_marginTop="10dp"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -662,9 +662,10 @@
                                 android:src="@drawable/icon_birthday" />
 
                             <EditText
-                                android:id="@+id/ed_birthdate"
+                                android:id="@+id/et_birthdate"
                                 android:hint="22/02/1996"
                                 android:textSize="15sp"
+                                android:focusable="false"
                                 android:layout_marginLeft="20dp"
                                 android:inputType="date"
                                 android:textColor="@color/goodgrey"
@@ -691,6 +692,7 @@
                                 android:id="@+id/et_gender"
                                 android:hint="Kadın/Erkek"
                                 android:textSize="15sp"
+                                android:focusable="false"
                                 android:layout_marginLeft="20dp"
                                 android:textColor="@color/goodgrey"
                                 android:textColorHint="@color/colorHint"
@@ -699,7 +701,7 @@
                         </LinearLayout>
 
                         <Button
-                            android:id="@+id/button_save_goals"
+                            android:id="@+id/button_save_user_info"
                             android:layout_marginTop="10dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
