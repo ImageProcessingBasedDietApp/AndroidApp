@@ -19,20 +19,38 @@ class FollowFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_follow, container, false)
         var weight: Double = 49.0 //Kullanıcıdan alınan kiloya setlenecek.
-        val weightText = view.tv_weight.text.toString()
         var newWeight: String? = null
 
         view.tv_weight.setText(weight.toString())
 
         view.iv_minus.setOnClickListener(){
-            weight -= 0.1
-            val text = DecimalFormat("00.0").format(weight)
+            if(weight >= 0.1){
+                weight -= 0.1
+            } else {
+                weight = 0.0
+            }
+
+            var text : String = ""
+            text = if(weight in 0.0..9.9) {
+                DecimalFormat("0.0").format(weight)
+            } else if(weight in 9.9..99.9) {
+                DecimalFormat("00.0").format(weight)
+            } else {
+                DecimalFormat("000.0").format(weight)
+            }
             view.tv_weight.text = text
         }
 
         view.iv_plus.setOnClickListener(){
             weight += 0.1
-            val text = DecimalFormat("00.0").format(weight)
+            var text : String = ""
+            text = if(weight in 0.0..9.9) {
+                DecimalFormat("0.0").format(weight)
+            } else if(weight in 9.99..99.9) {
+                DecimalFormat("00.0").format(weight)
+            } else {
+                DecimalFormat("000.0").format(weight)
+            }
             view.tv_weight.text = text
         }
 
@@ -44,20 +62,23 @@ class FollowFragment : Fragment() {
             mDialogView.btn_dialog_save.setOnClickListener {
                 mAlertDialog.dismiss()
                 newWeight = mDialogView.et_dialog_weight.text.toString()
+
                 if(!newWeight.equals("") &&!newWeight?.contains(".")!!) {
-                    newWeight = newWeight + ".0"
+                    newWeight = "$newWeight.0"
                 }
+
                 if(newWeight.equals("")) {
                     newWeight = "0.0"
                 }
-                view.tv_weight.setText(newWeight)
+
+                view.tv_weight.text = newWeight
                 weight = newWeight.toString().toDouble()
             }
+
             mDialogView.btn_dialog_cancel.setOnClickListener {
                 mAlertDialog.dismiss()
             }
         }
-
         return view
     }
 }
