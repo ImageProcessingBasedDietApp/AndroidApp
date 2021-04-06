@@ -38,7 +38,7 @@ fun Fragment.alertDialog(context: Context, title: String, msg: String, positiveB
     builder.setTitle(title)
     builder.setMessage(msg)
 
-    builder.setPositiveButton(android.R.string.yes) { dialog, which ->
+    builder.setPositiveButton(positiveBtn) { dialog, which ->
         if(positive == null){
             dialog.dismiss()
         }

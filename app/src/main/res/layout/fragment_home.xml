@@ -10,268 +10,276 @@
         android:orientation="vertical"
         tools:context=".ui.component.main.home.HomeFragment">
 
-
         <TextView
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:text="GRAFİK GELECEK" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/layout_breakfast"
-            android:background="@drawable/circular_corner_green"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_meal_list"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            app:layout_constraintCircleRadius="30dp">
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/cardview_add_meal" />
 
-            <ImageView
-                android:id="@+id/breakfast_imageView"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:layout_marginLeft="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/breakfast" />
 
-            <TextView
-                android:id="@+id/breakfast_textView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:text="Kahvaltı"
-                android:textColor="@color/colorTextGreen"
-                android:textSize="20dp"
-                app:layout_constraintBottom_toTopOf="@+id/breakfast_content"
-                app:layout_constraintEnd_toStartOf="@+id/breakfast_total_calorie"
-                app:layout_constraintStart_toEndOf="@+id/breakfast_imageView"
-                app:layout_constraintTop_toTopOf="parent" />
+        <!--
+                <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:id="@+id/layout_breakfast"
+                    android:background="@drawable/circular_corner_green"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    app:layout_constraintCircleRadius="30dp">
 
-            <TextView
-                android:id="@+id/breakfast_content"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:text="-"
-                android:textSize="16dp"
-                android:textColor="@color/black"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/breakfast_total_calorie"
-                app:layout_constraintStart_toEndOf="@+id/breakfast_imageView"
-                app:layout_constraintTop_toBottomOf="@+id/breakfast_textView" />
+                    <ImageView
+                        android:id="@+id/breakfast_imageView"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_marginLeft="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/breakfast" />
 
-            <TextView
-                android:id="@+id/breakfast_total_calorie"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0 cal"
-                android:textSize="25dp"
-                android:textColor="@color/black"
-                android:layout_marginRight="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                    <TextView
+                        android:id="@+id/breakfast_textView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:text="Kahvaltı"
+                        android:textColor="@color/colorTextGreen"
+                        android:textSize="20dp"
+                        app:layout_constraintBottom_toTopOf="@+id/breakfast_content"
+                        app:layout_constraintEnd_toStartOf="@+id/breakfast_total_calorie"
+                        app:layout_constraintStart_toEndOf="@+id/breakfast_imageView"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                    <TextView
+                        android:id="@+id/breakfast_content"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:text="-"
+                        android:textSize="16dp"
+                        android:textColor="@color/black"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/breakfast_total_calorie"
+                        app:layout_constraintStart_toEndOf="@+id/breakfast_imageView"
+                        app:layout_constraintTop_toBottomOf="@+id/breakfast_textView" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/layout_launch"
-            android:background="@drawable/circular_corner_green"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            app:layout_constraintCircleRadius="30dp">
+                    <TextView
+                        android:id="@+id/breakfast_total_calorie"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0 cal"
+                        android:textSize="25dp"
+                        android:textColor="@color/black"
+                        android:layout_marginRight="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:id="@+id/launch_imageView"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:layout_marginLeft="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/launch" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
-                android:id="@+id/launch_textView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:text="Öğle Yemeği"
-                android:textColor="@color/colorTextGreen"
-                android:textSize="20dp"
-                app:layout_constraintBottom_toTopOf="@+id/launch_content"
-                app:layout_constraintEnd_toStartOf="@+id/launch_total_calorie"
-                app:layout_constraintStart_toEndOf="@+id/launch_imageView"
-                app:layout_constraintTop_toTopOf="parent" />
+                <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:id="@+id/layout_launch"
+                    android:background="@drawable/circular_corner_green"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    app:layout_constraintCircleRadius="30dp">
 
-            <TextView
-                android:id="@+id/launch_content"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:text="-"
-                android:textSize="16dp"
-                android:textColor="@color/black"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/launch_total_calorie"
-                app:layout_constraintStart_toEndOf="@+id/launch_imageView"
-                app:layout_constraintTop_toBottomOf="@+id/launch_textView" />
+                    <ImageView
+                        android:id="@+id/launch_imageView"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_marginLeft="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/launch" />
 
-            <TextView
-                android:id="@+id/launch_total_calorie"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0 cal"
-                android:textSize="25dp"
-                android:textColor="@color/black"
-                android:layout_marginRight="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                    <TextView
+                        android:id="@+id/launch_textView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:text="Öğle Yemeği"
+                        android:textColor="@color/colorTextGreen"
+                        android:textSize="20dp"
+                        app:layout_constraintBottom_toTopOf="@+id/launch_content"
+                        app:layout_constraintEnd_toStartOf="@+id/launch_total_calorie"
+                        app:layout_constraintStart_toEndOf="@+id/launch_imageView"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                    <TextView
+                        android:id="@+id/launch_content"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:text="-"
+                        android:textSize="16dp"
+                        android:textColor="@color/black"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/launch_total_calorie"
+                        app:layout_constraintStart_toEndOf="@+id/launch_imageView"
+                        app:layout_constraintTop_toBottomOf="@+id/launch_textView" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/layout_dinner"
-            android:background="@drawable/circular_corner_green"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            app:layout_constraintCircleRadius="30dp">
+                    <TextView
+                        android:id="@+id/launch_total_calorie"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0 cal"
+                        android:textSize="25dp"
+                        android:textColor="@color/black"
+                        android:layout_marginRight="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:id="@+id/dinner_imageView"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:layout_marginLeft="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/dinner" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
-                android:id="@+id/dinner_textView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:text="Akşam Yemeği"
-                android:textColor="@color/colorTextGreen"
-                android:textSize="20dp"
-                app:layout_constraintBottom_toTopOf="@+id/dinner_content"
-                app:layout_constraintEnd_toStartOf="@+id/dinner_total_calorie"
-                app:layout_constraintStart_toEndOf="@+id/dinner_imageView"
-                app:layout_constraintTop_toTopOf="parent" />
+                <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:id="@+id/layout_dinner"
+                    android:background="@drawable/circular_corner_green"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    app:layout_constraintCircleRadius="30dp">
 
-            <TextView
-                android:id="@+id/dinner_content"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:text="-"
-                android:textSize="16dp"
-                android:textColor="@color/black"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/dinner_total_calorie"
-                app:layout_constraintStart_toEndOf="@+id/dinner_imageView"
-                app:layout_constraintTop_toBottomOf="@+id/dinner_textView" />
+                    <ImageView
+                        android:id="@+id/dinner_imageView"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_marginLeft="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/dinner" />
 
-            <TextView
-                android:id="@+id/dinner_total_calorie"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0 cal"
-                android:textSize="25dp"
-                android:textColor="@color/black"
-                android:layout_marginRight="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                    <TextView
+                        android:id="@+id/dinner_textView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:text="Akşam Yemeği"
+                        android:textColor="@color/colorTextGreen"
+                        android:textSize="20dp"
+                        app:layout_constraintBottom_toTopOf="@+id/dinner_content"
+                        app:layout_constraintEnd_toStartOf="@+id/dinner_total_calorie"
+                        app:layout_constraintStart_toEndOf="@+id/dinner_imageView"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                    <TextView
+                        android:id="@+id/dinner_content"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:text="-"
+                        android:textSize="16dp"
+                        android:textColor="@color/black"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/dinner_total_calorie"
+                        app:layout_constraintStart_toEndOf="@+id/dinner_imageView"
+                        app:layout_constraintTop_toBottomOf="@+id/dinner_textView" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/layout_snacks"
-            android:background="@drawable/circular_corner_green"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            app:layout_constraintCircleRadius="30dp">
+                    <TextView
+                        android:id="@+id/dinner_total_calorie"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0 cal"
+                        android:textSize="25dp"
+                        android:textColor="@color/black"
+                        android:layout_marginRight="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:id="@+id/snacks_imageView"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:layout_marginLeft="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/snacks" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
-                android:id="@+id/snacks_textView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:text="Atıştırmalıklar"
-                android:textColor="@color/colorTextGreen"
-                android:textSize="20dp"
-                app:layout_constraintBottom_toTopOf="@+id/snacks_content"
-                app:layout_constraintEnd_toStartOf="@+id/snacks_total_calorie"
-                app:layout_constraintStart_toEndOf="@+id/snacks_imageView"
-                app:layout_constraintTop_toTopOf="parent" />
+                <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:id="@+id/layout_snacks"
+                    android:background="@drawable/circular_corner_green"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    app:layout_constraintCircleRadius="30dp">
 
-            <TextView
-                android:id="@+id/snacks_content"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:text="-"
-                android:textSize="16dp"
-                android:textColor="@color/black"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/snacks_total_calorie"
-                app:layout_constraintStart_toEndOf="@+id/snacks_imageView"
-                app:layout_constraintTop_toBottomOf="@+id/snacks_textView" />
+                    <ImageView
+                        android:id="@+id/snacks_imageView"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_marginLeft="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/snacks" />
 
-            <TextView
-                android:id="@+id/snacks_total_calorie"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0 cal"
-                android:textSize="25dp"
-                android:textColor="@color/black"
-                android:layout_marginRight="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                    <TextView
+                        android:id="@+id/snacks_textView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:text="Atıştırmalıklar"
+                        android:textColor="@color/colorTextGreen"
+                        android:textSize="20dp"
+                        app:layout_constraintBottom_toTopOf="@+id/snacks_content"
+                        app:layout_constraintEnd_toStartOf="@+id/snacks_total_calorie"
+                        app:layout_constraintStart_toEndOf="@+id/snacks_imageView"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                    <TextView
+                        android:id="@+id/snacks_content"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:text="-"
+                        android:textSize="16dp"
+                        android:textColor="@color/black"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/snacks_total_calorie"
+                        app:layout_constraintStart_toEndOf="@+id/snacks_imageView"
+                        app:layout_constraintTop_toBottomOf="@+id/snacks_textView" />
+
+                    <TextView
+                        android:id="@+id/snacks_total_calorie"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0 cal"
+                        android:textSize="25dp"
+                        android:textColor="@color/black"
+                        android:layout_marginRight="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+        -->
     </LinearLayout>
 
 </ScrollView>
