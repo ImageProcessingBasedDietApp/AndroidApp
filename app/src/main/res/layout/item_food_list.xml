@@ -17,7 +17,7 @@
 
     <TextView
         android:id="@+id/tv_food_name"
-        android:layout_width="wrap_content"
+        android:layout_width="180dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:text="Taze Fasulye"

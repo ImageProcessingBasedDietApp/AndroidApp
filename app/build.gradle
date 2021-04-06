@@ -15,7 +15,6 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -51,7 +50,6 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'org.tensorflow:tensorflow-lite-support:0.1.0-rc1'
     implementation 'org.tensorflow:tensorflow-lite-metadata:0.1.0-rc1'
-
 
     implementation 'androidx.databinding:databinding-runtime:4.1.0@aar'
     implementation 'androidx.wear:wear:1.1.0'
@@ -110,5 +108,11 @@ dependencies {
     implementation "com.google.android.gms:play-services-auth:19.0.0"
 
     implementation 'me.itangqi.waveloadingview:library:0.3.5'
+
+    //Donut graphic
+    implementation "app.futured.donut:library:2.1.0"
+    implementation "app.futured.donut:library-compose:2.1.0"
+
+
 
 }
