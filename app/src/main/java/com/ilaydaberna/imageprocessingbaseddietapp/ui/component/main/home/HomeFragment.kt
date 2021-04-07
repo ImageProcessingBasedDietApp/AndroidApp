@@ -1,6 +1,5 @@
 package com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.home
 
-import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -25,14 +24,41 @@ class HomeFragment : Fragment() {
         view.rv_meal_list.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         view.rv_meal_list.adapter = context?.let { MealsAdapter(it, getMeals(), getFoods()) }
 
-        val section1 = DonutSection(
+        val sectionCalorie = DonutSection(
             name = "Alınan Kalori",
             color = resources.getColor(R.color.green_500),
             amount = 100f
         )
 
         view.dv_daily_calorie.cap = 1500f
-        view.dv_daily_calorie.submitData(listOf(section1))
+        view.dv_daily_calorie.submitData(listOf(sectionCalorie))
+
+        val sectionProtein = DonutSection(
+                name = "Alınan Protein",
+                color = resources.getColor(R.color.green_500),
+                amount = 100f
+        )
+
+        view.dv_daily_protein.cap = 1500f
+        view.dv_daily_protein.submitData(listOf(sectionProtein))
+
+        val sectionFat = DonutSection(
+                name = "Alınan Yağ",
+                color = resources.getColor(R.color.green_500),
+                amount = 100f
+        )
+
+        view.dv_daily_fat.cap = 1500f
+        view.dv_daily_fat.submitData(listOf(sectionFat))
+
+        val sectionCarbohydrate = DonutSection(
+                name = "Alınan KarbonHidrat",
+                color = resources.getColor(R.color.green_500),
+                amount = 100f
+        )
+
+        view.dv_daily_carbohydrate.cap = 1500f
+        view.dv_daily_carbohydrate.submitData(listOf(sectionCarbohydrate))
 
         view.mv_drop_down.setOnClickListener {
             if(view.layout_protein_fat_carbohydrate.visibility == View.GONE){
