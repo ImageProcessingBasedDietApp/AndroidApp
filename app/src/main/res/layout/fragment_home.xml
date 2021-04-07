@@ -10,7 +10,6 @@
         android:orientation="vertical"
         tools:context=".ui.component.main.home.HomeFragment">
 
-
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -84,7 +83,7 @@
                 android:gravity="center"
                 android:layout_margin="10dp"
                 android:orientation="horizontal"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="wrap_content"
@@ -107,7 +106,7 @@
                         android:layout_height="80dp"
                         android:layout_gravity="center"
                         app:donut_bgLineColor="@color/green_100"
-                        app:donut_gapAngle="90"
+                        app:donut_gapAngle="0"
                         app:donut_gapWidth="0"
                         app:donut_strokeWidth="7dp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -149,7 +148,7 @@
                         android:layout_height="80dp"
                         android:layout_gravity="center"
                         app:donut_bgLineColor="@color/green_100"
-                        app:donut_gapAngle="90"
+                        app:donut_gapAngle="270"
                         app:donut_gapWidth="0"
                         app:donut_strokeWidth="7dp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -191,7 +190,7 @@
                         android:layout_height="80dp"
                         android:layout_gravity="center"
                         app:donut_bgLineColor="@color/green_100"
-                        app:donut_gapAngle="90"
+                        app:donut_gapAngle="180"
                         app:donut_gapWidth="0"
                         app:donut_strokeWidth="7dp"
                         app:layout_constraintBottom_toBottomOf="parent"
