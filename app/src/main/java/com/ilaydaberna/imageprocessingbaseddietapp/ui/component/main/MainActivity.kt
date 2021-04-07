@@ -9,16 +9,25 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.postDelayed
 import androidx.databinding.DataBindingUtil
+import androidx.databinding.ObservableField
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.ilaydaberna.imageprocessingbaseddietapp.R
 import com.ilaydaberna.imageprocessingbaseddietapp.databinding.ActivityMainBinding
 import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.FirebaseSource
+import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.FirestoreSource
+import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.User
+import com.ilaydaberna.imageprocessingbaseddietapp.model.repository.UserRepository
 import com.ilaydaberna.imageprocessingbaseddietapp.util.startCameraActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.delay
+import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.UserInfo
 
 
 class MainActivity : AppCompatActivity() {
@@ -27,18 +36,23 @@ class MainActivity : AppCompatActivity() {
     lateinit var navController: NavController
     private var backPressedOnce = false
     val currentUser: FirebaseUser? = FirebaseSource().getAuth().currentUser
-
+    lateinit var date: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
        // setContentView(R.layout.activity_main)
-
+        currentUser?.let { FirestoreSource().setUser(it)}
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+
+
+        date = UserInfo.user.get()?.email?:""
 
         setupViews()
 
         binding.btnAddMeal.setOnClickListener {
             this.startCameraActivity()
+
+
         }
 
     }
@@ -86,5 +100,10 @@ class MainActivity : AppCompatActivity() {
         else {
             super.onBackPressed()
         }
+    }
+
+    suspend fun doSomethingUsefulTwo(): Int {
+        delay(1000L) // pretend we are doing something useful here, too
+        return 29
     }
 }

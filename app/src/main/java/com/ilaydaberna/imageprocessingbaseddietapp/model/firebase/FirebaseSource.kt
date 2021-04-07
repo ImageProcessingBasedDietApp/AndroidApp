@@ -27,8 +27,10 @@ class FirebaseSource {
     fun register(email: String, password: String) = Completable.create { emitter ->
         firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
             if (!emitter.isDisposed) {
-                if (it.isSuccessful)
+                if (it.isSuccessful) {
                     emitter.onComplete()
+                    currentUser()?.let { it1 -> FirestoreSource().initUser(it1) }
+                }
                 else
                     emitter.onError(it.exception!!)
             }
