@@ -23,6 +23,12 @@ class FollowFragment : Fragment() {
 
         view.tv_weight.text = weight.toString()
 
+        view.btn_add_water.setOnClickListener() {
+            val mDialogView = LayoutInflater.from(activity).inflate(R.layout.dialog_select_water_amount, null)
+            val mBuilder = AlertDialog.Builder(activity).setView(mDialogView)
+            val mAlertDialog = mBuilder.show()
+        }
+
         view.iv_minus.setOnClickListener(){
             if(weight >= 0.1){
                 weight -= 0.1

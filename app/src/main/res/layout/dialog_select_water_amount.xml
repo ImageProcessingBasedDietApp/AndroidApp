@@ -1,12 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="300dp"
+    android:layout_height="250dp"
     android:orientation="vertical"
     android:padding="30dp"
     android:background="@color/white"
     android:elevation="100dp">
 
+    <TextView
+        android:id="@+id/tv_dialog_water_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Su Miktarını Seçiniz"
+        android:textSize="20dp"
+        android:textColor="@color/goodgrey"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/btn_200"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:text="- 200 ml -"
+        android:textSize="18dp"
+        android:layout_marginTop="10dp"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_dialog_water_header"
+        android:textColor="@color/green_500"/>
+
+    <TextView
+        android:id="@+id/btn_330"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:text="- 330 ml -"
+        android:textSize="18dp"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_200"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/green_500" />
+
+    <TextView
+        android:id="@+id/btn_500"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:text="- 500 ml -"
+        android:textSize="18dp"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_330"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/green_500"/>
+
+    <TextView
+        android:id="@+id/btn_1000"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:text="- 1000 ml -"
+        android:textSize="18dp"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_500"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/green_500"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
