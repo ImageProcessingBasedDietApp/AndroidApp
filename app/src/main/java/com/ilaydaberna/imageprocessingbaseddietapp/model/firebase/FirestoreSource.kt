@@ -2,10 +2,14 @@ package com.ilaydaberna.imageprocessingbaseddietapp.model.firebase
 
 import android.util.Log
 import androidx.databinding.ObservableField
+import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.delay
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -15,37 +19,35 @@ class FirestoreSource {
                 if (currentUser.uid != null) {
                     val db = Firebase.firestore
                     val docRef = db.collection("Users").document("yKpzYTWawN0LxieSJME8")
-                    docRef.get()
-                            .addOnSuccessListener{document ->
-                                if (document != null) {
-                                    User().UID = "dfghjklşi"
-                                    User().email ="gmaikceduvhsıuorshb"
+                    val task: Task<DocumentSnapshot> = docRef.get()
+                    val document: DocumentSnapshot = Tasks.await(task)
 
-                                    UserInfo.user.set(User("dfghjklş","dfghjklşi"))
+                    if (document != null) {
 
-                                    /*
-                                    user!!.name = document.data?.get("name") as String
-                                    user!!.surname = document.data?.get("surname") as String
-                                    user!!.photoUrl = document.data?.get("photoURL") as String
-                                    user!!.gender = document.data?.get("gender") as String
-                                    user!!.birthdate = document.data?.get("birthdate") as Timestamp
-                                    user!!.height = (document.data?.get("height") as Number).toFloat()
-                                    user!!.weight = (document.data?.get("weight") as Number).toFloat()
-                                    user!!.goalWeight = (document.data?.get("goalWeight") as Number).toFloat()
-                                    user!!.goalWater = (document.data?.get("goalWater") as Number).toInt()
-                                    user!!.goalCoffee = (document.data?.get("goalCoffee") as Number).toInt()
-                                    user!!.goalTea = (document.data?.get("goalTea") as Number).toInt()
-                                    user!!.goalStep = (document.data?.get("goalStep") as Number).toInt()
-                                    user!!.isNotification = document.data?.get("isNotification") as Boolean
-                                    */
+                        val UID = document.data?.get("UID") as String
+                        val email = document.data?.get("email") as String
+                        val name = document.data?.get("name") as String
+                        val surname = document.data?.get("surname") as String
+                        val photoUrl = document.data?.get("photoURL") as String
+                        val gender = document.data?.get("gender") as String
+                        val birthdate = document.data?.get("birthdate") as Timestamp
+                        val height = (document.data?.get("height") as Number).toFloat()
+                        val weight = (document.data?.get("weight") as Number).toFloat()
+                        val goalWeight = (document.data?.get("goalWeight") as Number).toFloat()
+                        val goalWater = (document.data?.get("goalWater") as Number).toInt()
+                        val goalCoffee = (document.data?.get("goalCoffee") as Number).toInt()
+                        val goalTea = (document.data?.get("goalTea") as Number).toInt()
+                        val goalStep = (document.data?.get("goalStep") as Number).toInt()
+                        val isNotification = document.data?.get("isNotification") as Boolean
 
+                        UserInfo.user.set(User(UID, email, name, surname, photoUrl, gender,
+                                birthdate, height, weight, goalWeight, goalWater, goalCoffee,
+                                goalTea, goalStep, isNotification))
 
-                                } else {
-                                    Log.i("TAG", "No such document")
-                                }
-                            }.addOnFailureListener { exception ->
-                                Log.i("TAG", "get failed with ", exception)
-                            }
+                    } else {
+                        Log.i("TAG", "No such document")
+                    }
+
                 }
             }
         }

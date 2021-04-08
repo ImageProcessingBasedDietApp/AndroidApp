@@ -36,17 +36,18 @@ class MainActivity : AppCompatActivity() {
     lateinit var navController: NavController
     private var backPressedOnce = false
     val currentUser: FirebaseUser? = FirebaseSource().getAuth().currentUser
-    lateinit var date: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
        // setContentView(R.layout.activity_main)
-        currentUser?.let { FirestoreSource().setUser(it)}
+        Thread(Runnable {
+            currentUser?.let { FirestoreSource().setUser(it)}
+        }).start()
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-
-        date = UserInfo.user.get()?.email?:""
-
+        Thread.sleep(1000)
+        var ilayda = UserInfo.user.get()
         setupViews()
 
         binding.btnAddMeal.setOnClickListener {
