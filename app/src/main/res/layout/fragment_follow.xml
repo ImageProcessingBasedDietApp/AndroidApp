@@ -15,12 +15,101 @@
         android:background="@drawable/icon_water_tracking_bg">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_tea"
             android:layout_width="match_parent"
             android:layout_height="380dp"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="42dp"
             android:background="@drawable/sharp_border_white"
-            android:elevation="5dp">
+            android:elevation="5dp"
+            android:visibility="gone">
+
+
+            <ImageView
+                android:id="@+id/iv_water_on_tea"
+                android:layout_width="45dp"
+                android:layout_height="36dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/water"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"/>
+
+            <ImageView
+                android:id="@+id/iv_coffee_on_tea"
+                android:layout_width="45dp"
+                android:layout_height="38dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/coffee"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="14dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="@+id/iv_coffee_on_tea"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="100dp"
+                android:text="Çay Takip Ekranı"
+                android:textColor="@color/goodgrey"
+                android:textAlignment="center"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_coffee"
+            android:layout_width="match_parent"
+            android:layout_height="380dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="42dp"
+            android:background="@drawable/sharp_border_white"
+            android:elevation="5dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/iv_tea_on_coffee"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/tea"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"/>
+
+            <ImageView
+                android:id="@+id/iv_water_on_coffee"
+                android:layout_width="45dp"
+                android:layout_height="36dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/water"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="14dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="@+id/iv_coffee_on_coffee"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="100dp"
+                android:text="Kahve Takip Ekranı"
+                android:textColor="@color/goodgrey"
+                android:textAlignment="center"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_water"
+            android:layout_width="match_parent"
+            android:layout_height="380dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="42dp"
+            android:background="@drawable/sharp_border_white"
+            android:elevation="5dp"
+            android:visibility="visible">
 
             <me.itangqi.waveloadingview.WaveLoadingView
                 android:id="@+id/waterLevelView"
@@ -106,7 +195,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_water_remaining_amount" />
 
             <ImageView
-                android:id="@+id/iv_tea"
+                android:id="@+id/iv_tea_on_water"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -116,7 +205,7 @@
                 android:layout_marginTop="10dp"/>
 
             <ImageView
-                android:id="@+id/iv_coffee"
+                android:id="@+id/iv_coffee_on_water"
                 android:layout_width="45dp"
                 android:layout_height="38dp"
                 app:layout_constraintEnd_toEndOf="parent"

@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import com.ilaydaberna.imageprocessingbaseddietapp.R
 import kotlinx.android.synthetic.main.dialog_enter_weight.view.*
 import kotlinx.android.synthetic.main.fragment_follow.view.*
@@ -29,6 +30,39 @@ class FollowFragment : Fragment() {
             val mAlertDialog = mBuilder.show()
         }
 
+        //Handle Fragment Switching Water - Tea - Coffee
+        view.iv_coffee_on_water.setOnClickListener() {
+            view.layout_water.visibility = View.GONE
+            view.layout_coffee.visibility = View.VISIBLE
+        }
+
+        view.iv_tea_on_water.setOnClickListener() {
+            view.layout_water.visibility = View.GONE
+            view.layout_tea.visibility = View.VISIBLE
+        }
+
+        view.iv_tea_on_coffee.setOnClickListener() {
+            view.layout_coffee.visibility = View.GONE
+            view.layout_tea.visibility = View.VISIBLE
+        }
+
+        view.iv_water_on_coffee.setOnClickListener() {
+            view.layout_coffee.visibility = View.GONE
+            view.layout_water.visibility = View.VISIBLE
+        }
+
+        view.iv_water_on_tea.setOnClickListener() {
+            view.layout_tea.visibility = View.GONE
+            view.layout_water.visibility = View.VISIBLE
+        }
+
+        view.iv_coffee_on_tea.setOnClickListener() {
+            view.layout_tea.visibility = View.GONE
+            view.layout_coffee.visibility = View.VISIBLE
+        }
+
+
+        //Handle the Weight Which is Entered
         view.iv_minus.setOnClickListener(){
             if(weight >= 0.1){
                 weight -= 0.1
@@ -85,6 +119,8 @@ class FollowFragment : Fragment() {
                 mAlertDialog.dismiss()
             }
         }
+
         return view
     }
+
 }
