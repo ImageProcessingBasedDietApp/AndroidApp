@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import com.ilaydaberna.imageprocessingbaseddietapp.R
 import kotlinx.android.synthetic.main.dialog_enter_weight.view.*
@@ -83,6 +82,12 @@ class FollowFragment : Fragment() {
         view.iv_coffee_on_tea.setOnClickListener() {
             view.layout_tea.visibility = View.GONE
             view.layout_coffee.visibility = View.VISIBLE
+        }
+
+        view.tea_information.setOnClickListener() {
+            val mDialogView = LayoutInflater.from(activity).inflate(R.layout.dialog_beverage_information, null)
+            val mBuilder = AlertDialog.Builder(activity).setView(mDialogView)
+            val mAlertDialog = mBuilder.show()
         }
         return view
     }

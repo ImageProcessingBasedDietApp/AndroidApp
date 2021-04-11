@@ -67,7 +67,6 @@
 
 
             <ImageView
-                android:tag="1"
                 android:id="@+id/tea_1"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
@@ -182,12 +181,22 @@
                 android:id="@+id/amount_of_tea"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:text="Günlük içilen çay miktarı = 0 Bardak"
+                android:textColor="@color/goodgrey"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginBottom="20dp"
-                android:textColor="@color/goodgrey"
-                android:text="Günlük içilen çay miktarı = 0 Bardak"/>
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <ImageView
+                android:id="@+id/tea_information"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/amount_of_tea"
+                android:layout_marginBottom="28dp"
+                android:layout_marginLeft="5dp"
+                app:srcCompat="@drawable/icon_info"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -368,13 +377,13 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/weight_tracking_card_view"
+                android:elevation="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_weight_header"
-                android:layout_marginTop="10dp"
-                android:layout_marginHorizontal="20dp"
-                android:background="@drawable/weight_tracking_card_view"
-                android:elevation="5dp">
+                app:layout_constraintTop_toBottomOf="@+id/tv_weight_header">
 
                 <TextView
                     android:id="@+id/tv_weight"
@@ -392,20 +401,20 @@
                     android:id="@+id/iv_minus"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
+                    android:layout_marginRight="20dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/tv_weight"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginRight="20dp"
                     app:srcCompat="@drawable/minus" />
 
                 <ImageView
                     android:id="@+id/iv_plus"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
+                    android:layout_marginLeft="20dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/tv_weight"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginLeft="20dp"
                     app:srcCompat="@drawable/plus" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
