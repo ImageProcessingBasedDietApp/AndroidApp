@@ -208,7 +208,7 @@
             android:layout_marginTop="42dp"
             android:background="@drawable/sharp_border_white"
             android:elevation="5dp"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/iv_tea_on_coffee"
@@ -271,7 +271,7 @@
             android:layout_marginTop="42dp"
             android:background="@drawable/sharp_border_white"
             android:elevation="5dp"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <me.itangqi.waveloadingview.WaveLoadingView
                 android:id="@+id/waterLevelView"
