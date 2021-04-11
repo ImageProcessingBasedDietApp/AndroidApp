@@ -85,10 +85,13 @@ class FollowFragment : Fragment() {
         }
 
         view.tea_information.setOnClickListener() {
-            val mDialogView = LayoutInflater.from(activity).inflate(R.layout.dialog_beverage_information, null)
-            val mBuilder = AlertDialog.Builder(activity).setView(mDialogView)
-            val mAlertDialog = mBuilder.show()
+            showInformationDialog()
         }
+
+        view.coffee_information.setOnClickListener() {
+            showInformationDialog()
+        }
+
         return view
     }
 
@@ -196,5 +199,11 @@ class FollowFragment : Fragment() {
             DecimalFormat("000.0").format(weight)
         }
         view?.tv_weight?.text = text
+    }
+
+    fun showInformationDialog() {
+        val mDialogView = LayoutInflater.from(activity).inflate(R.layout.dialog_beverage_information, null)
+        val mBuilder = AlertDialog.Builder(activity).setView(mDialogView)
+        val mAlertDialog = mBuilder.show()
     }
 }
