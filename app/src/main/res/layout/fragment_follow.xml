@@ -67,6 +67,7 @@
 
 
             <ImageView
+                android:tag="1"
                 android:id="@+id/tea_1"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
@@ -74,7 +75,7 @@
                 android:layout_marginTop="50dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/tea_full" />
+                app:srcCompat="@drawable/tea_empty" />
 
             <ImageView
                 android:id="@+id/tea_2"
@@ -84,7 +85,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/tea_full" />
+                app:srcCompat="@drawable/tea_empty" />
 
             <ImageView
                 android:id="@+id/tea_3"
@@ -178,6 +179,7 @@
                 app:srcCompat="@drawable/tea_empty" />
 
             <TextView
+                android:id="@+id/amount_of_tea"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -185,7 +187,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginBottom="20dp"
                 android:textColor="@color/goodgrey"
-                android:text="Günlük içilen çay miktarı = 2 Bardak"/>
+                android:text="Günlük içilen çay miktarı = 0 Bardak"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
