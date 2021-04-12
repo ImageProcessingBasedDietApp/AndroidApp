@@ -1,21 +1,24 @@
 package com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.follow
 
 import android.app.AlertDialog
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.ilaydaberna.imageprocessingbaseddietapp.R
 import kotlinx.android.synthetic.main.dialog_enter_weight.view.*
 import kotlinx.android.synthetic.main.fragment_follow.view.*
+import java.math.BigDecimal
 import java.text.DecimalFormat
 
 class FollowFragment : Fragment() {
 
     var cup_of_tea: Int = 0 //Firebaseden setlenecek.
     var weight: Double = 49.0 //Kullanıcıdan alınan kiloya setlenecek.
-    var newWeight: String? = null
+    var newWeight: String? = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -148,26 +151,20 @@ class FollowFragment : Fragment() {
         val mDialogView = LayoutInflater.from(activity).inflate(R.layout.dialog_enter_weight, null)
         val mBuilder = AlertDialog.Builder(activity).setView(mDialogView)
         val mAlertDialog = mBuilder.show()
+        mDialogView.np_dialog_weight_int.maxValue = 597
+        mDialogView.np_dialog_weight_int.minValue = 0
+        mDialogView.np_dialog_weight_int.value = weight.toInt()
+
+        mDialogView.np_dialog_weight_decimal.maxValue = 9
+        mDialogView.np_dialog_weight_decimal.minValue = 0
 
         mDialogView.btn_dialog_save.setOnClickListener {
             mAlertDialog.dismiss()
-            newWeight = mDialogView.et_dialog_weight.text.toString()
-
-            if (!newWeight.equals("") && !newWeight?.contains(".")!!) {
-                newWeight = "$newWeight.0"
-            }
-
-            if (newWeight.equals("")) {
-                newWeight = "0.0"
-            }
-
+            newWeight = mDialogView.np_dialog_weight_int.value.toString() + "." + mDialogView.np_dialog_weight_decimal.value.toString()
             view?.tv_weight?.text = newWeight
             weight = newWeight.toString().toDouble()
         }
 
-        mDialogView.btn_dialog_cancel.setOnClickListener {
-            mAlertDialog.dismiss()
-        }
     }
 
     fun clickedToIncreaseWeight() {

@@ -2,7 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="30dp"
     android:background="@color/white"
@@ -14,39 +14,41 @@
         android:layout_height="wrap_content"
         android:textStyle="bold"
         android:text="Lütfen Kilonuzu Giriniz"
-        android:textSize="25dp"
+        android:textSize="20dp"
         android:gravity="center"
         android:textColor="@color/green_500"/>
 
-    <EditText
-        android:id="@+id/et_dialog_weight"
-        android:hint="Kilonuzu Giriniz.."
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="numberDecimal"
-        android:textColor="@color/green_500"
-        android:backgroundTint="@color/green_500"
-        android:textColorHint="#CACACA"/>
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_height="match_parent"
         android:gravity="center"
-        android:layout_marginTop="20dp">
-        <Button
-            android:id="@+id/btn_dialog_cancel"
-            android:text="İptal Et"
+        android:orientation="horizontal">
+
+        <NumberPicker
+            android:id="@+id/np_dialog_weight_int"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/tv_dialog_comma"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="40dp"
-            android:background="@color/green_500"/>
-        <Button
-            android:id="@+id/btn_dialog_save"
-            android:text="Kaydet"
+            android:textSize="25dp"
+            android:textColor="@color/black"
+            android:text="," />
+
+        <NumberPicker
+            android:id="@+id/np_dialog_weight_decimal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
-            android:background="@color/green_500"/>
+            android:layout_height="wrap_content" />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_dialog_save"
+        android:text="Kaydet"
+        android:textColor="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_default"/>
+
 </LinearLayout>
