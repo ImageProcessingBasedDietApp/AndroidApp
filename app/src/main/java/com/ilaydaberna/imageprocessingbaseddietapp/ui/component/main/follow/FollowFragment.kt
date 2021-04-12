@@ -154,10 +154,13 @@ class FollowFragment : Fragment() {
         mDialogView.np_dialog_weight_int.maxValue = 597
         mDialogView.np_dialog_weight_int.minValue = 0
         mDialogView.np_dialog_weight_int.value = weight.toInt()
+        var decimal = weight - weight.toInt()
+        decimal *= 10
 
         mDialogView.np_dialog_weight_decimal.maxValue = 9
         mDialogView.np_dialog_weight_decimal.minValue = 0
 
+        mDialogView.np_dialog_weight_decimal.value = decimal.toInt()
         mDialogView.btn_dialog_save.setOnClickListener {
             mAlertDialog.dismiss()
             newWeight = mDialogView.np_dialog_weight_int.value.toString() + "." + mDialogView.np_dialog_weight_decimal.value.toString()
