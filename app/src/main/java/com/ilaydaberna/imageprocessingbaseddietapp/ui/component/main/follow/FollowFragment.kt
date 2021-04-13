@@ -1,16 +1,24 @@
 package com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.follow
 
+import android.annotation.SuppressLint
+import android.app.ActionBar
 import android.app.AlertDialog
 import android.os.Build
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.GridLayout
+import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.ilaydaberna.imageprocessingbaseddietapp.R
 import kotlinx.android.synthetic.main.dialog_enter_weight.view.*
+import kotlinx.android.synthetic.main.fragment_follow.*
 import kotlinx.android.synthetic.main.fragment_follow.view.*
+import kotlinx.android.synthetic.main.fragment_home.view.*
 import java.math.BigDecimal
 import java.text.DecimalFormat
 
@@ -95,6 +103,21 @@ class FollowFragment : Fragment() {
             showInformationDialog()
         }
 
+        for(i in 1..12) {
+            val iv = ImageView(context)
+            //iv.layoutParams = LinearLayout.LayoutParams(150, 150)
+            iv.setImageResource(R.drawable.tea_empty)
+
+            val param =  GridLayout.LayoutParams()
+            param.height = 150
+            param.width = 150
+            param.setGravity(Gravity.CENTER)
+
+            view?.gl_tea?.addView(iv, param)
+
+        }
+
+
         return view
     }
 
@@ -105,7 +128,8 @@ class FollowFragment : Fragment() {
             cup_of_tea = 0
         }
 
-        when (cup_of_tea) {
+
+       /* when (cup_of_tea) {
             0 -> view?.tea_1?.setImageResource(R.drawable.tea_empty)
             1 -> view?.tea_2?.setImageResource(R.drawable.tea_empty)
             2 -> view?.tea_3?.setImageResource(R.drawable.tea_empty)
@@ -118,10 +142,11 @@ class FollowFragment : Fragment() {
             9 -> view?.tea_10?.setImageResource(R.drawable.tea_empty)
             10 -> view?.tea_11?.setImageResource(R.drawable.tea_empty)
             11 -> view?.tea_12?.setImageResource(R.drawable.tea_empty)
-        }
+        }*/
         view?.amount_of_tea?.text = "Günlük içilen çay miktarı = " + cup_of_tea.toString() + " Bardak"
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     fun clickedTeaPlus() {
         if (cup_of_tea < 12) {
             cup_of_tea += 1
@@ -129,7 +154,15 @@ class FollowFragment : Fragment() {
             cup_of_tea = 12
         }
 
-        when (cup_of_tea) {
+        for(i in 0..cup_of_tea-1) {
+           // gl_tea.getChildAt(i)?.setBackgroundResource(0)
+           //view?.gl_tea?.getChildAt(i)
+            //view?.gl_tea?.removeViewAt(i)
+            val v = view?.gl_tea?.getChildAt(i) as ImageView
+            v.setImageResource(R.drawable.tea_full)
+        }
+
+      /*  when (cup_of_tea) {
             1 -> view?.tea_1?.setImageResource(R.drawable.tea_full)
             2 -> view?.tea_2?.setImageResource(R.drawable.tea_full)
             3 -> view?.tea_3?.setImageResource(R.drawable.tea_full)
@@ -142,8 +175,7 @@ class FollowFragment : Fragment() {
             10 -> view?.tea_10?.setImageResource(R.drawable.tea_full)
             11 -> view?.tea_11?.setImageResource(R.drawable.tea_full)
             12 -> view?.tea_12?.setImageResource(R.drawable.tea_full)
-        }
-
+        }*/
         view?.amount_of_tea?.text = "Günlük içilen çay miktarı = " + cup_of_tea.toString() + " Bardak"
     }
 

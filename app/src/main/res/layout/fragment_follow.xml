@@ -22,7 +22,7 @@
             android:layout_marginTop="42dp"
             android:background="@drawable/sharp_border_white"
             android:elevation="5dp"
-            android:visibility="gone">
+            android:visibility="visible">
 
 
             <ImageView
@@ -65,117 +65,132 @@
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="175dp"/>
 
+            <GridLayout
+                android:id="@+id/gl_tea"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:columnCount="3"
+                android:rowCount="4"
+                app:layout_constraintBottom_toTopOf="@+id/amount_of_tea"
+                app:layout_constraintEnd_toStartOf="@+id/tea_plus"
+                app:layout_constraintStart_toEndOf="@+id/tea_minus"
+                app:layout_constraintTop_toBottomOf="@+id/iv_coffee_on_tea">
 
-            <ImageView
-                android:id="@+id/tea_1"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginLeft="80dp"
-                android:layout_marginTop="50dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/tea_empty" />
+            </GridLayout>
 
-            <ImageView
-                android:id="@+id/tea_2"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginTop="50dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/tea_empty" />
+            <!--
 
-            <ImageView
-                android:id="@+id/tea_3"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginTop="50dp"
-                android:layout_marginRight="80dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/tea_empty" />
+                        <ImageView
+                            android:id="@+id/tea_1"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_marginLeft="80dp"
+                            android:layout_marginTop="50dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/tea_empty" />
 
-            <ImageView
-                android:id="@+id/tea_4"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginTop="10dp"
-                app:layout_constraintStart_toStartOf="@+id/tea_1"
-                app:layout_constraintTop_toBottomOf="@+id/tea_1"
-                app:srcCompat="@drawable/tea_empty" />
+                        <ImageView
+                            android:id="@+id/tea_2"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_marginTop="50dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/tea_empty" />
 
-            <ImageView
-                android:id="@+id/tea_5"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginTop="10dp"
-                app:layout_constraintStart_toStartOf="@+id/tea_2"
-                app:layout_constraintTop_toBottomOf="@+id/tea_2"
-                app:srcCompat="@drawable/tea_empty" />
+                        <ImageView
+                            android:id="@+id/tea_3"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_marginTop="50dp"
+                            android:layout_marginRight="80dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/tea_empty" />
 
-            <ImageView
-                android:id="@+id/tea_6"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginTop="10dp"
-                app:layout_constraintStart_toStartOf="@+id/tea_3"
-                app:layout_constraintTop_toBottomOf="@+id/tea_3"
-                app:srcCompat="@drawable/tea_empty" />
+                        <ImageView
+                            android:id="@+id/tea_4"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_marginTop="10dp"
+                            app:layout_constraintStart_toStartOf="@+id/tea_1"
+                            app:layout_constraintTop_toBottomOf="@+id/tea_1"
+                            app:srcCompat="@drawable/tea_empty" />
 
-            <ImageView
-                android:id="@+id/tea_7"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginTop="10dp"
-                app:layout_constraintStart_toStartOf="@+id/tea_4"
-                app:layout_constraintTop_toBottomOf="@+id/tea_4"
-                app:srcCompat="@drawable/tea_empty" />
+                        <ImageView
+                            android:id="@+id/tea_5"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_marginTop="10dp"
+                            app:layout_constraintStart_toStartOf="@+id/tea_2"
+                            app:layout_constraintTop_toBottomOf="@+id/tea_2"
+                            app:srcCompat="@drawable/tea_empty" />
 
-            <ImageView
-                android:id="@+id/tea_8"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginTop="10dp"
-                app:layout_constraintStart_toStartOf="@+id/tea_5"
-                app:layout_constraintTop_toBottomOf="@+id/tea_5"
-                app:srcCompat="@drawable/tea_empty" />
+                        <ImageView
+                            android:id="@+id/tea_6"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_marginTop="10dp"
+                            app:layout_constraintStart_toStartOf="@+id/tea_3"
+                            app:layout_constraintTop_toBottomOf="@+id/tea_3"
+                            app:srcCompat="@drawable/tea_empty" />
 
-            <ImageView
-                android:id="@+id/tea_9"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginTop="10dp"
-                app:layout_constraintStart_toStartOf="@+id/tea_6"
-                app:layout_constraintTop_toBottomOf="@+id/tea_6"
-                app:srcCompat="@drawable/tea_empty" />
+                        <ImageView
+                            android:id="@+id/tea_7"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_marginTop="10dp"
+                            app:layout_constraintStart_toStartOf="@+id/tea_4"
+                            app:layout_constraintTop_toBottomOf="@+id/tea_4"
+                            app:srcCompat="@drawable/tea_empty" />
 
-            <ImageView
-                android:id="@+id/tea_10"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginTop="10dp"
-                app:layout_constraintStart_toStartOf="@+id/tea_7"
-                app:layout_constraintTop_toBottomOf="@+id/tea_7"
-                app:srcCompat="@drawable/tea_empty" />
+                        <ImageView
+                            android:id="@+id/tea_8"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_marginTop="10dp"
+                            app:layout_constraintStart_toStartOf="@+id/tea_5"
+                            app:layout_constraintTop_toBottomOf="@+id/tea_5"
+                            app:srcCompat="@drawable/tea_empty" />
 
-            <ImageView
-                android:id="@+id/tea_11"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginTop="10dp"
-                app:layout_constraintStart_toStartOf="@+id/tea_8"
-                app:layout_constraintTop_toBottomOf="@+id/tea_8"
-                app:srcCompat="@drawable/tea_empty" />
+                        <ImageView
+                            android:id="@+id/tea_9"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_marginTop="10dp"
+                            app:layout_constraintStart_toStartOf="@+id/tea_6"
+                            app:layout_constraintTop_toBottomOf="@+id/tea_6"
+                            app:srcCompat="@drawable/tea_empty" />
 
-            <ImageView
-                android:id="@+id/tea_12"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginTop="10dp"
-                app:layout_constraintStart_toStartOf="@+id/tea_9"
-                app:layout_constraintTop_toBottomOf="@+id/tea_9"
-                app:srcCompat="@drawable/tea_empty" />
+                        <ImageView
+                            android:id="@+id/tea_10"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_marginTop="10dp"
+                            app:layout_constraintStart_toStartOf="@+id/tea_7"
+                            app:layout_constraintTop_toBottomOf="@+id/tea_7"
+                            app:srcCompat="@drawable/tea_empty" />
+
+                        <ImageView
+                            android:id="@+id/tea_11"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_marginTop="10dp"
+                            app:layout_constraintStart_toStartOf="@+id/tea_8"
+                            app:layout_constraintTop_toBottomOf="@+id/tea_8"
+                            app:srcCompat="@drawable/tea_empty" />
+
+                        <ImageView
+                            android:id="@+id/tea_12"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_marginTop="10dp"
+                            app:layout_constraintStart_toStartOf="@+id/tea_9"
+                            app:layout_constraintTop_toBottomOf="@+id/tea_9"
+                            app:srcCompat="@drawable/tea_empty" />
+            -->
 
             <TextView
                 android:id="@+id/amount_of_tea"
@@ -271,7 +286,7 @@
             android:layout_marginTop="42dp"
             android:background="@drawable/sharp_border_white"
             android:elevation="5dp"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <me.itangqi.waveloadingview.WaveLoadingView
                 android:id="@+id/waterLevelView"
@@ -379,6 +394,27 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:background="@color/white">
+
+            <GridLayout
+                android:id="@+id/grid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:columnCount="3"
+                android:rowCount="4"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+            </GridLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
