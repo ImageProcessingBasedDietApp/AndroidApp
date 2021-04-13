@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         Thread.sleep(1000)
-        var ilayda = UserInfo.user.get()
+        var user = UserInfo.user.get()
         setupViews()
 
         binding.btnAddMeal.setOnClickListener {
