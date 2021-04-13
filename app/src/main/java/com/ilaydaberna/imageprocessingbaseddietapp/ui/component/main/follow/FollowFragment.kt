@@ -116,8 +116,6 @@ class FollowFragment : Fragment() {
             view?.gl_tea?.addView(iv, param)
 
         }
-
-
         return view
     }
 
@@ -128,21 +126,8 @@ class FollowFragment : Fragment() {
             cup_of_tea = 0
         }
 
-
-       /* when (cup_of_tea) {
-            0 -> view?.tea_1?.setImageResource(R.drawable.tea_empty)
-            1 -> view?.tea_2?.setImageResource(R.drawable.tea_empty)
-            2 -> view?.tea_3?.setImageResource(R.drawable.tea_empty)
-            3 -> view?.tea_4?.setImageResource(R.drawable.tea_empty)
-            4 -> view?.tea_5?.setImageResource(R.drawable.tea_empty)
-            5 -> view?.tea_6?.setImageResource(R.drawable.tea_empty)
-            6 -> view?.tea_7?.setImageResource(R.drawable.tea_empty)
-            7 -> view?.tea_8?.setImageResource(R.drawable.tea_empty)
-            8 -> view?.tea_9?.setImageResource(R.drawable.tea_empty)
-            9 -> view?.tea_10?.setImageResource(R.drawable.tea_empty)
-            10 -> view?.tea_11?.setImageResource(R.drawable.tea_empty)
-            11 -> view?.tea_12?.setImageResource(R.drawable.tea_empty)
-        }*/
+        val v = view?.gl_tea?.getChildAt(cup_of_tea) as ImageView
+        v.setImageResource(R.drawable.tea_empty)
         view?.amount_of_tea?.text = "Günlük içilen çay miktarı = " + cup_of_tea.toString() + " Bardak"
     }
 
@@ -154,28 +139,8 @@ class FollowFragment : Fragment() {
             cup_of_tea = 12
         }
 
-        for(i in 0..cup_of_tea-1) {
-           // gl_tea.getChildAt(i)?.setBackgroundResource(0)
-           //view?.gl_tea?.getChildAt(i)
-            //view?.gl_tea?.removeViewAt(i)
-            val v = view?.gl_tea?.getChildAt(i) as ImageView
-            v.setImageResource(R.drawable.tea_full)
-        }
-
-      /*  when (cup_of_tea) {
-            1 -> view?.tea_1?.setImageResource(R.drawable.tea_full)
-            2 -> view?.tea_2?.setImageResource(R.drawable.tea_full)
-            3 -> view?.tea_3?.setImageResource(R.drawable.tea_full)
-            4 -> view?.tea_4?.setImageResource(R.drawable.tea_full)
-            5 -> view?.tea_5?.setImageResource(R.drawable.tea_full)
-            6 -> view?.tea_6?.setImageResource(R.drawable.tea_full)
-            7 -> view?.tea_7?.setImageResource(R.drawable.tea_full)
-            8 -> view?.tea_8?.setImageResource(R.drawable.tea_full)
-            9 -> view?.tea_9?.setImageResource(R.drawable.tea_full)
-            10 -> view?.tea_10?.setImageResource(R.drawable.tea_full)
-            11 -> view?.tea_11?.setImageResource(R.drawable.tea_full)
-            12 -> view?.tea_12?.setImageResource(R.drawable.tea_full)
-        }*/
+        val v = view?.gl_tea?.getChildAt(cup_of_tea-1) as ImageView
+        v.setImageResource(R.drawable.tea_full)
         view?.amount_of_tea?.text = "Günlük içilen çay miktarı = " + cup_of_tea.toString() + " Bardak"
     }
 
