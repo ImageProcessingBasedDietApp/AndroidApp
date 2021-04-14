@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:context=".ui.component.main.follow.FollowFragment"
-        android:background="@drawable/icon_water_tracking_bg">
+        android:background="@drawable/water_tracking_background">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_tea"
