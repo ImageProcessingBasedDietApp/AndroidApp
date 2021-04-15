@@ -1,7 +1,7 @@
 package com.ilaydaberna.imageprocessingbaseddietapp.model.firebase
 
+import android.net.Uri
 import android.util.Log
-import androidx.databinding.ObservableField
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.Timestamp
@@ -9,9 +9,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.delay
-import java.util.*
-import kotlin.collections.ArrayList
+import com.google.firebase.storage.FirebaseStorage
 
 class FirestoreSource {
         fun setUser(currentUser: FirebaseUser){
@@ -51,6 +49,39 @@ class FirestoreSource {
                 }
             }
         }
+
+    fun uploadPhotoToStorageUri(image: Uri?) {
+        val user = UserInfo.user.get()
+        if (user != null) {
+            val storage = FirebaseStorage.getInstance()
+            val storageReference = storage.reference
+            val imageRef = storageReference.child("profile_picture/" + user.UID)
+            if (image != null) {
+                imageRef.putFile(image).addOnSuccessListener {
+                    Log.i("Storage", "Basarili!")
+                }.addOnFailureListener{
+                    Log.i("Storage", "Basarisiz!")
+                }
+            }
+        }
+    }
+
+    fun uploadPhotoToStorageBitmap(image: ByteArray) {
+        val user = UserInfo.user.get()
+        if (user != null) {
+            val storage = FirebaseStorage.getInstance()
+            val storageReference = storage.reference
+            val imageRef = storageReference.child("profile_picture/" + user.UID)
+            if (image != null) {
+                var uploadTask = imageRef.putBytes(image)
+                uploadTask.addOnSuccessListener {
+                    Log.i("Storage", "Basarili!")
+                }.addOnFailureListener{
+                    Log.i("Storage", "Basarisiz!")
+                }
+            }
+        }
+    }
 
         fun initUser(currentUser: FirebaseUser) {
             if (currentUser != null) {

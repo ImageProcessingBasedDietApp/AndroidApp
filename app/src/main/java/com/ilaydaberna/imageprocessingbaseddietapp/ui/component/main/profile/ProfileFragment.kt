@@ -3,26 +3,24 @@ package com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.profile
 import android.app.Activity.RESULT_CANCELED
 import android.app.Activity.RESULT_OK
 import android.app.AlertDialog
-import android.app.DatePickerDialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.appcompat.widget.ViewUtils
 import androidx.fragment.app.Fragment
 import com.ilaydaberna.imageprocessingbaseddietapp.R
+import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.FirestoreSource
 import com.ilaydaberna.imageprocessingbaseddietapp.util.alertDialog
 import com.ilaydaberna.imageprocessingbaseddietapp.util.isEmpty
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.fragment_profile.view.*
-import java.text.SimpleDateFormat
-import java.util.*
+import java.io.ByteArrayOutputStream
 
 
 class ProfileFragment : Fragment(){
@@ -157,13 +155,17 @@ class ProfileFragment : Fragment(){
                 0 -> if (resultCode == RESULT_OK && data != null) {
                     val selectedImage = data.extras!!["data"] as Bitmap?
                     iv_profile_photo.setImageBitmap(selectedImage)
-                    //TODO: firebase kaydet
+                    val bitmap = (iv_profile_photo.drawable as BitmapDrawable).bitmap
+                    val baos = ByteArrayOutputStream()
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+                    val data = baos.toByteArray()
+                    FirestoreSource().uploadPhotoToStorageBitmap(data)
                 }
                 1 -> if (resultCode == RESULT_OK && data != null) {
                     val selectedImage: Uri? = data.data
                     if (selectedImage != null) {
                         iv_profile_photo.setImageURI(selectedImage)
-                        //TODO: firebase kaydet
+                        FirestoreSource().uploadPhotoToStorageUri(selectedImage)
                     }
                 }
             }
