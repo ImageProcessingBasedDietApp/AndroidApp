@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:orientation="vertical"
+    android:background="@color/grey"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.component.main.home.HomeFragment">
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context=".ui.component.main.home.HomeFragment">
+        android:layout_height="wrap_content"
+        android:background="@drawable/gradient_background"
+        android:orientation="vertical">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
-            android:background="@color/green_700"
             android:theme="?attr/actionBarTheme">
 
             <ImageView
@@ -28,11 +31,11 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
+            android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:background="@drawable/sharp_border_white"
-            android:elevation="15dp">
+            android:elevation="15dp"
+            android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -79,9 +82,9 @@
                 android:id="@+id/layout_protein_fat_carbohydrate"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
+                android:layout_margin="10dp"
                 android:background="@drawable/circular_border_white"
                 android:gravity="center"
-                android:layout_margin="10dp"
                 android:orientation="horizontal"
                 android:visibility="gone">
 
@@ -216,11 +219,13 @@
 
         </LinearLayout>
 
+    </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
+
+    <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_meal_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             tools:listitem="@layout/cardview_add_meal" />
 
 
@@ -481,6 +486,5 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
         -->
-    </LinearLayout>
 
-</ScrollView>
+</LinearLayout>
