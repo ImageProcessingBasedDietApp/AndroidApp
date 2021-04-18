@@ -3,6 +3,7 @@ package com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.profile
 import android.app.Activity.RESULT_CANCELED
 import android.app.Activity.RESULT_OK
 import android.app.AlertDialog
+import android.app.DatePickerDialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
@@ -14,13 +15,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.ilaydaberna.imageprocessingbaseddietapp.R
 import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.FirestoreSource
+import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.User
+import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.UserInfo
 import com.ilaydaberna.imageprocessingbaseddietapp.util.alertDialog
 import com.ilaydaberna.imageprocessingbaseddietapp.util.isEmpty
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.fragment_profile.view.*
 import java.io.ByteArrayOutputStream
+import java.util.*
 
 
 class ProfileFragment : Fragment(){
@@ -81,6 +86,17 @@ class ProfileFragment : Fragment(){
 
         view.et_birthdate.setOnClickListener {
             //TODO: DATEPİCKER EKLE
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val datePickerDialog =
+                context?.let { it1 ->
+                    DatePickerDialog(it1, DatePickerDialog.OnDateSetListener{ mView, mYear, mMonth, mDay ->
+                        view.et_birthdate.setText(""+ mDay +"/" +( mMonth+1) + "/"+ mYear)
+                    }, year, month, day)
+                }
+            datePickerDialog?.show()
 
         }
 
