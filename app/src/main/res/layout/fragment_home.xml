@@ -14,8 +14,8 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorBackgroundLight"
             android:minHeight="?attr/actionBarSize"
+            android:background="@color/green_700"
             android:theme="?attr/actionBarTheme">
 
             <ImageView
@@ -31,7 +31,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:layout_margin="10dp"
-            android:background="@drawable/circular_border_white"
+            android:background="@drawable/sharp_border_white"
             android:elevation="15dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout

@@ -4,14 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/water_tracking_background"
     android:orientation="vertical"
+    android:background="@color/grey"
     tools:context=".ui.component.main.profile.ProfileFragment">
-    <!--
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="240dp"
-        Top Header Layout-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:background="@drawable/gradient_background" />
+
+    <!--    Top Header Layout-->
     <LinearLayout
         android:id="@+id/topbar"
         android:layout_width="match_parent"
@@ -61,7 +63,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:background="@drawable/circular_border_white"
+                android:background="@drawable/sharp_border_white"
                 android:gravity="center"
                 android:orientation="vertical"
                 android:padding="16dp">
@@ -70,7 +72,7 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     app:cardCornerRadius="60dp"
-                    app:cardElevation="0dp">
+                    app:cardElevation="10dp">
 
                     <ImageView
                         android:id="@+id/iv_profile_photo"
@@ -120,7 +122,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/circular_border_white"
+                    android:background="@drawable/sharp_border_white"
                     android:orientation="vertical"
                     android:padding="16dp">
 
@@ -442,11 +444,13 @@
 
 
                 <!--Bilgilerim-->
+
+                <!--Ayarlar-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/circular_border_white"
+                    android:background="@drawable/sharp_border_white"
                     android:orientation="vertical"
                     android:padding="16dp">
 
@@ -472,26 +476,26 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="10dp"
-                            android:text="Düzenle"
                             android:drawableRight="@drawable/icon_edit"
+                            android:text="Düzenle"
                             android:textColor="#FFCF66"
-                            android:textStyle="bold"
-                            android:textSize="15sp" />
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/layout_user_info"
-                        android:visibility="visible"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:visibility="visible">
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:gravity="center_vertical"
                             android:layout_marginTop="10dp"
+                            android:gravity="center_vertical"
                             android:paddingRight="8dp">
 
                             <ImageView
@@ -504,7 +508,7 @@
                             <TextView
                                 android:id="@+id/tv_weight"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_height="14dp"
                                 android:layout_marginLeft="20dp"
                                 android:text="YY kg"
                                 android:textColor="@color/goodgrey"
@@ -514,8 +518,8 @@
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:gravity="center_vertical"
                             android:layout_marginTop="10dp"
+                            android:gravity="center_vertical"
                             android:paddingRight="8dp">
 
                             <ImageView
@@ -589,15 +593,15 @@
                         android:id="@+id/layout_edit_user_info"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="gone"
                         android:layout_marginTop="10dp"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:gravity="center_vertical"
                             android:layout_marginTop="10dp"
+                            android:gravity="center_vertical"
                             android:paddingRight="8dp">
 
                             <ImageView
@@ -609,21 +613,21 @@
 
                             <EditText
                                 android:id="@+id/et_weight"
-                                android:hint="65"
-                                android:textSize="15sp"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
                                 android:layout_marginLeft="20dp"
+                                android:hint="65"
                                 android:inputType="number"
                                 android:textColor="@color/goodgrey"
                                 android:textColorHint="@color/colorHint"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"/>
+                                android:textSize="15sp" />
                         </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:gravity="center_vertical"
                             android:layout_marginTop="10dp"
+                            android:gravity="center_vertical"
                             android:paddingRight="8dp">
 
                             <ImageView
@@ -635,14 +639,14 @@
 
                             <EditText
                                 android:id="@+id/et_height"
-                                android:hint="165"
-                                android:textSize="15sp"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
                                 android:layout_marginLeft="20dp"
+                                android:hint="165"
                                 android:inputType="number"
                                 android:textColor="@color/goodgrey"
                                 android:textColorHint="@color/colorHint"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"/>
+                                android:textSize="15sp" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -661,15 +665,15 @@
 
                             <EditText
                                 android:id="@+id/et_birthdate"
-                                android:hint="22/02/1996"
-                                android:textSize="15sp"
-                                android:focusable="false"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
                                 android:layout_marginLeft="20dp"
+                                android:focusable="false"
+                                android:hint="22/02/1996"
                                 android:inputType="date"
                                 android:textColor="@color/goodgrey"
                                 android:textColorHint="@color/colorHint"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"/>
+                                android:textSize="15sp" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -688,36 +692,35 @@
 
                             <EditText
                                 android:id="@+id/et_gender"
-                                android:hint="Kadın/Erkek"
-                                android:textSize="15sp"
-                                android:focusable="false"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
                                 android:layout_marginLeft="20dp"
+                                android:focusable="false"
+                                android:hint="Kadın/Erkek"
                                 android:textColor="@color/goodgrey"
                                 android:textColorHint="@color/colorHint"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"/>
+                                android:textSize="15sp" />
                         </LinearLayout>
 
                         <Button
                             android:id="@+id/button_save_user_info"
-                            android:layout_marginTop="10dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
                             android:background="@drawable/button_default"
-                            android:textColor="@color/white"
-                            android:text="Kaydet" />
+                            android:text="Kaydet"
+                            android:textColor="@color/white" />
 
                     </LinearLayout>
 
                 </LinearLayout>
 
-                <!--Ayarlar-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="60dp"
-                    android:background="@drawable/circular_border_white"
+                    android:background="@drawable/sharp_border_white"
                     android:orientation="vertical"
                     android:padding="16dp">
 
