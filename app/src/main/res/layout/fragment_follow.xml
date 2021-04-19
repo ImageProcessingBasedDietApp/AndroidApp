@@ -8,14 +8,19 @@
             name="viewModel"
             type="com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.follow.FollowViewModel" />
     </data>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
 
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="460dp"
         android:orientation="vertical"
         tools:context=".ui.component.main.follow.FollowFragment"
-        android:background="@drawable/water_tracking_background">
+        android:background="@drawable/gradient_background">
 
         <LinearLayout
             android:id="@+id/topbar"
@@ -54,7 +59,7 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/sharp_border_white"
             android:elevation="5dp"
-            android:visibility="visible">
+            android:visibility="gone">
 
 
             <ImageView
@@ -109,120 +114,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/iv_coffee_on_tea">
 
             </GridLayout>
-
-            <!--
-
-                        <ImageView
-                            android:id="@+id/tea_1"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:layout_marginLeft="80dp"
-                            android:layout_marginTop="50dp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/tea_empty" />
-
-                        <ImageView
-                            android:id="@+id/tea_2"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:layout_marginTop="50dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/tea_empty" />
-
-                        <ImageView
-                            android:id="@+id/tea_3"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:layout_marginTop="50dp"
-                            android:layout_marginRight="80dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/tea_empty" />
-
-                        <ImageView
-                            android:id="@+id/tea_4"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:layout_marginTop="10dp"
-                            app:layout_constraintStart_toStartOf="@+id/tea_1"
-                            app:layout_constraintTop_toBottomOf="@+id/tea_1"
-                            app:srcCompat="@drawable/tea_empty" />
-
-                        <ImageView
-                            android:id="@+id/tea_5"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:layout_marginTop="10dp"
-                            app:layout_constraintStart_toStartOf="@+id/tea_2"
-                            app:layout_constraintTop_toBottomOf="@+id/tea_2"
-                            app:srcCompat="@drawable/tea_empty" />
-
-                        <ImageView
-                            android:id="@+id/tea_6"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:layout_marginTop="10dp"
-                            app:layout_constraintStart_toStartOf="@+id/tea_3"
-                            app:layout_constraintTop_toBottomOf="@+id/tea_3"
-                            app:srcCompat="@drawable/tea_empty" />
-
-                        <ImageView
-                            android:id="@+id/tea_7"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:layout_marginTop="10dp"
-                            app:layout_constraintStart_toStartOf="@+id/tea_4"
-                            app:layout_constraintTop_toBottomOf="@+id/tea_4"
-                            app:srcCompat="@drawable/tea_empty" />
-
-                        <ImageView
-                            android:id="@+id/tea_8"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:layout_marginTop="10dp"
-                            app:layout_constraintStart_toStartOf="@+id/tea_5"
-                            app:layout_constraintTop_toBottomOf="@+id/tea_5"
-                            app:srcCompat="@drawable/tea_empty" />
-
-                        <ImageView
-                            android:id="@+id/tea_9"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:layout_marginTop="10dp"
-                            app:layout_constraintStart_toStartOf="@+id/tea_6"
-                            app:layout_constraintTop_toBottomOf="@+id/tea_6"
-                            app:srcCompat="@drawable/tea_empty" />
-
-                        <ImageView
-                            android:id="@+id/tea_10"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:layout_marginTop="10dp"
-                            app:layout_constraintStart_toStartOf="@+id/tea_7"
-                            app:layout_constraintTop_toBottomOf="@+id/tea_7"
-                            app:srcCompat="@drawable/tea_empty" />
-
-                        <ImageView
-                            android:id="@+id/tea_11"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:layout_marginTop="10dp"
-                            app:layout_constraintStart_toStartOf="@+id/tea_8"
-                            app:layout_constraintTop_toBottomOf="@+id/tea_8"
-                            app:srcCompat="@drawable/tea_empty" />
-
-                        <ImageView
-                            android:id="@+id/tea_12"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:layout_marginTop="10dp"
-                            app:layout_constraintStart_toStartOf="@+id/tea_9"
-                            app:layout_constraintTop_toBottomOf="@+id/tea_9"
-                            app:srcCompat="@drawable/tea_empty" />
-            -->
 
             <TextView
                 android:id="@+id/amount_of_tea"
@@ -318,7 +209,7 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/sharp_border_white"
             android:elevation="5dp"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <me.itangqi.waveloadingview.WaveLoadingView
                 android:id="@+id/waterLevelView"
@@ -447,9 +338,13 @@
             </GridLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/grey">
 
             <TextView
                 android:id="@+id/tv_weight_header"
@@ -512,7 +407,6 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </LinearLayout>
-
+</LinearLayout>
 
 </layout>
