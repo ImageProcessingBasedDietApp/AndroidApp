@@ -88,6 +88,7 @@
             android:id="@+id/buttonSignIn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/white"
             android:background="@drawable/button_default"
             android:onClick="@{() -> viewModel.signup()}"
             android:text="KAYIT OL" />
