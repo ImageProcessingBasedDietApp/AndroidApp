@@ -17,6 +17,7 @@ import com.ilaydaberna.imageprocessingbaseddietapp.databinding.ActivityLoginBind
 import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.FirebaseSource
 import com.ilaydaberna.imageprocessingbaseddietapp.ui.base.BaseActivity
 import com.ilaydaberna.imageprocessingbaseddietapp.util.startHomeActivity
+import com.ilaydaberna.imageprocessingbaseddietapp.util.startRegisterActivity
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
@@ -97,10 +98,14 @@ class LoginActivity : BaseActivity(), KodeinAware, AuthListener{
         binding.progressbar.visibility = View.VISIBLE
     }
 
-    //AuthViewModelde işlem başarılı bitiyor. Home Activity yönlendirmesi yapılıyor.
-    override fun onSuccess() {
+    override fun onSuccessLogin() {
         binding.progressbar.visibility = View.GONE
         startHomeActivity()
+    }
+
+    override fun onSuccessRegister() {
+        binding.progressbar.visibility = View.GONE
+        startRegisterActivity()
     }
 
     //AuthViewModelde gotoForgotPassword fonksiyonu buna düşüyor. Şifremi unuttum bu sayede açılıyor.
@@ -155,7 +160,6 @@ class LoginActivity : BaseActivity(), KodeinAware, AuthListener{
                     Log.d("firebaseAuthWithGoogle", "signInWithCredential:success")
                     val user = auth.currentUser
                     startHomeActivity()
-                    //updateUI(user)
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w("firebaseAuthWithGoogle", "signInWithCredential:failure", task.exception)

@@ -5,8 +5,10 @@ package com.ilaydaberna.imageprocessingbaseddietapp.ui.component.login
 
 interface AuthListener {
     fun onStarted()
-    fun onSuccess()
+    fun onSuccessLogin()
     fun onFailure(message: String)
     fun forgotPassword()
     fun onSuccessSendEmail(message: String)
+    fun onSuccessRegister()
+
 }

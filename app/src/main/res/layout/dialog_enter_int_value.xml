@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="30dp"
+    android:background="@color/white"
+    android:elevation="100dp">
+
+    <TextView
+        android:id="@+id/tv_dialog_header_int"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Lütfen boyunuzu seçiniz"
+        android:textColor="@color/green_500"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
+    <NumberPicker
+        android:id="@+id/np_dialog_int"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/btn_dialog_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_default"
+        android:text="Kaydet"
+        android:textColor="@color/white" />
+</LinearLayout>

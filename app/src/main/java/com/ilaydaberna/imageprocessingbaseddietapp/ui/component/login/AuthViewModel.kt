@@ -52,7 +52,7 @@ class AuthViewModel (private val repository: UserRepository) : ViewModel() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 //sending a success callback
-                authListener?.onSuccess()
+                authListener?.onSuccessLogin()
             }, {
                 //sending a failure callback
                 authListener?.onFailure("E-posta ya da şifre doğru değil")
@@ -79,7 +79,7 @@ class AuthViewModel (private val repository: UserRepository) : ViewModel() {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    authListener?.onSuccess()
+                    authListener?.onSuccessRegister()
                 }, {
                     authListener?.onFailure("Bu mail zaten kayıtlı")
                 })

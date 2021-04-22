@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import com.google.firebase.firestore.WriteBatch
 import com.ilaydaberna.imageprocessingbaseddietapp.ui.component.camera.CameraActivity
 import com.ilaydaberna.imageprocessingbaseddietapp.ui.component.login.LoginActivity
+import com.ilaydaberna.imageprocessingbaseddietapp.ui.component.login.RegisterActivity
 import com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.MainActivity
 import java.text.SimpleDateFormat
 import java.util.*
@@ -30,6 +31,12 @@ fun Context.startCameraActivity() =
         it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(it)
     }
+
+fun Context.startRegisterActivity() =
+        Intent(this, RegisterActivity::class.java).also {
+            it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(it)
+        }
 
 fun EditText.isEmpty() = this.text.isEmpty()
 
