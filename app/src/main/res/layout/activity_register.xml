@@ -44,14 +44,6 @@
                 android:elevation="8dp"
                 android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="Cinsiyet"
-                    android:textColor="@color/green_700"
-                    android:textSize="20dp" />
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -73,6 +65,15 @@
                         app:srcCompat="@drawable/icon_man" />
 
                 </LinearLayout>
+                <TextView
+                    android:id="@+id/tv_name_surname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center"
+                    android:text="......"
+                    android:textSize="18dp" />
+
             </LinearLayout>
 
             <LinearLayout

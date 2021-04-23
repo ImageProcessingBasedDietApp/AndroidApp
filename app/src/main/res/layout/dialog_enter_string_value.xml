@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="30dp"
+    android:background="@color/white"
+    android:elevation="100dp">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/et_name_surname_input_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="İsim Soyisim"
+        android:theme="@style/EditTextStyle"
+        android:textColorHint="@color/colorHint">
+
+        <EditText
+            android:id="@+id/et_name_surname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:ems="10"
+            android:singleLine="true"
+            android:textColor="@color/green_700"
+            android:textColorHint="@color/colorHint" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/btn_dialog_string_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/button_default"
+        android:text="Kaydet"
+        android:textColor="@color/white" />
+</LinearLayout>

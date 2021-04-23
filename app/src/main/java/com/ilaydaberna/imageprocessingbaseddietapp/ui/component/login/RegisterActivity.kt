@@ -10,12 +10,14 @@ import com.ilaydaberna.imageprocessingbaseddietapp.R
 import com.ilaydaberna.imageprocessingbaseddietapp.util.startHomeActivity
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.dialog_enter_int_value.view.*
+import kotlinx.android.synthetic.main.dialog_enter_string_value.view.*
 import kotlinx.android.synthetic.main.dialog_enter_weight.view.*
 import kotlinx.android.synthetic.main.dialog_enter_weight.view.btn_dialog_save
 import java.util.*
 
 class RegisterActivity : AppCompatActivity() {
 
+    var nameSurname: String = ""
     var weight:Double = 0.0
     var height:Int = 0
     var goalWeight:Double = 0.0
@@ -25,7 +27,6 @@ class RegisterActivity : AppCompatActivity() {
     var goalStep: Int = 0
 
 
-
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
@@ -33,11 +34,29 @@ class RegisterActivity : AppCompatActivity() {
         iv_woman.setOnClickListener {
             iv_woman.setImageDrawable(resources.getDrawable(R.drawable.icon_woman_selected))
             iv_man.setImageDrawable(resources.getDrawable(R.drawable.icon_man))
+            val mDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_enter_string_value, null)
+            val mBuilder = AlertDialog.Builder(this).setView(mDialogView)
+            val mAlertDialog = mBuilder.show()
+
+            mDialogView.btn_dialog_string_save.setOnClickListener {
+                mAlertDialog.dismiss()
+                nameSurname = mDialogView.et_name_surname.text.toString()
+                tv_name_surname.setText(nameSurname)
+            }
         }
 
         iv_man.setOnClickListener {
             iv_man.setImageDrawable(resources.getDrawable(R.drawable.icon_man_selected))
             iv_woman.setImageDrawable(resources.getDrawable(R.drawable.icon_woman))
+            val mDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_enter_string_value, null)
+            val mBuilder = AlertDialog.Builder(this).setView(mDialogView)
+            val mAlertDialog = mBuilder.show()
+
+            mDialogView.btn_dialog_string_save.setOnClickListener {
+                mAlertDialog.dismiss()
+                nameSurname = mDialogView.et_name_surname.text.toString()
+                tv_name_surname.setText(nameSurname)
+            }
         }
 
         iv_weight.setOnClickListener {
@@ -69,6 +88,8 @@ class RegisterActivity : AppCompatActivity() {
             mDialogView.np_dialog_int.maxValue = 251
             mDialogView.np_dialog_int.minValue = 73
             mDialogView.np_dialog_int.value = height
+            mDialogView.tv_dialog_header_int.text = "Lütfen boyunuzu seçiniz"
+
 
             mDialogView.btn_dialog_save.setOnClickListener {
                 mAlertDialog.dismiss()
