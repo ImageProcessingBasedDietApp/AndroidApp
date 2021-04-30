@@ -21,6 +21,10 @@ private val EMAIL_PATTERN = Pattern.compile(
                 ")+"
 )
 
+private val NAME_SURNAME_PATTERN = Pattern.compile(
+    "(\\w+)\\s+(\\w+)"
+)
+
 fun String.isEmailValid(): Boolean {
     if(!EMAIL_PATTERN.matcher(this).matches())
         return true
@@ -29,6 +33,12 @@ fun String.isEmailValid(): Boolean {
 
 fun String.isPasswordValid(): Boolean {
     if(!PASSWORD_PATTERN.matcher(this).matches())
+        return false
+    return true
+}
+
+fun String.isNameSurnameValid():Boolean{
+    if(!NAME_SURNAME_PATTERN.matcher(this).matches())
         return false
     return true
 }

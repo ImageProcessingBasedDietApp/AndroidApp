@@ -5,8 +5,10 @@ import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.ilaydaberna.imageprocessingbaseddietapp.R
+import com.ilaydaberna.imageprocessingbaseddietapp.util.isNameSurnameValid
 import com.ilaydaberna.imageprocessingbaseddietapp.util.startHomeActivity
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.dialog_enter_int_value.view.*
@@ -30,32 +32,56 @@ class RegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
+        val textViewNameSurname = findViewById<TextView>(R.id.tv_name_surname)
 
         iv_woman.setOnClickListener {
             iv_woman.setImageDrawable(resources.getDrawable(R.drawable.icon_woman_selected))
             iv_man.setImageDrawable(resources.getDrawable(R.drawable.icon_man))
+            var nameSurname: String = ""
             val mDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_enter_string_value, null)
             val mBuilder = AlertDialog.Builder(this).setView(mDialogView)
             val mAlertDialog = mBuilder.show()
 
             mDialogView.btn_dialog_string_save.setOnClickListener {
-                mAlertDialog.dismiss()
-                nameSurname = mDialogView.et_name_surname.text.toString()
-                tv_name_surname.setText(nameSurname)
+                if(mDialogView.et_name_surname.text.isEmpty()){
+                    mDialogView.et_name_surname.setError("Bu alan boş bırakılamaz")
+                }
+                else if(mDialogView.et_name_surname.text.toString().isNameSurnameValid()){
+                    nameSurname = mDialogView.et_name_surname.text.toString()
+
+                    tv_name_surname.text = nameSurname.toUpperCase()
+                    mAlertDialog.dismiss()
+
+                }
+                else{
+                    mDialogView.et_name_surname.setError("Geçerli bir isim soyisim giriniz")
+                }
             }
         }
 
         iv_man.setOnClickListener {
             iv_man.setImageDrawable(resources.getDrawable(R.drawable.icon_man_selected))
             iv_woman.setImageDrawable(resources.getDrawable(R.drawable.icon_woman))
+            var nameSurname: String = ""
             val mDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_enter_string_value, null)
             val mBuilder = AlertDialog.Builder(this).setView(mDialogView)
             val mAlertDialog = mBuilder.show()
-
             mDialogView.btn_dialog_string_save.setOnClickListener {
-                mAlertDialog.dismiss()
-                nameSurname = mDialogView.et_name_surname.text.toString()
-                tv_name_surname.setText(nameSurname)
+                if(mDialogView.et_name_surname.text.isEmpty()){
+                    mDialogView.et_name_surname.setError("Bu alan boş bırakılamaz")
+                }
+                else if(mDialogView.et_name_surname.text.toString().isNameSurnameValid()){
+                    nameSurname = mDialogView.et_name_surname.text.toString()
+
+                    tv_name_surname.text = nameSurname.toUpperCase()
+                    mAlertDialog.dismiss()
+
+                }
+                else{
+                    mDialogView.et_name_surname.setError("Geçerli bir isim soyisim giriniz")
+                }
+
+
             }
         }
 
@@ -218,6 +244,5 @@ class RegisterActivity : AppCompatActivity() {
         }
 
     }
-
 
 }
