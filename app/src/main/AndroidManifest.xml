@@ -18,11 +18,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ImageProcessingBasedDietAppLight">
-        <activity android:name=".ui.component.login.LoginActivity"/>
+        <activity android:name=".ui.component.main.MainActivity"/>
         <activity android:name=".ui.component.splash.SplashActivity" />
+        <activity android:name=".ui.component.login.RegisterActivity" />
         <activity android:name=".ui.component.camera.CameraActivity" />
         <activity
-            android:name=".ui.component.main.MainActivity"
+            android:name=".ui.component.login.LoginActivity"
             android:label="Diet App">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
