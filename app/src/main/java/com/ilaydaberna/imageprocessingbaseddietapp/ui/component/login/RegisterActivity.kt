@@ -55,7 +55,7 @@ class RegisterActivity : AppCompatActivity() {
                 }
                 else if(mDialogView.et_name_surname.text.toString().isNameSurnameValid()){
                     nameSurname = mDialogView.et_name_surname.text.toString()
-                    gender = "woman"
+                    gender = "Kadın"
 
                     tv_name_surname.text = nameSurname.toUpperCase()
                     mAlertDialog.dismiss()
@@ -79,7 +79,7 @@ class RegisterActivity : AppCompatActivity() {
                 }
                 else if(mDialogView.et_name_surname.text.toString().isNameSurnameValid()){
                     nameSurname = mDialogView.et_name_surname.text.toString()
-                    gender = "man"
+                    gender = "Erkek"
 
                     tv_name_surname.text = nameSurname.toUpperCase()
                     mAlertDialog.dismiss()

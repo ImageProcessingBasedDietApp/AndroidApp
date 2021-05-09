@@ -28,7 +28,7 @@ import java.io.ByteArrayOutputStream
 import java.util.*
 
 
-class ProfileFragment : Fragment(){
+class ProfileFragment  : Fragment(){
 
     var isEditGoals = false
     var isEditUserInfo = false
@@ -39,6 +39,7 @@ class ProfileFragment : Fragment(){
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val user = UserInfo.user.get()
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
         view.iv_profile_photo.setOnClickListener {
             selectImage()
@@ -156,6 +157,18 @@ class ProfileFragment : Fragment(){
             view.layout_edit_settings.visibility = View.GONE
             isEditSettings = false
         }
+
+        view.tv_name_surname.text = user?.name
+        view.tv_email.text = user?.email
+        view.tv_goal_weight.text = user?.goalWeight.toString() + " kg"
+        view.tv_goal_coffee.text = user?.goalCoffee.toString() + " fincan"
+        view.tv_goal_step.text = user?.goalStep.toString() + " adım"
+        view.tv_goal_tea.text = user?.goalTea.toString() + " bardak"
+        view.tv_goal_water.text = user?.goalWater.toString() + " bardak"
+        view.tv_gender.text = user?.gender
+        view.tv_weight.text = user?.weight.toString() + " kg"
+        view.tv_height.text = user?.height.toString() + " cm"
+        //view.tv_birthdate.text = user?.birthdate?.toDate().toString()
 
 
         return view
