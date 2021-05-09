@@ -7,7 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.Timestamp
+import com.google.firebase.auth.FirebaseUser
 import com.ilaydaberna.imageprocessingbaseddietapp.R
+import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.FirebaseSource
+import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.FirestoreSource
+import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.User
+import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.UserInfo
 import com.ilaydaberna.imageprocessingbaseddietapp.util.isNameSurnameValid
 import com.ilaydaberna.imageprocessingbaseddietapp.util.startHomeActivity
 import kotlinx.android.synthetic.main.activity_register.*
@@ -20,13 +26,15 @@ import java.util.*
 class RegisterActivity : AppCompatActivity() {
 
     var nameSurname: String = ""
-    var weight:Double = 0.0
+    var weight:Float = 0F
     var height:Int = 0
-    var goalWeight:Double = 0.0
+    var goalWeight:Float = 0F
     var goalWater:Int = 0
     var goalCoffee:Int = 0
     var goalTea:Int = 0
-    var goalStep: Int = 0
+    var goalStep:Int = 0
+    var gender:String = ""
+    var birthdate:Timestamp = Timestamp(Date(System.currentTimeMillis()))
 
 
     override fun onCreate(savedInstanceState: Bundle?){
@@ -37,7 +45,6 @@ class RegisterActivity : AppCompatActivity() {
         iv_woman.setOnClickListener {
             iv_woman.setImageDrawable(resources.getDrawable(R.drawable.icon_woman_selected))
             iv_man.setImageDrawable(resources.getDrawable(R.drawable.icon_man))
-            var nameSurname: String = ""
             val mDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_enter_string_value, null)
             val mBuilder = AlertDialog.Builder(this).setView(mDialogView)
             val mAlertDialog = mBuilder.show()
@@ -48,6 +55,7 @@ class RegisterActivity : AppCompatActivity() {
                 }
                 else if(mDialogView.et_name_surname.text.toString().isNameSurnameValid()){
                     nameSurname = mDialogView.et_name_surname.text.toString()
+                    gender = "woman"
 
                     tv_name_surname.text = nameSurname.toUpperCase()
                     mAlertDialog.dismiss()
@@ -62,7 +70,6 @@ class RegisterActivity : AppCompatActivity() {
         iv_man.setOnClickListener {
             iv_man.setImageDrawable(resources.getDrawable(R.drawable.icon_man_selected))
             iv_woman.setImageDrawable(resources.getDrawable(R.drawable.icon_woman))
-            var nameSurname: String = ""
             val mDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_enter_string_value, null)
             val mBuilder = AlertDialog.Builder(this).setView(mDialogView)
             val mAlertDialog = mBuilder.show()
@@ -72,6 +79,7 @@ class RegisterActivity : AppCompatActivity() {
                 }
                 else if(mDialogView.et_name_surname.text.toString().isNameSurnameValid()){
                     nameSurname = mDialogView.et_name_surname.text.toString()
+                    gender = "man"
 
                     tv_name_surname.text = nameSurname.toUpperCase()
                     mAlertDialog.dismiss()
@@ -102,7 +110,7 @@ class RegisterActivity : AppCompatActivity() {
             mDialogView.btn_dialog_save.setOnClickListener {
                 mAlertDialog.dismiss()
                 var newWeight = mDialogView.np_dialog_weight_int.value.toString() + "." + mDialogView.np_dialog_weight_decimal.value.toString()
-                weight = newWeight.toString().toDouble()
+                weight = newWeight.toString().toFloat()
                 tv_weight.text = newWeight + " kg"
             }
         }
@@ -134,6 +142,8 @@ class RegisterActivity : AppCompatActivity() {
                     this?.let { it1 ->
                         DatePickerDialog(it1, DatePickerDialog.OnDateSetListener{ mView, mYear, mMonth, mDay ->
                             tv_birthdate.setText(""+ mDay +"/" +( mMonth+1) + "/"+ mYear)
+                            val timestamp: Timestamp = Timestamp(Date(mYear, mMonth, mDay))
+                            birthdate = timestamp
                         }, year, month, day)
                     }
             datePickerDialog?.show()
@@ -161,7 +171,7 @@ class RegisterActivity : AppCompatActivity() {
             mDialogView.btn_dialog_save.setOnClickListener {
                 mAlertDialog.dismiss()
                 var newGoalWeight = mDialogView.np_dialog_weight_int.value.toString() + "." + mDialogView.np_dialog_weight_decimal.value.toString()
-                goalWeight = newGoalWeight.toString().toDouble()
+                goalWeight = newGoalWeight.toString().toFloat()
                 tv_goal_weight.text = newGoalWeight + " kg"
             }
         }
@@ -240,6 +250,24 @@ class RegisterActivity : AppCompatActivity() {
 
         button_register_save.setOnClickListener {
             //TODO: Firebase kaydet
+            val currentUser: FirebaseUser? = FirebaseSource().getAuth().currentUser
+            Thread(Runnable {
+                UserInfo.user.set(
+                    currentUser?.uid?.let { it1 ->
+                        currentUser?.email?.let { it2 ->
+                            User(
+                                it1, it2, nameSurname, "", gender, birthdate, height, weight,
+                                goalWeight, goalWater, goalCoffee, goalTea, goalStep, false )
+                        }
+                    }
+                )
+            }).start()
+
+            var user = UserInfo.user.get()
+            if (currentUser != null) {
+                Thread.sleep(1000)
+                UserInfo.user.get()?.let { it1 -> FirestoreSource().saveUser(currentUser, it1) }
+            }
             startHomeActivity()
         }
 
