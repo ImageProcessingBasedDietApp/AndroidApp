@@ -25,6 +25,7 @@ import java.text.DecimalFormat
 class FollowFragment : Fragment() {
 
     var cup_of_tea: Int = 0 //Firebaseden setlenecek.
+    var cup_of_coffee: Int = 0 //Firebaseden setlenecek.
     var weight: Double = 49.0 //Kullanıcıdan alınan kiloya setlenecek.
     var newWeight: String? = ""
 
@@ -61,6 +62,14 @@ class FollowFragment : Fragment() {
 
         view.tea_plus.setOnClickListener() {
             clickedTeaPlus()
+        }
+
+        view.coffee_minus.setOnClickListener() {
+            clickedCoffeeMinus()
+        }
+
+        view.coffee_plus.setOnClickListener() {
+            clickedCoffeePlus()
         }
 
 
@@ -116,6 +125,21 @@ class FollowFragment : Fragment() {
             view?.gl_tea?.addView(iv, param)
 
         }
+
+        for(i in 1..12) {
+            val iv = ImageView(context)
+            //iv.layoutParams = LinearLayout.LayoutParams(150, 150)
+            iv.setImageResource(R.drawable.icon_turkish_coffee_empty)
+
+            val param =  GridLayout.LayoutParams()
+            param.height = 150
+            param.width = 150
+            param.setGravity(Gravity.CENTER)
+
+            view?.gl_coffee?.addView(iv, param)
+
+        }
+
         return view
     }
 
@@ -131,6 +155,18 @@ class FollowFragment : Fragment() {
         view?.amount_of_tea?.text = "Günlük içilen çay miktarı = " + cup_of_tea.toString() + " Bardak"
     }
 
+    fun clickedCoffeeMinus() {
+        if (cup_of_coffee > 0) {
+            cup_of_coffee -= 1
+        } else {
+            cup_of_coffee = 0
+        }
+
+        val v = view?.gl_coffee?.getChildAt(cup_of_coffee) as ImageView
+        v.setImageResource(R.drawable.icon_turkish_coffee_empty)
+        view?.amount_of_coffee?.text = "Günlük içilen çay miktarı = " + cup_of_coffee.toString() + " Bardak"
+    }
+
     @SuppressLint("UseCompatLoadingForDrawables")
     fun clickedTeaPlus() {
         if (cup_of_tea < 12) {
@@ -142,6 +178,18 @@ class FollowFragment : Fragment() {
         val v = view?.gl_tea?.getChildAt(cup_of_tea-1) as ImageView
         v.setImageResource(R.drawable.tea_full)
         view?.amount_of_tea?.text = "Günlük içilen çay miktarı = " + cup_of_tea.toString() + " Bardak"
+    }
+
+    fun clickedCoffeePlus() {
+        if (cup_of_coffee < 12) {
+            cup_of_coffee += 1
+        } else {
+            cup_of_coffee = 12
+        }
+
+        val v = view?.gl_coffee?.getChildAt(cup_of_coffee-1) as ImageView
+        v.setImageResource(R.drawable.icon_turkish_coffee)
+        view?.amount_of_coffee?.text = "Günlük içilen çay miktarı = " + cup_of_coffee.toString() + " Bardak"
     }
 
     fun clickedWeightText() {

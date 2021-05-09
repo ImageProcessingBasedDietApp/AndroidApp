@@ -146,7 +146,7 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/sharp_border_white"
             android:elevation="5dp"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <ImageView
                 android:id="@+id/iv_tea_on_coffee"
@@ -168,15 +168,39 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="14dp"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+
+            <ImageView
+                android:id="@+id/coffee_minus"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:text="Kahve takip"
-                android:textColor="@color/goodgrey"/>
+                app:srcCompat="@drawable/minus"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="175dp"/>
+
+            <ImageView
+                android:id="@+id/coffee_plus"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/plus"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="175dp"/>
+
+            <GridLayout
+                android:id="@+id/gl_coffee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:columnCount="3"
+                android:rowCount="4"
+                app:layout_constraintBottom_toTopOf="@+id/amount_of_coffee"
+                app:layout_constraintEnd_toStartOf="@+id/coffee_plus"
+                app:layout_constraintStart_toEndOf="@+id/coffee_minus"
+                app:layout_constraintTop_toBottomOf="@+id/iv_tea_on_coffee">
+
+            </GridLayout>
 
             <TextView
                 android:id="@+id/amount_of_coffee"
@@ -209,7 +233,7 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/sharp_border_white"
             android:elevation="5dp"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <me.itangqi.waveloadingview.WaveLoadingView
                 android:id="@+id/waterLevelView"
