@@ -15,16 +15,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.ilaydaberna.imageprocessingbaseddietapp.R
 import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.FirestoreSource
-import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.User
 import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.UserInfo
 import com.ilaydaberna.imageprocessingbaseddietapp.util.alertDialog
 import com.ilaydaberna.imageprocessingbaseddietapp.util.isEmpty
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.fragment_profile.view.*
 import java.io.ByteArrayOutputStream
+import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -170,6 +170,11 @@ class ProfileFragment  : Fragment(){
         view.tv_height.text = user?.height.toString() + " cm"
         //view.tv_birthdate.text = user?.birthdate?.toDate().toString()
 
+        if (user?.isNotification != null && user?.isNotification) {
+            view.tv_notification.text = "Bildirimler Açık"
+        } else {
+            view.tv_notification.text = "Bildirimler Kapalı"
+        }
 
         return view
     }
