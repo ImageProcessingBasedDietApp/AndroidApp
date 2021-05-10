@@ -101,6 +101,21 @@ class FirestoreSource {
             }
         }
 
+        fun saveWeight(currentUser: FirebaseUser, weight: Double, date: Long) {
+            var weight = hashMapOf(
+                    "date" to date,
+                    "userID" to currentUser.uid,
+                    "weightMeasure" to weight
+            )
+            if (currentUser != null) {
+                if (currentUser.uid != null) {
+                    val db = Firebase.firestore
+                    val docRef = db.collection("WeightTracking").document(currentUser.uid)
+                    docRef.set(weight)
+                }
+            }
+        }
+
         fun getFoods() : ArrayList<Food> {
             val foods: ArrayList<Food>? = null
             val db = Firebase.firestore

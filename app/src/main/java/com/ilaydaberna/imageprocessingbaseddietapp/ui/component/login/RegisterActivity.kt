@@ -263,11 +263,18 @@ class RegisterActivity : AppCompatActivity() {
                 )
             }).start()
 
+            val timeFormat = "dd.MM.yy"
+            val c = Calendar.getInstance()
+            val d: Date = c.getTime()
+            val timestamp: Long = d.getTime()
+
             var user = UserInfo.user.get()
             if (currentUser != null) {
                 Thread.sleep(1000)
                 UserInfo.user.get()?.let { it1 -> FirestoreSource().saveUser(currentUser, it1) }
+                FirestoreSource().saveWeight(currentUser, weight.toDouble(), timestamp)
             }
+
             startHomeActivity()
         }
 

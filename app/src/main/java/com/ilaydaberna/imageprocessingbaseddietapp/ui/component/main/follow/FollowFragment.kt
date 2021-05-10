@@ -1,9 +1,7 @@
 package com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.follow
 
 import android.annotation.SuppressLint
-import android.app.ActionBar
 import android.app.AlertDialog
-import android.os.Build
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -11,29 +9,37 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.GridLayout
 import android.widget.ImageView
-import android.widget.LinearLayout
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import com.google.firebase.auth.FirebaseUser
 import com.ilaydaberna.imageprocessingbaseddietapp.R
+import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.FirebaseSource
+import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.FirestoreSource
+import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.User
+import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.UserInfo
 import kotlinx.android.synthetic.main.dialog_enter_weight.view.*
-import kotlinx.android.synthetic.main.fragment_follow.*
 import kotlinx.android.synthetic.main.fragment_follow.view.*
-import kotlinx.android.synthetic.main.fragment_home.view.*
-import java.math.BigDecimal
 import java.text.DecimalFormat
+import java.util.*
 
 class FollowFragment : Fragment() {
 
+    lateinit var user: User
     var cup_of_tea: Int = 0 //Firebaseden setlenecek.
     var cup_of_coffee: Int = 0 //Firebaseden setlenecek.
-    var weight: Double = 49.0 //Kullanıcıdan alınan kiloya setlenecek.
+    var weight: Double = 0.0 //Kullanıcıdan alınan kiloya setlenecek.
     var newWeight: String? = ""
+    val currentUser: FirebaseUser? = FirebaseSource().getAuth().currentUser
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_follow, container, false)
 
+        Thread(Runnable {
+            user = UserInfo.user.get()!!
+        }).start()
 
+        Thread.sleep(1000)
+        weight = user.weight.toDouble()
 
         view.tv_weight.text = weight.toString()
 
@@ -141,6 +147,18 @@ class FollowFragment : Fragment() {
         }
 
         return view
+    }
+
+    override fun onStop() {
+        super.onStop()
+        val timeFormat = "dd.MM.yy"
+        val c = Calendar.getInstance()
+        val d: Date = c.getTime()
+        val timestamp: Long = d.getTime()
+        if (currentUser != null) {
+            FirestoreSource().saveWeight(currentUser, weight.toDouble(), timestamp)
+        }
+        UserInfo.user.get()?.weight = weight.toFloat()
     }
 
     fun clickedTeaMinus() {
