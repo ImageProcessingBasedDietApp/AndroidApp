@@ -263,7 +263,6 @@ class RegisterActivity : AppCompatActivity() {
                 )
             }).start()
 
-            val timeFormat = "dd.MM.yy"
             val c = Calendar.getInstance()
             val d: Date = c.getTime()
             val timestamp: Long = d.getTime()
