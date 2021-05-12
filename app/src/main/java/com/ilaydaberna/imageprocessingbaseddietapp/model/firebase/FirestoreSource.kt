@@ -1,5 +1,6 @@
 package com.ilaydaberna.imageprocessingbaseddietapp.model.firebase
 
+import android.content.ContentValues.TAG
 import android.net.Uri
 import android.util.Log
 import com.google.android.gms.tasks.Task
@@ -110,8 +111,13 @@ class FirestoreSource {
             if (currentUser != null) {
                 if (currentUser.uid != null) {
                     val db = Firebase.firestore
-                    val docRef = db.collection("WeightTracking").document(currentUser.uid)
-                    docRef.set(weight)
+                    val docRef = db.collection("WeightTracking").add(weight)
+                            .addOnSuccessListener { documentReference ->
+                                Log.d(TAG, "DocumentSnapshot written with ID: ${documentReference.id}")
+                            }
+                            .addOnFailureListener { e ->
+                                Log.w(TAG, "Error adding document", e)
+                            }
                 }
             }
         }

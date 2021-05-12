@@ -154,14 +154,13 @@ class FollowFragment : Fragment() {
     override fun onStop() {
         super.onStop()
 
-        //val c = Calendar.getInstance()
-        //val d: Date = c.getTime()
-        //val timestamp: Long = d.getTime()
-        var x = weightText
-        var y = x.toDouble()
-        UserInfo.user.get()?.weight = y
+        val calendar = Calendar.getInstance()
+        val date: Date = calendar.getTime()
+        val timestamp: Long = date.getTime()
+        var weightDouble = weightText.toDouble()
+        UserInfo.user.get()?.weight = weightDouble
         if (currentUser != null) {
-            //FirestoreSource().saveWeight(currentUser, weight.toDouble(), timestamp)
+            FirestoreSource().saveWeight(currentUser, weightDouble, timestamp)
             UserInfo.user.get()?.let { FirestoreSource().saveUser(currentUser, it) }
         }
 
