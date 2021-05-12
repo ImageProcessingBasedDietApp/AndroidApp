@@ -168,7 +168,12 @@ class ProfileFragment  : Fragment(){
         view.tv_gender.text = user?.gender
         view.tv_weight.text = user?.weight.toString() + " kg"
         view.tv_height.text = user?.height.toString() + " cm"
-        //view.tv_birthdate.text = user?.birthdate?.toDate().toString()
+
+        //Converted birthday from long to Date format.
+        val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy")
+        val dateString = simpleDateFormat.format(user?.birthdate)
+        val text = String.format("%s", dateString)
+        view.tv_birthdate.text = text
 
         if (user?.isNotification != null && user?.isNotification) {
             view.tv_notification.text = "Bildirimler Açık"

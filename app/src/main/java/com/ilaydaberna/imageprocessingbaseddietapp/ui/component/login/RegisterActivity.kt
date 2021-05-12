@@ -34,7 +34,7 @@ class RegisterActivity : AppCompatActivity() {
     var goalTea:Int = 0
     var goalStep:Int = 0
     var gender:String = ""
-    var birthdate:Timestamp = Timestamp(Date(System.currentTimeMillis()))
+    var birthdate:Long = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?){
@@ -142,7 +142,10 @@ class RegisterActivity : AppCompatActivity() {
                     this?.let { it1 ->
                         DatePickerDialog(it1, DatePickerDialog.OnDateSetListener{ mView, mYear, mMonth, mDay ->
                             tv_birthdate.setText(""+ mDay +"/" +( mMonth+1) + "/"+ mYear)
-                            val timestamp: Timestamp = Timestamp(Date(mYear, mMonth, mDay))
+                            val calendar = Calendar.getInstance()
+                            calendar.set(mYear, mMonth, mDay)
+                            val date: Date = calendar.getTime()
+                            val timestamp = date.time
                             birthdate = timestamp
                         }, year, month, day)
                     }

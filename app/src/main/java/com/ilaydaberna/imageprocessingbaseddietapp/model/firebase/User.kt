@@ -13,7 +13,7 @@ data class User(
     var name: String = "",
     var photoUrl:String = "",
     var gender: String = "",
-    var birthdate: Timestamp = Timestamp(Date(System.currentTimeMillis())),
+    var birthdate: Long = 0,
     var height: Int = 0,
     var weight: Float = 0F,
     var goalWeight: Float = 0F,

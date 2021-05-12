@@ -27,7 +27,7 @@ class FirestoreSource {
                         val name = document.data?.get("name") as String
                         val photoUrl = document.data?.get("photoUrl") as String
                         val gender = document.data?.get("gender") as String
-                        val birthdate = document.data?.get("birthdate") as Timestamp
+                        val birthdate = (document.data?.get("birthdate") as Number).toLong()
                         val height = (document.data?.get("height") as Number).toInt()
                         val weight = (document.data?.get("weight") as Number).toFloat()
                         val goalWeight = (document.data?.get("goalWeight") as Number).toFloat()
