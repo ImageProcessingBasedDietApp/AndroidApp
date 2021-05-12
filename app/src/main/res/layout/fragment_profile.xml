@@ -5,13 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/grey"
+    android:background="@drawable/gradient_background"
     tools:context=".ui.component.main.profile.">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="240dp"
-        android:background="@drawable/gradient_background" />
 
     <!--    Top Header Layout-->
     <LinearLayout
