@@ -42,6 +42,7 @@ class FollowFragment : Fragment() {
 
         Thread.sleep(1000)
         weight = user.weight.toDouble()
+        weightText = weight.toString()
 
         view.tv_weight.text = weight.toString()
 
@@ -234,6 +235,7 @@ class FollowFragment : Fragment() {
             newWeight = mDialogView.np_dialog_weight_int.value.toString() + "." + mDialogView.np_dialog_weight_decimal.value.toString()
             view?.tv_weight?.text = newWeight
             weight = newWeight.toString().toDouble()
+            weightText = newWeight.toString()
         }
 
     }
