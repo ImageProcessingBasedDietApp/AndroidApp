@@ -56,7 +56,6 @@ class RegisterActivity : AppCompatActivity() {
                 else if(mDialogView.et_name_surname.text.toString().isNameSurnameValid()){
                     nameSurname = mDialogView.et_name_surname.text.toString()
                     gender = "Kadın"
-
                     tv_name_surname.text = nameSurname.toUpperCase()
                     mAlertDialog.dismiss()
 
@@ -80,7 +79,6 @@ class RegisterActivity : AppCompatActivity() {
                 else if(mDialogView.et_name_surname.text.toString().isNameSurnameValid()){
                     nameSurname = mDialogView.et_name_surname.text.toString()
                     gender = "Erkek"
-
                     tv_name_surname.text = nameSurname.toUpperCase()
                     mAlertDialog.dismiss()
 
@@ -99,7 +97,7 @@ class RegisterActivity : AppCompatActivity() {
             val mAlertDialog = mBuilder.show()
             mDialogView.np_dialog_weight_int.maxValue = 597
             mDialogView.np_dialog_weight_int.minValue = 0
-            mDialogView.np_dialog_weight_int.value = weight.toInt()
+            mDialogView.np_dialog_weight_int.value = 65
             var decimal = weight - weight.toInt()
             decimal *= 10
 
@@ -121,7 +119,7 @@ class RegisterActivity : AppCompatActivity() {
             val mAlertDialog = mBuilder.show()
             mDialogView.np_dialog_int.maxValue = 251
             mDialogView.np_dialog_int.minValue = 73
-            mDialogView.np_dialog_int.value = height
+            mDialogView.np_dialog_int.value = 160
             mDialogView.tv_dialog_header_int.text = "Lütfen boyunuzu seçiniz"
 
 
@@ -161,12 +159,12 @@ class RegisterActivity : AppCompatActivity() {
 
             mDialogView.np_dialog_weight_int.maxValue = 597
             mDialogView.np_dialog_weight_int.minValue = 0
-            mDialogView.np_dialog_weight_int.value = goalWeight.toInt()
+            mDialogView.np_dialog_weight_int.value = 65
             var decimal = goalWeight - goalWeight.toInt()
             decimal *= 10
             mDialogView.np_dialog_weight_decimal.maxValue = 9
             mDialogView.np_dialog_weight_decimal.minValue = 0
-            mDialogView.np_dialog_weight_decimal.value = decimal.toInt()
+            mDialogView.np_dialog_weight_decimal.value = 0
 
             mDialogView.btn_dialog_save.setOnClickListener {
                 mAlertDialog.dismiss()
@@ -181,7 +179,7 @@ class RegisterActivity : AppCompatActivity() {
             val mBuilder = AlertDialog.Builder(this).setView(mDialogView)
             val mAlertDialog = mBuilder.show()
             mDialogView.tv_dialog_header_int.text = "Lütfen Hedef Su Miktarını Seçiniz"
-            mDialogView.np_dialog_int.maxValue = 10
+            mDialogView.np_dialog_int.maxValue = 20
             mDialogView.np_dialog_int.minValue = 0
             mDialogView.np_dialog_int.value = goalWater
 
@@ -198,7 +196,7 @@ class RegisterActivity : AppCompatActivity() {
             val mBuilder = AlertDialog.Builder(this).setView(mDialogView)
             val mAlertDialog = mBuilder.show()
             mDialogView.tv_dialog_header_int.text = "Lütfen Hedef Kahve Miktarını Seçiniz"
-            mDialogView.np_dialog_int.maxValue = 10
+            mDialogView.np_dialog_int.maxValue = 20
             mDialogView.np_dialog_int.minValue = 0
             mDialogView.np_dialog_int.value = goalCoffee
 
@@ -215,7 +213,7 @@ class RegisterActivity : AppCompatActivity() {
             val mBuilder = AlertDialog.Builder(this).setView(mDialogView)
             val mAlertDialog = mBuilder.show()
             mDialogView.tv_dialog_header_int.text = "Lütfen Hedef Çay Miktarını Seçiniz"
-            mDialogView.np_dialog_int.maxValue = 10
+            mDialogView.np_dialog_int.maxValue = 20
             mDialogView.np_dialog_int.minValue = 0
             mDialogView.np_dialog_int.value = goalTea
 
