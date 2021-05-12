@@ -31,6 +31,7 @@ class FollowFragment : Fragment() {
     lateinit var weightText: String
     var newWeight: String? = ""
     val currentUser: FirebaseUser? = FirebaseSource().getAuth().currentUser
+    var isWeightChanged: Boolean = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -155,15 +156,18 @@ class FollowFragment : Fragment() {
     override fun onStop() {
         super.onStop()
 
-        val calendar = Calendar.getInstance()
-        val date: Date = calendar.getTime()
-        val timestamp: Long = date.getTime()
-        var weightDouble = weightText.toDouble()
-        UserInfo.user.get()?.weight = weightDouble
-        if (currentUser != null) {
-            FirestoreSource().saveWeight(currentUser, weightDouble, timestamp)
-            UserInfo.user.get()?.let { FirestoreSource().saveUser(currentUser, it) }
+        if (isWeightChanged) {
+            val calendar = Calendar.getInstance()
+            val date: Date = calendar.getTime()
+            val timestamp: Long = date.getTime()
+            var weightDouble = weightText.toDouble()
+            UserInfo.user.get()?.weight = weightDouble
+            if (currentUser != null) {
+                FirestoreSource().saveWeight(currentUser, weightDouble, timestamp)
+                UserInfo.user.get()?.let { FirestoreSource().saveUser(currentUser, it) }
+            }
         }
+
 
     }
 
@@ -236,6 +240,7 @@ class FollowFragment : Fragment() {
             view?.tv_weight?.text = newWeight
             weight = newWeight.toString().toDouble()
             weightText = newWeight.toString()
+            isWeightChanged = true
         }
 
     }
@@ -252,6 +257,7 @@ class FollowFragment : Fragment() {
         }
         weightText = text
         view?.tv_weight?.text = text
+        isWeightChanged = true
     }
 
     fun clickedToDecreaseWeight() {
@@ -271,6 +277,7 @@ class FollowFragment : Fragment() {
         }
         weightText = text
         view?.tv_weight?.text = text
+        isWeightChanged = true
     }
 
     fun showInformationDialog() {
