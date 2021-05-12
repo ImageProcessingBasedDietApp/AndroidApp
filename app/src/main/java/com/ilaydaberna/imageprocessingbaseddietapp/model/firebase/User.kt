@@ -15,7 +15,7 @@ data class User(
     var gender: String = "",
     var birthdate: Long = 0,
     var height: Int = 0,
-    var weight: Float = 0F,
+    var weight: Double = 0.0,
     var goalWeight: Float = 0F,
     var goalWater: Int = 0,
     var goalCoffee: Int = 0,

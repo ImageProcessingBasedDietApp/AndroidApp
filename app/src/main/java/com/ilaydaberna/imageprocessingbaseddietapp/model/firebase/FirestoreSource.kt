@@ -29,7 +29,7 @@ class FirestoreSource {
                         val gender = document.data?.get("gender") as String
                         val birthdate = (document.data?.get("birthdate") as Number).toLong()
                         val height = (document.data?.get("height") as Number).toInt()
-                        val weight = (document.data?.get("weight") as Number).toFloat()
+                        val weight = (document.data?.get("weight") as Number).toDouble()
                         val goalWeight = (document.data?.get("goalWeight") as Number).toFloat()
                         val goalWater = (document.data?.get("goalWater") as Number).toInt()
                         val goalCoffee = (document.data?.get("goalCoffee") as Number).toInt()

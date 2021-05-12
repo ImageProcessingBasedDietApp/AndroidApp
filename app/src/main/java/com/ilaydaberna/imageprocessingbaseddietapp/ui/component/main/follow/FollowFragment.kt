@@ -18,6 +18,7 @@ import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.User
 import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.UserInfo
 import kotlinx.android.synthetic.main.dialog_enter_weight.view.*
 import kotlinx.android.synthetic.main.fragment_follow.view.*
+import java.math.RoundingMode
 import java.text.DecimalFormat
 import java.util.*
 
@@ -27,6 +28,7 @@ class FollowFragment : Fragment() {
     var cup_of_tea: Int = 0 //Firebaseden setlenecek.
     var cup_of_coffee: Int = 0 //Firebaseden setlenecek.
     var weight: Double = 0.0 //Kullanıcıdan alınan kiloya setlenecek.
+    lateinit var weightText: String
     var newWeight: String? = ""
     val currentUser: FirebaseUser? = FirebaseSource().getAuth().currentUser
 
@@ -152,13 +154,17 @@ class FollowFragment : Fragment() {
     override fun onStop() {
         super.onStop()
 
-        val c = Calendar.getInstance()
-        val d: Date = c.getTime()
-        val timestamp: Long = d.getTime()
+        //val c = Calendar.getInstance()
+        //val d: Date = c.getTime()
+        //val timestamp: Long = d.getTime()
+        var x = weightText
+        var y = x.toDouble()
+        UserInfo.user.get()?.weight = y
         if (currentUser != null) {
-            FirestoreSource().saveWeight(currentUser, weight.toDouble(), timestamp)
+            //FirestoreSource().saveWeight(currentUser, weight.toDouble(), timestamp)
+            UserInfo.user.get()?.let { FirestoreSource().saveUser(currentUser, it) }
         }
-        UserInfo.user.get()?.weight = weight.toFloat()
+
     }
 
     fun clickedTeaMinus() {
@@ -243,6 +249,7 @@ class FollowFragment : Fragment() {
         } else {
             DecimalFormat("000.0").format(weight)
         }
+        weightText = text
         view?.tv_weight?.text = text
     }
 
@@ -261,6 +268,7 @@ class FollowFragment : Fragment() {
         } else {
             DecimalFormat("000.0").format(weight)
         }
+        weightText = text
         view?.tv_weight?.text = text
     }
 

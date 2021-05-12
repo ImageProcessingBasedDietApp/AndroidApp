@@ -26,7 +26,7 @@ import java.util.*
 class RegisterActivity : AppCompatActivity() {
 
     var nameSurname: String = ""
-    var weight:Float = 0F
+    var weight:Double = 0.0
     var height:Int = 0
     var goalWeight:Float = 0F
     var goalWater:Int = 0
@@ -108,7 +108,7 @@ class RegisterActivity : AppCompatActivity() {
             mDialogView.btn_dialog_save.setOnClickListener {
                 mAlertDialog.dismiss()
                 var newWeight = mDialogView.np_dialog_weight_int.value.toString() + "." + mDialogView.np_dialog_weight_decimal.value.toString()
-                weight = newWeight.toString().toFloat()
+                weight = newWeight.toDouble()
                 tv_weight.text = newWeight + " kg"
             }
         }
