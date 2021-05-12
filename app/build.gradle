@@ -9,6 +9,10 @@ android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
 
+    repositories {
+        maven { url "https://jitpack.io" }
+    }
+
     defaultConfig {
         applicationId "com.ilaydaberna.imageprocessingbaseddietapp"
         minSdkVersion 26
@@ -34,6 +38,7 @@ android {
     buildFeatures {
         mlModelBinding true
         dataBinding true
+        viewBinding true
     }
 
 }
@@ -113,6 +118,7 @@ dependencies {
     implementation "app.futured.donut:library:2.1.0"
     implementation "app.futured.donut:library-compose:2.1.0"
 
-
+    //Chart
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
 }
