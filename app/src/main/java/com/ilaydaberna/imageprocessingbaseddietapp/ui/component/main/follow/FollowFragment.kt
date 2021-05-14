@@ -3,6 +3,7 @@ package com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.follow
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +17,10 @@ import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.FirebaseSource
 import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.FirestoreSource
 import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.User
 import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.UserInfo
+import kotlinx.android.synthetic.main.activity_register.*
+import kotlinx.android.synthetic.main.dialog_enter_int_value.view.*
 import kotlinx.android.synthetic.main.dialog_enter_weight.view.*
+import kotlinx.android.synthetic.main.dialog_enter_weight.view.btn_dialog_save
 import kotlinx.android.synthetic.main.fragment_follow.view.*
 import java.math.RoundingMode
 import java.text.DecimalFormat
@@ -32,6 +36,8 @@ class FollowFragment : Fragment() {
     var newWeight: String? = ""
     val currentUser: FirebaseUser? = FirebaseSource().getAuth().currentUser
     var isWeightChanged: Boolean = false
+    var waterAmount: Int = 0
+    var longDate: Long = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -45,12 +51,31 @@ class FollowFragment : Fragment() {
         weight = user.weight.toDouble()
         weightText = weight.toString()
 
+        val c = Calendar.getInstance()
+        c.set(Calendar.HOUR, 0)
+        c.set(Calendar.MINUTE, 0)
+        c.set(Calendar.SECOND, 0)
+        c.set(Calendar.MILLISECOND, 0)
+        val d: Date = c.getTime()
+        val timestamp: Long = d.getTime()
+        longDate = timestamp
+
         view.tv_weight.text = weight.toString()
 
         view.btn_add_water.setOnClickListener() {
-            val mDialogView = LayoutInflater.from(activity).inflate(R.layout.dialog_select_water_amount, null)
+            val mDialogView = LayoutInflater.from(activity).inflate(R.layout.dialog_enter_int_value, null)
             val mBuilder = AlertDialog.Builder(activity).setView(mDialogView)
             val mAlertDialog = mBuilder.show()
+            mDialogView.tv_dialog_header_int.text = "Lütfen Hedef Su Miktarını Seçiniz"
+            mDialogView.np_dialog_int.maxValue = 20
+            mDialogView.np_dialog_int.minValue = 0
+            mDialogView.np_dialog_int.value = waterAmount
+
+            mDialogView.btn_dialog_save.setOnClickListener {
+                mAlertDialog.dismiss()
+                waterAmount = mDialogView.np_dialog_int.value
+                FirestoreSource().saveLiquid(currentUser, longDate, waterAmount, 0, 0)
+            }
         }
 
         //Handle the Weight Which is Entered
@@ -157,13 +182,10 @@ class FollowFragment : Fragment() {
         super.onStop()
 
         if (isWeightChanged) {
-            val calendar = Calendar.getInstance()
-            val date: Date = calendar.getTime()
-            val timestamp: Long = date.getTime()
             var weightDouble = weightText.toDouble()
             UserInfo.user.get()?.weight = weightDouble
             if (currentUser != null) {
-                FirestoreSource().saveWeight(currentUser, weightDouble, timestamp)
+                FirestoreSource().saveWeight(currentUser, weightDouble, longDate)
                 UserInfo.user.get()?.let { FirestoreSource().saveUser(currentUser, it) }
             }
         }

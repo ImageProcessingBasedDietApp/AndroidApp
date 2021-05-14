@@ -265,6 +265,10 @@ class RegisterActivity : AppCompatActivity() {
             }).start()
 
             val c = Calendar.getInstance()
+            c.set(Calendar.HOUR, 0)
+            c.set(Calendar.MINUTE, 0)
+            c.set(Calendar.SECOND, 0)
+            c.set(Calendar.MILLISECOND, 0)
             val d: Date = c.getTime()
             val timestamp: Long = d.getTime()
 

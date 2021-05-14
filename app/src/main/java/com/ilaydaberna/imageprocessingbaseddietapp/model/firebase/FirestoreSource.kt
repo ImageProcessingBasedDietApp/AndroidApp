@@ -122,6 +122,46 @@ class FirestoreSource {
             }
         }
 
+        fun saveLiquid(currentUser: FirebaseUser?, date: Long, waterAmount: Int, teaAmount: Int, coffeeAmount: Int) {
+            if (currentUser != null) {
+                if (currentUser.uid != null) {
+                    val db = Firebase.firestore
+                    val docRef = db.collection("LiquidTracking")
+                            docRef.whereEqualTo("userID", currentUser.uid)
+                            .whereEqualTo("date", date)
+                            .get()
+                            .addOnSuccessListener { documents ->
+                                if (documents.size() == 0) {
+                                    val liquid = hashMapOf(
+                                            "dailyWater" to waterAmount,
+                                            "dailyCoffee" to coffeeAmount,
+                                            "dailyTea" to teaAmount,
+                                            "date" to date,
+                                            "userID" to currentUser.uid
+                                    )
+                                    docRef.add(liquid)
+                                            .addOnSuccessListener { documentReference ->
+                                                Log.i(TAG, "DocumentSnapshot written with ID: ${documentReference.id}")
+                                            }
+                                            .addOnFailureListener { e ->
+                                                Log.i(TAG, "Error adding document", e)
+                                            }
+                                } else {
+                                    for (document in documents) {
+                                        Log.i(TAG, document.data["dailyWater"].toString())
+                                        val totalWater = document.data["dailyWater"]
+
+                                        //docRef.document(document.id).set(liquid)
+                                    }
+                                }
+                            }
+                            .addOnFailureListener { exception ->
+                                Log.i(TAG, "Error getting documents: ", exception)
+                            }
+                }
+            }
+        }
+
         fun getFoods() : ArrayList<Food> {
             val foods: ArrayList<Food>? = null
             val db = Firebase.firestore
