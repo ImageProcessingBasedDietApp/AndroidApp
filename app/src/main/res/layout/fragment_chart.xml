@@ -22,7 +22,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Profilim"
+            android:text="Takip Grafiklerim"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -69,10 +69,6 @@
 
                 </com.github.mikephil.charting.charts.LineChart>
 
-                <SeekBar
-                    android:id="@+id/weightSeekBar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
             </LinearLayout>
 
             <LinearLayout

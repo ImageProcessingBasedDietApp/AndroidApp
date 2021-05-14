@@ -11,44 +11,43 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import java.text.SimpleDateFormat
 
 class FirestoreSource {
-        fun setUser(currentUser: FirebaseUser){
-            if (currentUser != null) {
-                if (currentUser.uid != null) {
-                    val db = Firebase.firestore
-                    val docRef = db.collection("Users").document(currentUser.uid)
-                    val task: Task<DocumentSnapshot> = docRef.get()
-                    val document: DocumentSnapshot = Tasks.await(task)
+    fun setUser(currentUser: FirebaseUser){
+        if (currentUser != null) {
+            if (currentUser.uid != null) {
+                val db = Firebase.firestore
+                val docRef = db.collection("Users").document(currentUser.uid)
+                val task: Task<DocumentSnapshot> = docRef.get()
+                val document: DocumentSnapshot = Tasks.await(task)
 
-                    if (document != null) {
+                if (document != null) {
+                    val UID = document.data?.get("uid") as String
+                    val email = document.data?.get("email") as String
+                    val name = document.data?.get("name") as String
+                    val photoUrl = document.data?.get("photoUrl") as String
+                    val gender = document.data?.get("gender") as String
+                    val birthdate = (document.data?.get("birthdate") as Number).toLong()
+                    val height = (document.data?.get("height") as Number).toInt()
+                    val weight = (document.data?.get("weight") as Number).toDouble()
+                    val goalWeight = (document.data?.get("goalWeight") as Number).toFloat()
+                    val goalWater = (document.data?.get("goalWater") as Number).toInt()
+                    val goalCoffee = (document.data?.get("goalCoffee") as Number).toInt()
+                    val goalTea = (document.data?.get("goalTea") as Number).toInt()
+                    val goalStep = (document.data?.get("goalStep") as Number).toInt()
+                    val isNotification = document.data?.get("notification") as Boolean
 
-                        val UID = document.data?.get("uid") as String
-                        val email = document.data?.get("email") as String
-                        val name = document.data?.get("name") as String
-                        val photoUrl = document.data?.get("photoUrl") as String
-                        val gender = document.data?.get("gender") as String
-                        val birthdate = (document.data?.get("birthdate") as Number).toLong()
-                        val height = (document.data?.get("height") as Number).toInt()
-                        val weight = (document.data?.get("weight") as Number).toDouble()
-                        val goalWeight = (document.data?.get("goalWeight") as Number).toFloat()
-                        val goalWater = (document.data?.get("goalWater") as Number).toInt()
-                        val goalCoffee = (document.data?.get("goalCoffee") as Number).toInt()
-                        val goalTea = (document.data?.get("goalTea") as Number).toInt()
-                        val goalStep = (document.data?.get("goalStep") as Number).toInt()
-                        val isNotification = document.data?.get("notification") as Boolean
+                    UserInfo.user.set(User(UID, email, name, photoUrl, gender,
+                        birthdate, height, weight, goalWeight, goalWater, goalCoffee,
+                        goalTea, goalStep, isNotification))
 
-                        UserInfo.user.set(User(UID, email, name, photoUrl, gender,
-                            birthdate, height, weight, goalWeight, goalWater, goalCoffee,
-                            goalTea, goalStep, isNotification))
-
-                    } else {
-                        Log.i("TAG", "No such document")
-                    }
-
+                } else {
+                    Log.i("TAG", "No such document")
                 }
             }
         }
+    }
 
     fun uploadPhotoToStorageUri(image: Uri?) {
         val user = UserInfo.user.get()
@@ -83,44 +82,44 @@ class FirestoreSource {
         }
     }
 
-        fun initUser(currentUser: FirebaseUser) {
-            if (currentUser != null) {
-                if (currentUser.uid != null) {
-                    val db = Firebase.firestore
-                    val docRef = db.collection("Users").document(currentUser.uid)
-                }
+    fun initUser(currentUser: FirebaseUser) {
+        if (currentUser != null) {
+            if (currentUser.uid != null) {
+                val db = Firebase.firestore
+                val docRef = db.collection("Users").document(currentUser.uid)
             }
         }
+    }
 
-        fun saveUser(currentUser: FirebaseUser, userModel: User) {
-            if (currentUser != null) {
-                if (currentUser.uid != null) {
-                    val db = Firebase.firestore
-                    val docRef = db.collection("Users").document(currentUser.uid)
-                    docRef.set(userModel)
-                }
+    fun saveUser(currentUser: FirebaseUser, userModel: User) {
+        if (currentUser != null) {
+            if (currentUser.uid != null) {
+                val db = Firebase.firestore
+                val docRef = db.collection("Users").document(currentUser.uid)
+                docRef.set(userModel)
             }
         }
+    }
 
-        fun saveWeight(currentUser: FirebaseUser, weight: Double, date: Long) {
-            var weight = hashMapOf(
-                    "date" to date,
-                    "userID" to currentUser.uid,
-                    "weightMeasure" to weight
-            )
-            if (currentUser != null) {
-                if (currentUser.uid != null) {
-                    val db = Firebase.firestore
-                    val docRef = db.collection("WeightTracking").add(weight)
-                            .addOnSuccessListener { documentReference ->
-                                Log.d(TAG, "DocumentSnapshot written with ID: ${documentReference.id}")
-                            }
-                            .addOnFailureListener { e ->
-                                Log.w(TAG, "Error adding document", e)
-                            }
-                }
+    fun saveWeight(currentUser: FirebaseUser, weight: Double, date: Long) {
+        var weight = hashMapOf(
+            "date" to date,
+            "userID" to currentUser.uid,
+            "weightMeasure" to weight
+        )
+        if (currentUser != null) {
+            if (currentUser.uid != null) {
+                val db = Firebase.firestore
+                val docRef = db.collection("WeightTracking").add(weight)
+                    .addOnSuccessListener { documentReference ->
+                        Log.d(TAG, "DocumentSnapshot written with ID: ${documentReference.id}")
+                    }
+                    .addOnFailureListener { e ->
+                        Log.w(TAG, "Error adding document", e)
+                    }
             }
         }
+    }
 
         fun saveLiquid(currentUser: FirebaseUser?, date: Long, waterAmount: Int, teaAmount: Int, coffeeAmount: Int) {
             if (currentUser != null) {
@@ -162,18 +161,40 @@ class FirestoreSource {
             }
         }
 
-        fun getFoods() : ArrayList<Food> {
-            val foods: ArrayList<Food>? = null
-            val db = Firebase.firestore
-            val docRef = db.collection("Foods")
-            return foods!!
-        }
+    fun getFoods() : ArrayList<Food> {
+        val foods: ArrayList<Food>? = null
+        val db = Firebase.firestore
+        val docRef = db.collection("Foods")
+        return foods!!
+    }
 
-        fun initLiquidTracking(currentUser: FirebaseUser) {
-            val date = Timestamp.now().toDate()
-            val db = Firebase.firestore
-            Log.i("date" , date.toString()) //??
-            val docRef = db.collection("LiquidTracking").document(currentUser.uid + "-" + date.toString())
-        }
+    fun initLiquidTracking(currentUser: FirebaseUser) {
+        val date = Timestamp.now().toDate()
+        val db = Firebase.firestore
+        Log.i("date" , date.toString()) //??
+        val docRef = db.collection("LiquidTracking").document(currentUser.uid + "-" + date.toString())
+    }
+
+    fun getWeightTrackingValues(currentUser: FirebaseUser, callback : GetUserWeightTrackigCallBack){
+        val userWeights =  arrayListOf<WeightTrackValue>()
+        val db = Firebase.firestore
+        db.collection("WeightTracking")
+                .whereEqualTo("userID", currentUser.uid)
+                .get()
+                .addOnSuccessListener { documents ->
+                    for (document in documents) {
+                        //Converted birthday from long to Date format.
+                        val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy")
+                        val dateString = simpleDateFormat.format(document.get("date"))
+                        userWeights.add(WeightTrackValue(String.format("%s", dateString), document.get("weightMeasure").toString().toFloat()))
+                        Log.d(TAG, "${document.id} => ${document.data}")
+                    }
+                    callback.onCallback(userWeights)
+                }
+                .addOnFailureListener { exception ->
+                    Log.w(TAG, "Error getting documents: ", exception)
+
+                }
+    }
 
 }
