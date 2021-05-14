@@ -8,6 +8,7 @@ import com.google.android.gms.tasks.Tasks
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
@@ -126,7 +127,8 @@ class FirestoreSource {
                 if (currentUser.uid != null) {
                     val db = Firebase.firestore
                     val docRef = db.collection("LiquidTracking")
-                            docRef.whereEqualTo("userID", currentUser.uid)
+
+                            val query = docRef.whereEqualTo("userID", currentUser.uid)
                             .whereEqualTo("date", date)
                             .get()
                             .addOnSuccessListener { documents ->
@@ -147,10 +149,15 @@ class FirestoreSource {
                                             }
                                 } else {
                                     for (document in documents) {
-                                        Log.i(TAG, document.data["dailyWater"].toString())
-                                        val totalWater = document.data["dailyWater"]
-
-                                        //docRef.document(document.id).set(liquid)
+                                        val totalWater = document.data["dailyWater"].toString().toInt() + waterAmount
+                                        val liquid = hashMapOf(
+                                                "dailyWater" to totalWater,
+                                                "dailyCoffee" to coffeeAmount,
+                                                "dailyTea" to teaAmount,
+                                                "date" to date,
+                                                "userID" to currentUser.uid
+                                        )
+                                        docRef.document(document.id).set(liquid)
                                     }
                                 }
                             }
@@ -161,12 +168,37 @@ class FirestoreSource {
             }
         }
 
-    fun getFoods() : ArrayList<Food> {
-        val foods: ArrayList<Food>? = null
-        val db = Firebase.firestore
-        val docRef = db.collection("Foods")
-        return foods!!
-    }
+
+
+        fun checkWater(currentUser: FirebaseUser?, date: Long) {
+            val liquid = LiquidInfo.liquid.get()
+            if (currentUser != null) {
+                if (currentUser.uid != null) {
+                    val db = Firebase.firestore
+                    val docRef = db.collection("LiquidTracking")
+                    val query = docRef.whereEqualTo("userID", currentUser.uid)
+                                .whereEqualTo("date", date)
+                    val task: Task<QuerySnapshot> = query.get()
+                    val documents: QuerySnapshot = Tasks.await(task)
+                        for (document in documents) {
+                            val dailyWater = document.data["dailyWater"].toString().toInt()
+                            val dailyCoffee = document.data["dailyCoffee"].toString().toInt()
+                            val dailyTea = document.data["dailyTea"].toString().toInt()
+                            val date = document.data["date"].toString().toLong()
+                            val userId = document.data["userID"].toString()
+                            LiquidInfo.liquid.set(Liquid(dailyWater, dailyTea, dailyCoffee, date, userId))
+                        }
+
+                    }
+                }
+        }
+
+        fun getFoods() : ArrayList<Food> {
+            val foods: ArrayList<Food>? = null
+            val db = Firebase.firestore
+            val docRef = db.collection("Foods")
+            return foods!!
+        }
 
     fun initLiquidTracking(currentUser: FirebaseUser) {
         val date = Timestamp.now().toDate()

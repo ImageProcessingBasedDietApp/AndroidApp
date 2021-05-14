@@ -2,6 +2,7 @@ package com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.follow
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -11,20 +12,20 @@ import android.view.ViewGroup
 import android.widget.GridLayout
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.google.firebase.auth.FirebaseUser
 import com.ilaydaberna.imageprocessingbaseddietapp.R
-import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.FirebaseSource
-import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.FirestoreSource
-import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.User
-import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.UserInfo
+import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.*
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.dialog_enter_int_value.view.*
 import kotlinx.android.synthetic.main.dialog_enter_weight.view.*
 import kotlinx.android.synthetic.main.dialog_enter_weight.view.btn_dialog_save
 import kotlinx.android.synthetic.main.fragment_follow.view.*
+import kotlinx.coroutines.launch
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import java.util.*
+import kotlin.math.log
 
 class FollowFragment : Fragment() {
 
@@ -38,29 +39,11 @@ class FollowFragment : Fragment() {
     var isWeightChanged: Boolean = false
     var waterAmount: Int = 0
     var longDate: Long = 0
+    var savedWater: Int? = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_follow, container, false)
-
-        Thread(Runnable {
-            user = UserInfo.user.get()!!
-        }).start()
-
-        Thread.sleep(1000)
-        weight = user.weight.toDouble()
-        weightText = weight.toString()
-
-        val c = Calendar.getInstance()
-        c.set(Calendar.HOUR, 0)
-        c.set(Calendar.MINUTE, 0)
-        c.set(Calendar.SECOND, 0)
-        c.set(Calendar.MILLISECOND, 0)
-        val d: Date = c.getTime()
-        val timestamp: Long = d.getTime()
-        longDate = timestamp
-
-        view.tv_weight.text = weight.toString()
 
         view.btn_add_water.setOnClickListener() {
             val mDialogView = LayoutInflater.from(activity).inflate(R.layout.dialog_enter_int_value, null)
@@ -178,6 +161,32 @@ class FollowFragment : Fragment() {
         return view
     }
 
+    override fun onResume() {
+        super.onResume()
+        val c = Calendar.getInstance()
+        c.set(Calendar.HOUR, 0)
+        c.set(Calendar.MINUTE, 0)
+        c.set(Calendar.SECOND, 0)
+        c.set(Calendar.MILLISECOND, 0)
+        val d: Date = c.getTime()
+        val timestamp: Long = d.getTime()
+        longDate = timestamp
+
+        Thread(Runnable {
+            user = UserInfo.user.get()!!
+            FirestoreSource().checkWater(currentUser, longDate)
+        }).start()
+
+        Thread.sleep(1000)
+        weight = user.weight.toDouble()
+        weightText = weight.toString()
+
+        var liquid = LiquidInfo.liquid.get()
+        savedWater = liquid?.dailyWater
+
+        Log.i("Saved Water", savedWater.toString())
+        view?.tv_weight?.text = weight.toString()
+    }
     override fun onStop() {
         super.onStop()
 
@@ -189,8 +198,6 @@ class FollowFragment : Fragment() {
                 UserInfo.user.get()?.let { FirestoreSource().saveUser(currentUser, it) }
             }
         }
-
-
     }
 
     fun clickedTeaMinus() {
