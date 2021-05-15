@@ -15,7 +15,7 @@ import com.google.firebase.storage.FirebaseStorage
 import java.text.SimpleDateFormat
 
 class FirestoreSource {
-    fun setUser(currentUser: FirebaseUser){
+    fun setUser(currentUser: FirebaseUser) {
         if (currentUser != null) {
             if (currentUser.uid != null) {
                 val db = Firebase.firestore
@@ -40,8 +40,8 @@ class FirestoreSource {
                     val isNotification = document.data?.get("notification") as Boolean
 
                     UserInfo.user.set(User(UID, email, name, photoUrl, gender,
-                        birthdate, height, weight, goalWeight, goalWater, goalCoffee,
-                        goalTea, goalStep, isNotification))
+                            birthdate, height, weight, goalWeight, goalWater, goalCoffee,
+                            goalTea, goalStep, isNotification))
 
                 } else {
                     Log.i("TAG", "No such document")
@@ -59,7 +59,7 @@ class FirestoreSource {
             if (image != null) {
                 imageRef.putFile(image).addOnSuccessListener {
                     Log.i("Storage", "Basarili!")
-                }.addOnFailureListener{
+                }.addOnFailureListener {
                     Log.i("Storage", "Basarisiz!")
                 }
             }
@@ -76,7 +76,7 @@ class FirestoreSource {
                 var uploadTask = imageRef.putBytes(image)
                 uploadTask.addOnSuccessListener {
                     Log.i("Storage", "Basarili!")
-                }.addOnFailureListener{
+                }.addOnFailureListener {
                     Log.i("Storage", "Basarisiz!")
                 }
             }
@@ -104,9 +104,9 @@ class FirestoreSource {
 
     fun saveWeight(currentUser: FirebaseUser, weight: Double, date: Long) {
         var weight = hashMapOf(
-            "date" to date,
-            "userID" to currentUser.uid,
-            "weightMeasure" to weight
+                "date" to date,
+                "userID" to currentUser.uid,
+                "weightMeasure" to weight
         )
         if (currentUser != null) {
             if (currentUser.uid != null) {
@@ -137,93 +137,99 @@ class FirestoreSource {
         }
     }
 
-        fun saveLiquid(currentUser: FirebaseUser?, date: Long, waterAmount: Int, teaAmount: Int, coffeeAmount: Int) {
-            if (currentUser != null) {
-                if (currentUser.uid != null) {
-                    val db = Firebase.firestore
-                    val docRef = db.collection("LiquidTracking")
+    fun saveLiquid(currentUser: FirebaseUser?, date: Long, waterAmount: Int, teaAmount: Int, coffeeAmount: Int) {
+        if (currentUser != null) {
+            if (currentUser.uid != null) {
+                val db = Firebase.firestore
+                val docRef = db.collection("LiquidTracking")
 
-                            val query = docRef.whereEqualTo("userID", currentUser.uid)
-                            .whereEqualTo("date", date)
-                            .get()
-                            .addOnSuccessListener { documents ->
-                                if (documents.size() == 0) {
+                val query = docRef.whereEqualTo("userID", currentUser.uid)
+                        .whereEqualTo("date", date)
+                        .get()
+                        .addOnSuccessListener { documents ->
+                            if (documents.size() == 0) {
+                                val liquid = hashMapOf(
+                                        "dailyWater" to waterAmount,
+                                        "dailyCoffee" to coffeeAmount,
+                                        "dailyTea" to teaAmount,
+                                        "date" to date,
+                                        "userID" to currentUser.uid
+                                )
+                                docRef.add(liquid)
+                                        .addOnSuccessListener { documentReference ->
+                                            Log.i(TAG, "DocumentSnapshot written with ID: ${documentReference.id}")
+                                        }
+                                        .addOnFailureListener { e ->
+                                            Log.i(TAG, "Error adding document", e)
+                                        }
+                            } else {
+                                for (document in documents) {
+                                    val totalWater = document.data["dailyWater"].toString().toInt() + waterAmount
                                     val liquid = hashMapOf(
-                                            "dailyWater" to waterAmount,
+                                            "dailyWater" to totalWater,
                                             "dailyCoffee" to coffeeAmount,
                                             "dailyTea" to teaAmount,
                                             "date" to date,
                                             "userID" to currentUser.uid
                                     )
-                                    docRef.add(liquid)
-                                            .addOnSuccessListener { documentReference ->
-                                                Log.i(TAG, "DocumentSnapshot written with ID: ${documentReference.id}")
-                                            }
-                                            .addOnFailureListener { e ->
-                                                Log.i(TAG, "Error adding document", e)
-                                            }
-                                } else {
-                                    for (document in documents) {
-                                        val totalWater = document.data["dailyWater"].toString().toInt() + waterAmount
-                                        val liquid = hashMapOf(
-                                                "dailyWater" to totalWater,
-                                                "dailyCoffee" to coffeeAmount,
-                                                "dailyTea" to teaAmount,
-                                                "date" to date,
-                                                "userID" to currentUser.uid
-                                        )
-                                        docRef.document(document.id).set(liquid)
-                                    }
+                                    docRef.document(document.id).set(liquid)
                                 }
                             }
-                            .addOnFailureListener { exception ->
-                                Log.i(TAG, "Error getting documents: ", exception)
-                            }
+                        }
+                        .addOnFailureListener { exception ->
+                            Log.i(TAG, "Error getting documents: ", exception)
+                        }
+            }
+        }
+    }
+
+
+    fun checkWater(currentUser: FirebaseUser?, date: Long) {
+        val liquid = LiquidInfo.liquid.get()
+        if (currentUser != null) {
+            if (currentUser.uid != null) {
+                val db = Firebase.firestore
+                val docRef = db.collection("LiquidTracking")
+                val query = docRef.whereEqualTo("userID", currentUser.uid)
+                        .whereEqualTo("date", date)
+                val task: Task<QuerySnapshot> = query.get()
+                val documents: QuerySnapshot = Tasks.await(task)
+                for (document in documents) {
+                    val dailyWater = document.data["dailyWater"].toString().toInt()
+                    val dailyCoffee = document.data["dailyCoffee"].toString().toInt()
+                    val dailyTea = document.data["dailyTea"].toString().toInt()
+                    val date = document.data["date"].toString().toLong()
+                    val userId = document.data["userID"].toString()
+                    LiquidInfo.liquid.set(Liquid(dailyWater, dailyTea, dailyCoffee, date, userId))
+                }
+
+            }
+        }
+    }
+
+    fun updateUser(currentUser: FirebaseUser?) {
+        if (currentUser != null) {
+            if (currentUser.uid != null) {
+                val db = Firebase.firestore
+                val docRef = db.collection("Users").document(currentUser.uid)
+
+                if (docRef != null) {
+                    UserInfo.user.get()?.let { docRef.set(it) }
                 }
             }
         }
-
-
-
-        fun checkWater(currentUser: FirebaseUser?, date: Long) {
-            val liquid = LiquidInfo.liquid.get()
-            if (currentUser != null) {
-                if (currentUser.uid != null) {
-                    val db = Firebase.firestore
-                    val docRef = db.collection("LiquidTracking")
-                    val query = docRef.whereEqualTo("userID", currentUser.uid)
-                                .whereEqualTo("date", date)
-                    val task: Task<QuerySnapshot> = query.get()
-                    val documents: QuerySnapshot = Tasks.await(task)
-                        for (document in documents) {
-                            val dailyWater = document.data["dailyWater"].toString().toInt()
-                            val dailyCoffee = document.data["dailyCoffee"].toString().toInt()
-                            val dailyTea = document.data["dailyTea"].toString().toInt()
-                            val date = document.data["date"].toString().toLong()
-                            val userId = document.data["userID"].toString()
-                            LiquidInfo.liquid.set(Liquid(dailyWater, dailyTea, dailyCoffee, date, userId))
-                        }
-
-                    }
-                }
-        }
-
-        fun getFoods() : ArrayList<Food> {
-            val foods: ArrayList<Food>? = null
-            val db = Firebase.firestore
-            val docRef = db.collection("Foods")
-            return foods!!
-        }
-
-    fun initLiquidTracking(currentUser: FirebaseUser) {
-        val date = Timestamp.now().toDate()
-        val db = Firebase.firestore
-        Log.i("date" , date.toString()) //??
-        val docRef = db.collection("LiquidTracking").document(currentUser.uid + "-" + date.toString())
     }
 
-    fun getWeightTrackingValues(currentUser: FirebaseUser, callback : GetUserWeightTrackigCallBack){
-        val userWeights =  arrayListOf<WeightTrackValue>()
+    fun getFoods(): ArrayList<Food> {
+        val foods: ArrayList<Food>? = null
+        val db = Firebase.firestore
+        val docRef = db.collection("Foods")
+        return foods!!
+    }
+
+
+    fun getWeightTrackingValues(currentUser: FirebaseUser, callback: GetUserWeightTrackigCallBack) {
+        val userWeights = arrayListOf<WeightTrackValue>()
         val db = Firebase.firestore
         db.collection("WeightTracking")
                 .whereEqualTo("userID", currentUser.uid)
