@@ -2,7 +2,6 @@ package com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.follow
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -51,8 +50,9 @@ class FollowFragment : Fragment() {
             mDialogView.np_dialog_int.value = waterAmount
             mDialogView.btn_dialog_save.setOnClickListener {
                 mAlertDialog.dismiss()
-                this.initWaterChart()
                 waterAmount = mDialogView.np_dialog_int.value
+                this.savedWater = savedWater?.plus(waterAmount)
+                this.initWaterChart()
                 FirestoreSource().saveLiquid(currentUser, longDate, waterAmount, cup_of_tea, cup_of_coffee)
             }
         }
@@ -140,24 +140,26 @@ class FollowFragment : Fragment() {
         val timestamp: Long = d.getTime()
         longDate = timestamp
 
+        var liquid: Liquid? = null
         Thread(Runnable {
             user = UserInfo.user.get()!!
             FirestoreSource().checkWater(currentUser, longDate)
+            liquid = LiquidInfo.liquid.get()!!
         }).start()
 
-        Thread.sleep(1000)
+        Thread.sleep(2000)
         weight = user.weight.toDouble()
         weightText = weight.toString()
-
-        var liquid = LiquidInfo.liquid.get()
         savedWater = liquid?.dailyWater
 
         Log.i("Saved Water", savedWater.toString())
         view?.tv_weight?.text = weight.toString()
         this.initWaterChart()
 
-        cup_of_coffee = liquid?.dailyCoffee!!
-        cup_of_tea = liquid?.dailyTea!!
+            cup_of_coffee = liquid?.dailyCoffee!!
+            cup_of_tea = liquid?.dailyTea!!
+
+
 
         for(i in 1..12) {
             val iv = ImageView(context)
@@ -326,7 +328,12 @@ class FollowFragment : Fragment() {
     }
 
     fun initWaterChart() {
-        val percentage = (100 * savedWater!!) / user.goalWater
+        var percentage = 0
+        if (savedWater != null) {
+            percentage = (100 * savedWater!!) / user.goalWater
+        } else {
+            savedWater = 0
+        }
 
         if (percentage < 100) {
             view?.waterLevelView?.progressValue = percentage
