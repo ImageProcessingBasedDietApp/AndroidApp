@@ -111,13 +111,28 @@ class FirestoreSource {
         if (currentUser != null) {
             if (currentUser.uid != null) {
                 val db = Firebase.firestore
-                val docRef = db.collection("WeightTracking").add(weight)
-                    .addOnSuccessListener { documentReference ->
-                        Log.d(TAG, "DocumentSnapshot written with ID: ${documentReference.id}")
-                    }
-                    .addOnFailureListener { e ->
-                        Log.w(TAG, "Error adding document", e)
-                    }
+                val docRef = db.collection("WeightTracking")
+                val query = docRef.whereEqualTo("userID", currentUser.uid)
+                        .whereEqualTo("date", date)
+                        .get()
+                        .addOnSuccessListener { documents ->
+                            if (documents.size() == 0) {
+                                docRef.add(weight)
+                                        .addOnSuccessListener { documentReference ->
+                                            Log.i(TAG, "DocumentSnapshot written with ID: ${documentReference.id}")
+                                        }
+                                        .addOnFailureListener { e ->
+                                            Log.i(TAG, "Error adding document", e)
+                                        }
+                            } else {
+                                for (document in documents) {
+                                    docRef.document(document.id).set(weight)
+                                }
+                            }
+                        }
+                        .addOnFailureListener { exception ->
+                            Log.i(TAG, "Error getting documents: ", exception)
+                        }
             }
         }
     }
