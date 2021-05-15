@@ -2,7 +2,7 @@ package com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.follow
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.content.ContentValues.TAG
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -12,27 +12,23 @@ import android.view.ViewGroup
 import android.widget.GridLayout
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import com.google.firebase.auth.FirebaseUser
 import com.ilaydaberna.imageprocessingbaseddietapp.R
 import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.*
-import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.dialog_enter_int_value.view.*
 import kotlinx.android.synthetic.main.dialog_enter_weight.view.*
 import kotlinx.android.synthetic.main.dialog_enter_weight.view.btn_dialog_save
 import kotlinx.android.synthetic.main.fragment_follow.view.*
-import kotlinx.coroutines.launch
-import java.math.RoundingMode
 import java.text.DecimalFormat
 import java.util.*
-import kotlin.math.log
+
 
 class FollowFragment : Fragment() {
 
     lateinit var user: User
-    var cup_of_tea: Int = 0 //Firebaseden setlenecek.
-    var cup_of_coffee: Int = 0 //Firebaseden setlenecek.
-    var weight: Double = 0.0 //Kullanıcıdan alınan kiloya setlenecek.
+    var cup_of_tea: Int = 0
+    var cup_of_coffee: Int = 0
+    var weight: Double = 0.0
     lateinit var weightText: String
     var newWeight: String? = ""
     val currentUser: FirebaseUser? = FirebaseSource().getAuth().currentUser
@@ -49,15 +45,15 @@ class FollowFragment : Fragment() {
             val mDialogView = LayoutInflater.from(activity).inflate(R.layout.dialog_enter_int_value, null)
             val mBuilder = AlertDialog.Builder(activity).setView(mDialogView)
             val mAlertDialog = mBuilder.show()
-            mDialogView.tv_dialog_header_int.text = "Lütfen Hedef Su Miktarını Seçiniz"
+            mDialogView.tv_dialog_header_int.text = "Lütfen Eklemek İsteediğiniz Su Miktarını Seçiniz"
             mDialogView.np_dialog_int.maxValue = 20
             mDialogView.np_dialog_int.minValue = 0
             mDialogView.np_dialog_int.value = waterAmount
-
             mDialogView.btn_dialog_save.setOnClickListener {
                 mAlertDialog.dismiss()
+                this.initWaterChart()
                 waterAmount = mDialogView.np_dialog_int.value
-                FirestoreSource().saveLiquid(currentUser, longDate, waterAmount, 0, 0)
+                FirestoreSource().saveLiquid(currentUser, longDate, waterAmount, cup_of_tea, cup_of_coffee)
             }
         }
 
@@ -130,34 +126,6 @@ class FollowFragment : Fragment() {
             showInformationDialog()
         }
 
-        for(i in 1..12) {
-            val iv = ImageView(context)
-            //iv.layoutParams = LinearLayout.LayoutParams(150, 150)
-            iv.setImageResource(R.drawable.tea_empty)
-
-            val param =  GridLayout.LayoutParams()
-            param.height = 150
-            param.width = 150
-            param.setGravity(Gravity.CENTER)
-
-            view?.gl_tea?.addView(iv, param)
-
-        }
-
-        for(i in 1..12) {
-            val iv = ImageView(context)
-            //iv.layoutParams = LinearLayout.LayoutParams(150, 150)
-            iv.setImageResource(R.drawable.icon_turkish_coffee_empty)
-
-            val param =  GridLayout.LayoutParams()
-            param.height = 150
-            param.width = 150
-            param.setGravity(Gravity.CENTER)
-
-            view?.gl_coffee?.addView(iv, param)
-
-        }
-
         return view
     }
 
@@ -186,7 +154,47 @@ class FollowFragment : Fragment() {
 
         Log.i("Saved Water", savedWater.toString())
         view?.tv_weight?.text = weight.toString()
+        this.initWaterChart()
+
+        cup_of_coffee = liquid?.dailyCoffee!!
+        cup_of_tea = liquid?.dailyTea!!
+
+        for(i in 1..12) {
+            val iv = ImageView(context)
+            if (i <= cup_of_tea) {
+                iv.setImageResource(R.drawable.tea_full)
+            } else {
+                iv.setImageResource(R.drawable.tea_empty)
+            }
+
+            val param =  GridLayout.LayoutParams()
+            param.height = 150
+            param.width = 150
+            param.setGravity(Gravity.CENTER)
+            view?.gl_tea?.addView(iv, param)
+        }
+
+        for(i in 1..12) {
+            val iv = ImageView(context)
+            if (i <= cup_of_coffee) {
+                iv.setImageResource(R.drawable.icon_turkish_coffee)
+            } else {
+                iv.setImageResource(R.drawable.icon_turkish_coffee_empty)
+            }
+
+            val param =  GridLayout.LayoutParams()
+            param.height = 150
+            param.width = 150
+            param.setGravity(Gravity.CENTER)
+
+            view?.gl_coffee?.addView(iv, param)
+
+        }
+
+        view?.amount_of_tea?.text = "Günlük içilen çay miktarı = " + cup_of_tea.toString() + " Bardak"
+        view?.amount_of_coffee?.text = "Günlük içilen kahve miktarı = " + cup_of_coffee.toString() + " Bardak"
     }
+
     override fun onStop() {
         super.onStop()
 
@@ -198,6 +206,8 @@ class FollowFragment : Fragment() {
                 UserInfo.user.get()?.let { FirestoreSource().saveUser(currentUser, it) }
             }
         }
+
+        FirestoreSource().saveLiquid(currentUser, longDate, 0, cup_of_tea, cup_of_coffee)
     }
 
     fun clickedTeaMinus() {
@@ -221,7 +231,7 @@ class FollowFragment : Fragment() {
 
         val v = view?.gl_coffee?.getChildAt(cup_of_coffee) as ImageView
         v.setImageResource(R.drawable.icon_turkish_coffee_empty)
-        view?.amount_of_coffee?.text = "Günlük içilen çay miktarı = " + cup_of_coffee.toString() + " Bardak"
+        view?.amount_of_coffee?.text = "Günlük içilen kahve miktarı = " + cup_of_coffee.toString() + " Bardak"
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -246,7 +256,7 @@ class FollowFragment : Fragment() {
 
         val v = view?.gl_coffee?.getChildAt(cup_of_coffee-1) as ImageView
         v.setImageResource(R.drawable.icon_turkish_coffee)
-        view?.amount_of_coffee?.text = "Günlük içilen çay miktarı = " + cup_of_coffee.toString() + " Bardak"
+        view?.amount_of_coffee?.text = "Günlük içilen kahve miktarı = " + cup_of_coffee.toString() + " Bardak"
     }
 
     fun clickedWeightText() {
@@ -312,6 +322,25 @@ class FollowFragment : Fragment() {
     fun showInformationDialog() {
         val mDialogView = LayoutInflater.from(activity).inflate(R.layout.dialog_beverage_information, null)
         val mBuilder = AlertDialog.Builder(activity).setView(mDialogView)
-        val mAlertDialog = mBuilder.show()
+        mBuilder.show()
+    }
+
+    fun initWaterChart() {
+        val percentage = (100 * savedWater!!) / user.goalWater
+
+        if (percentage < 100) {
+            view?.waterLevelView?.progressValue = percentage
+            view?.waterLevelView?.centerTitle = "%" + percentage
+        } else {
+            view?.waterLevelView?.centerTitle = "%100"
+            view?.waterLevelView?.progressValue = 100
+        }
+        view?.tv_water_target_amount?.text  = user.goalWater.toString() + " Bardak"
+        val remaining = user.goalWater - savedWater!!
+        if (remaining > 0) {
+            view?.tv_water_remaining_amount?.text = remaining.toString() + " Bardak"
+        } else {
+            view?.tv_water_remaining_amount?.text = "Tamamladınız"
+        }
     }
 }
