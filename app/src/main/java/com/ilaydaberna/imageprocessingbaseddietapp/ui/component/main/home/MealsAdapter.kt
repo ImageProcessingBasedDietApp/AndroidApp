@@ -47,6 +47,16 @@ class MealsAdapter(private val context: Context, private val dataSet: ArrayList<
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         viewHolder.tvMealType.text = dataSet.get(position).type.description
+        when(dataSet.get(position).type.id){
+            1 -> viewHolder.ivMealType.setImageDrawable(context.getDrawable(R.drawable.breakfast))
+            2 -> viewHolder.ivMealType.setImageDrawable(context.getDrawable(R.drawable.launch))
+            3 -> viewHolder.ivMealType.setImageDrawable(context.getDrawable(R.drawable.dinner))
+            4 -> viewHolder.ivMealType.setImageDrawable(context.getDrawable(R.drawable.snacks))
+            else -> {
+                viewHolder.ivMealType.setImageDrawable(context.getDrawable(R.drawable.icon_man))
+            }
+        }
+
 
         if(dataSet.get(position).contents != null){
             var i:Int = 1
