@@ -14,9 +14,7 @@
         android:id="@+id/layout_meal"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="5dp">
+        android:layout_margin="5dp">
 
         <ImageView
             android:id="@+id/iv_meal_type"
@@ -70,23 +68,31 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+
+
     <LinearLayout
         android:id="@+id/layout_add_meal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="10dp"
-        android:background="@drawable/circular_corner_green"
+        android:background="@drawable/sharp_border_white"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginHorizontal="5dp"
+            android:background="@color/grey" />
 
         <SearchView
             android:id="@+id/sw_search"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="10dp"
             android:clickable="false">
 
         </SearchView>
+
 
         <ScrollView
             android:layout_width="match_parent"
@@ -107,11 +113,12 @@
                     android:nestedScrollingEnabled="false"
                     tools:listitem="@layout/item_food_list" />
             </LinearLayout>
+
         </ScrollView>
 
         <Button
             android:id="@+id/button_save_meal"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="5dp"
