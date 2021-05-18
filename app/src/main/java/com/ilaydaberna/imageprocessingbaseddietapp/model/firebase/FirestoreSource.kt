@@ -250,4 +250,30 @@ class FirestoreSource {
                 }
     }
 
+
+    fun getLiquidTrackingValues(currentUser: FirebaseUser, callback: GetUserLiquidTrackingCallback){
+        val userLiquidValues = arrayListOf<LiquidTrackValue>()
+        val db = Firebase.firestore
+        db.collection("LiquidTracking")
+                .whereEqualTo("userID", currentUser.uid)
+                .get()
+                .addOnSuccessListener { documents ->
+                    for(document in documents){
+                        val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy")
+                        val dateString = simpleDateFormat.format(document.get("date"))
+                        userLiquidValues.add(LiquidTrackValue(
+                                document.get("dailyWater").toString().toInt(),
+                                document.get("dailyTea").toString().toInt(),
+                                document.get("dailyCoffee").toString().toInt(),
+                                String.format("%s", dateString)))
+                        Log.d(TAG, "${document.id} => ${document.data}")
+                    }
+                    callback.onCallback(userLiquidValues)
+                }
+                .addOnFailureListener { exception ->
+                    Log.w(TAG, "Error getting documents: ", exception)
+
+                }
+    }
+
 }
