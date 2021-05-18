@@ -52,9 +52,6 @@ class MealsAdapter(private val context: Context, private val dataSet: ArrayList<
             2 -> viewHolder.ivMealType.setImageDrawable(context.getDrawable(R.drawable.launch))
             3 -> viewHolder.ivMealType.setImageDrawable(context.getDrawable(R.drawable.dinner))
             4 -> viewHolder.ivMealType.setImageDrawable(context.getDrawable(R.drawable.snacks))
-            else -> {
-                viewHolder.ivMealType.setImageDrawable(context.getDrawable(R.drawable.icon_man))
-            }
         }
 
 
