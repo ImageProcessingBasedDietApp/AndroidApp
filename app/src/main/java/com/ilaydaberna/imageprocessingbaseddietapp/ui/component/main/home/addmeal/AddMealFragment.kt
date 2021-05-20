@@ -23,7 +23,7 @@ class AddMealFragment : Fragment() {
     private var totalCalorie = 0.0
     private var totalProtein = 0.0
     private var totalFat = 0.0
-    private var totalCarbohydrate = 0.0
+    private var totalCarbohydrate: Double = 0.0
 
     override fun onCreateView(
             inflater: LayoutInflater,

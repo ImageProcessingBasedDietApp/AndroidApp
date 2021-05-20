@@ -144,7 +144,11 @@ class FollowFragment : Fragment() {
         Thread(Runnable {
             user = UserInfo.user.get()!!
             FirestoreSource().checkWater(currentUser, longDate)
+
             liquid = LiquidInfo.liquid.get()!!
+
+
+
         }).start()
 
         Thread.sleep(2000)
@@ -160,7 +164,7 @@ class FollowFragment : Fragment() {
             cup_of_tea = liquid?.dailyTea!!
 
 
-
+        view?.gl_tea?.removeAllViews()
         for(i in 1..12) {
             val iv = ImageView(context)
             if (i <= cup_of_tea) {
@@ -176,6 +180,7 @@ class FollowFragment : Fragment() {
             view?.gl_tea?.addView(iv, param)
         }
 
+        view?.gl_coffee?.removeAllViews()
         for(i in 1..12) {
             val iv = ImageView(context)
             if (i <= cup_of_coffee) {

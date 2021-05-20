@@ -183,6 +183,29 @@ class FirestoreSource {
         }
     }
 
+    fun initLiquid(currentUser: FirebaseUser?, date: Long) {
+        if (currentUser != null) {
+            if (currentUser.uid != null) {
+                val db = Firebase.firestore
+                val docRef = db.collection("LiquidTracking")
+                val liquid = hashMapOf(
+                        "dailyWater" to 0,
+                        "dailyCoffee" to 0,
+                        "dailyTea" to 0,
+                        "date" to date,
+                        "userID" to currentUser.uid
+                )
+                docRef.add(liquid)
+                        .addOnSuccessListener { documentReference ->
+                            Log.i(TAG, "DocumentSnapshot written with ID: ${documentReference.id}")
+                        }
+                        .addOnFailureListener { e ->
+                            Log.i(TAG, "Error adding document", e)
+                        }
+            }
+        }
+    }
+
 
     fun checkWater(currentUser: FirebaseUser?, date: Long) {
         val liquid = LiquidInfo.liquid.get()
@@ -201,6 +224,10 @@ class FirestoreSource {
                     val date = document.data["date"].toString().toLong()
                     val userId = document.data["userID"].toString()
                     LiquidInfo.liquid.set(Liquid(dailyWater, dailyTea, dailyCoffee, date, userId))
+                }
+                if(documents.isEmpty()){
+                    this.initLiquid(currentUser, date)
+                    LiquidInfo.liquid.set(currentUser?.uid?.let { Liquid(0,0,0, date, it) })
                 }
 
             }
