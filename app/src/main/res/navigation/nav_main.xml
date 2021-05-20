@@ -10,8 +10,9 @@
         android:label="Ana Sayfa"
         tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/action_homeFragment_to_addMealFragment"
-            app:destination="@id/addMealFragment" />
+            android:id="@+id/actionToAddMealFragment"
+            app:destination="@id/addMealFragment">
+        </action>
     </fragment>
     <fragment
         android:id="@+id/followFragment"
@@ -30,7 +31,7 @@
         tools:layout="@layout/fragment_profile" />
     <fragment
         android:id="@+id/addMealFragment"
-        android:name="com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.home.AddMealFragment"
-        android:label="fragment_add_meal"
+        android:name="com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.home.addmeal.AddMealFragment"
+        android:label="Öğün Ekle"
         tools:layout="@layout/fragment_add_meal" />
 </navigation>

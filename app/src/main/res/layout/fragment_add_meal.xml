@@ -1,15 +1,174 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.component.main.home.AddMealFragment">
+    tools:context=".ui.component.main.home.addmeal.AddMealFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        android:id="@+id/topbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="53dp"
+        android:background="@color/white"
+        android:elevation="4dp"
+        android:gravity="center_vertical"
+        android:padding="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_arrow_back_green" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:textColor="@color/green_500"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            tools:text="Kahvaltım" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/topbar">
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Toplam Kalori"
+            android:gravity="center"
+            android:textColor="@color/green_700"
+            android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/tv_user_meal_total_calorie"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0 cal"
+            android:gravity="center"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Toplam Protein"
+            android:gravity="center"
+            android:textColor="@color/green_700"
+            android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/tv_user_meal_total_protein"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0 gr"
+            android:gravity="center"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Toplam Yağ"
+            android:gravity="center"
+            android:textColor="@color/green_700"
+            android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/tv_user_meal_total_fat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0 gr"
+            android:gravity="center"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Toplam Karbonhidrat"
+            android:gravity="center"
+            android:textColor="@color/green_700"
+            android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/tv_user_meal_total_carbohydrate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0 gr"
+            android:gravity="center"
+            android:textStyle="bold"/>
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_user_food"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="5dp"
+        android:background="@drawable/circular_border_grey"
+        android:elevation="4dp"
+        tools:listitem="@layout/item_user_food_list"
+        app:layout_constraintBottom_toTopOf="@id/guideline"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/topbar">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.45" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.75" />
+
+    <SearchView
+        android:id="@+id/sw_search"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="ADD MEAL FRAGMENT"
-        android:textColor="@color/black"
-        android:textSize="40dp" />
-</FrameLayout>
+        android:layout_height="wrap_content"
+        android:background="@drawable/sharp_border_white"
+        android:elevation="4dp"
+        android:layout_margin="5dp"
+        app:layout_constraintTop_toTopOf="@id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_food_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="5dp"
+        android:background="@drawable/circular_border_grey"
+        android:elevation="4dp"
+        android:focusable="auto"
+        android:nestedScrollingEnabled="false"
+        android:orientation="vertical"
+        tools:listitem="@layout/item_food_list"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sw_search">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

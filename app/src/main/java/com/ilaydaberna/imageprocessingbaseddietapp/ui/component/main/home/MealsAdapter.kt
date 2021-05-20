@@ -1,22 +1,83 @@
 package com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.home
 
-import android.content.Context
 import android.view.LayoutInflater
-import android.view.MotionEvent
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.OnItemTouchListener
 import com.ilaydaberna.imageprocessingbaseddietapp.R
-import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.Food
+import com.ilaydaberna.imageprocessingbaseddietapp.databinding.ItemMealBinding
 import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.Meal
 
 
+class MealsAdapter : ListAdapter<Meal, MealsAdapter.MealHolder>(DIFF_CALLBACK){
+    var itemClickListener: (Meal) -> Unit = {}
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MealHolder {
+        val binding = ItemMealBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+        )
+
+        return MealHolder(binding, itemClickListener)
+    }
+
+    override fun onBindViewHolder(holder: MealHolder, position: Int) =
+            holder.bind(getItem(position))
+
+    class MealHolder(
+            private val binding: ItemMealBinding,
+            private val itemClickListener: (Meal) -> Unit)
+        : RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(meal: Meal) {
+
+            binding.tvMealType.text = meal.type.description
+
+            when(meal.type.id){
+                1 -> binding.ivMealType.setImageResource(R.drawable.breakfast)
+                2 -> binding.ivMealType.setImageResource(R.drawable.launch)
+                3 -> binding.ivMealType.setImageResource(R.drawable.dinner)
+                4 -> binding.ivMealType.setImageResource(R.drawable.snacks)
+            }
+
+            if(meal.contents != null){
+                var i:Int = 1
+                var strContent: String = meal.contents!![0].name
+                while(i < meal.contents!!.size){
+                    strContent = strContent + ", "+ meal.contents!![i].name
+                    i = i + 1
+                }
+                binding.tvMealContent.text = strContent
+                binding.tvMealTotalCalorie.text = meal.totalCalorie.toString() + " kcal"
+            }
+            else{
+                binding.tvMealTotalCalorie.text = "0 cal"
+                binding.tvMealContent.text = " - "
+            }
+
+            binding.root.setOnClickListener {
+                itemClickListener(meal)
+            }
+        }
+    }
+
+    companion object {
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Meal>() {
+            override fun areItemsTheSame(oldItem: Meal, newItem: Meal) =
+                    oldItem.date == newItem.date && oldItem.type == newItem.type
+
+            override fun areContentsTheSame(oldItem: Meal, newItem: Meal) =
+                    oldItem == newItem
+        }
+    }
+}
+
+
+
+
+/*
 class MealsAdapter(private val context: Context, private val dataSet: ArrayList<Meal>, private val foodList: List<Food>) : RecyclerView.Adapter<MealsAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -25,7 +86,7 @@ class MealsAdapter(private val context: Context, private val dataSet: ArrayList<
         val tvMealContent: TextView
         val tvMealTotalCalorie: TextView
         val layoutMeal: ConstraintLayout
-        val layoutAddMeal: LinearLayout
+        //val layoutAddMeal: LinearLayout
         val rvFoodList: RecyclerView
 
         init {
@@ -34,7 +95,7 @@ class MealsAdapter(private val context: Context, private val dataSet: ArrayList<
             tvMealContent = view.findViewById(R.id.tv_meal_content)
             tvMealTotalCalorie = view.findViewById(R.id.tv_meal_total_calorie)
             layoutMeal = view.findViewById(R.id.layout_meal)
-            layoutAddMeal = view.findViewById(R.id.layout_add_meal)
+            //layoutAddMeal = view.findViewById(R.id.layout_add_meal)
             rvFoodList = view.findViewById(R.id.rv_food_list)
         }
     }
@@ -71,12 +132,12 @@ class MealsAdapter(private val context: Context, private val dataSet: ArrayList<
         }
 
         viewHolder.layoutMeal.setOnClickListener {
-            if(viewHolder.layoutAddMeal.visibility == View.VISIBLE){
+           /* if(viewHolder.layoutAddMeal.visibility == View.VISIBLE){
                 viewHolder.layoutAddMeal.visibility = View.GONE
             }
             else{
                 viewHolder.layoutAddMeal.visibility = View.VISIBLE
-            }
+            }*/
         }
 
 
@@ -105,6 +166,6 @@ class MealsAdapter(private val context: Context, private val dataSet: ArrayList<
 
     override fun getItemCount() = dataSet.size
 
-}
+}*/
 
 

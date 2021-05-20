@@ -219,12 +219,32 @@ class FirestoreSource {
             }
         }
     }
-
-    fun getFoods(): ArrayList<Food> {
-        val foods: ArrayList<Food>? = null
+    
+    fun getFoods(callback: GetFoodsCallback){
+        val foods = arrayListOf<Food>()
         val db = Firebase.firestore
-        val docRef = db.collection("Foods")
-        return foods!!
+        db.collection("Foods").get()
+                .addOnSuccessListener { documents ->
+                    for(document in documents){
+                        foods.add(
+                                Food(
+                                        document.get("ID").toString().toInt(),
+                                        document.get("fileName").toString(),
+                                        document.get("name").toString(),
+                                        document.getString("calorie")!!.toDouble(),
+                                        document.getString("carbohydrate")!!.toDouble(),
+                                        document.getString("fat")!!.toDouble(),
+                                        document.getString("protein")!!.toDouble(),
+                                        ServingType(1, "Kase") //TODO:
+                            )
+                        )
+                        Log.d(TAG, "${document.id} => ${document.data}")
+                    }
+                    callback.onCallback(foods)
+                }
+                .addOnFailureListener { exception ->
+                    Log.w(TAG, "Error getting documents: ", exception)
+                }
     }
 
 
@@ -239,7 +259,12 @@ class FirestoreSource {
                         //Converted birthday from long to Date format.
                         val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy")
                         val dateString = simpleDateFormat.format(document.get("date"))
-                        userWeights.add(WeightTrackValue(String.format("%s", dateString), document.get("weightMeasure").toString().toFloat()))
+                        userWeights.add(
+                                WeightTrackValue(
+                                        String.format("%s", dateString),
+                                        document.get("weightMeasure").toString().toFloat()
+                                )
+                        )
                         Log.d(TAG, "${document.id} => ${document.data}")
                     }
                     callback.onCallback(userWeights)

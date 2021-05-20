@@ -5,25 +5,25 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.futured.donut.DonutSection
 import com.google.firebase.Timestamp
 import com.ilaydaberna.imageprocessingbaseddietapp.R
-import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.Food
-import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.Meal
-import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.MealType
-import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.ServingType
+import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
 
 class HomeFragment : Fragment() {
+
+    private val adapter = MealsAdapter()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
         view.rv_meal_list.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        view.rv_meal_list.adapter = context?.let { MealsAdapter(it, getMeals(), getFoods()) }
 
+        //Donut Graph
         val sectionCalorie = DonutSection(
             name = "Alınan Kalori",
             color = resources.getColor(R.color.green_500),
@@ -71,6 +71,13 @@ class HomeFragment : Fragment() {
             }
         }
 
+        //Meals
+        view.rv_meal_list.adapter = adapter
+        getMeals()
+
+        adapter.itemClickListener = {
+            findNavController().navigate(R.id.actionToAddMealFragment)
+        }
 
 
 
@@ -94,29 +101,12 @@ class HomeFragment : Fragment() {
         return view
     }
 
-    fun getFoods(): ArrayList<Food>{
-        val foods = arrayListOf<Food>()
-        foods.add(0,Food(1, "Tarhana", 105, 10,15,35, ServingType(1, "Kase")))
-        foods.add(1,Food(2, "Kuru Fasulye", 155, 10,15,35, ServingType(1, "Tabak")))
-        foods.add(2, Food(3, "Pilav", 200, 10,15,35, ServingType(1, "Tabak")))
-        foods.add(2, Food(3, "Menemen", 180, 10,15,35, ServingType(1, "Tabak")))
-        foods.add(2, Food(3, "Kabak Yemeği", 80, 10,15,35, ServingType(1, "Tabak")))
-
-        return foods
-    }
-
-
-    fun getMeals(): ArrayList<Meal>{
-        val meals = arrayListOf<Meal>()
-        val foods = arrayListOf<Food>()
-
-        foods.add(0,Food(1, "Tarhana", 105, 10,15,35, ServingType(1, "Kase")))
-        foods.add(1,Food(2, "Kuru Fasulye", 155, 10,15,35, ServingType(1, "Tabak")))
-        foods.add(2, Food(3, "Pilav", 200, 10,15,35, ServingType(1, "Tabak")))
-        meals.add(Meal("123456", null, Timestamp.now(), 0, 0, 0, 0, MealType(1, "Kahvaltı")))
-        meals.add(Meal("123456", foods, Timestamp.now(), 460, 30, 45, 105, MealType(2, "Öğle Yemeği")))
-        meals.add(Meal("123456", foods, Timestamp.now(), 460, 30, 45, 105, MealType(3, "Akşam Yemeği")))
-
-        return meals
+    private fun getMeals(){
+        val meals = listOf<Meal>(
+                Meal(null, Timestamp.now(), 0, 0, 0, 0, MealType(1, "Kahvaltı")),
+                Meal(null, Timestamp.now(), 0, 0, 0, 0, MealType(2, "Öğle Yemeği")),
+                Meal(null, Timestamp.now(), 0, 0, 0, 0, MealType(3, "Akşam Yemeği")),
+                Meal(null, Timestamp.now(), 0, 0, 0, 0, MealType(4, "Atıştırmalık")))
+        adapter.submitList(meals)
     }
 }
