@@ -15,6 +15,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.ilaydaberna.imageprocessingbaseddietapp.R
 import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.FirebaseSource
@@ -23,10 +24,10 @@ import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.User
 import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.UserInfo
 import com.ilaydaberna.imageprocessingbaseddietapp.util.alertDialog
 import com.ilaydaberna.imageprocessingbaseddietapp.util.isEmpty
+import com.ilaydaberna.imageprocessingbaseddietapp.util.startLoginActivity
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.fragment_profile.view.*
 import java.io.ByteArrayOutputStream
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -36,12 +37,14 @@ class ProfileFragment : Fragment() {
     var isEditGoals = false
     var isEditUserInfo = false
     var isEditSettings = false
-    val currentUser: FirebaseUser? = FirebaseSource().getAuth().currentUser
+    val firebaseAuth: FirebaseAuth? = FirebaseSource().getAuth()
+    val currentUser: FirebaseUser? = firebaseAuth?.currentUser
+
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         Thread(Runnable {
             currentUser?.let { FirestoreSource().setUser(it) }
@@ -50,8 +53,26 @@ class ProfileFragment : Fragment() {
         Thread.sleep(1000)
         val user = UserInfo.user.get()
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
+
+        user?.let { initUser(view, it) }
+
         view.iv_profile_photo.setOnClickListener {
             selectImage()
+        }
+
+        view.btn_log_out.setOnClickListener {
+            val builder = AlertDialog.Builder(activity)
+                .setTitle("Çıkış Yap")
+                .setIcon(resources.getDrawable(R.drawable.icon_logout))
+                .setMessage("Çıkış yapmak istediğinizden emin misiniz?")
+                .setPositiveButton("Çıkış Yap") { dialog, which ->
+                    firebaseAuth?.signOut()
+                    context?.startLoginActivity()
+                }
+                .setNegativeButton("Vazgeç"){ dialog, which ->
+
+                }
+            builder.create().show()
         }
 
         view.tv_edit_goals.setOnClickListener {
@@ -92,16 +113,21 @@ class ProfileFragment : Fragment() {
 
 
         view.et_birthdate.setOnClickListener {
-            //TODO: DATEPİCKER EKLE
             val c = Calendar.getInstance()
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
             val datePickerDialog =
                     context?.let { it1 ->
-                        DatePickerDialog(it1, DatePickerDialog.OnDateSetListener { mView, mYear, mMonth, mDay ->
-                            view.et_birthdate.setText("" + mDay + "/" + (mMonth + 1) + "/" + mYear)
-                        }, year, month, day)
+                        DatePickerDialog(
+                            it1,
+                            DatePickerDialog.OnDateSetListener { mView, mYear, mMonth, mDay ->
+                                view.et_birthdate.setText("" + mDay + "/" + (mMonth + 1) + "/" + mYear)
+                            },
+                            year,
+                            month,
+                            day
+                        )
                     }
             datePickerDialog?.show()
 
@@ -121,7 +147,9 @@ class ProfileFragment : Fragment() {
                 //TODO: firebase kaydet
                 val tmpUser = UserInfo.user.get()
                 if (tmpUser != null) {
-                    UserInfo.user.set(User(tmpUser.UID,
+                    UserInfo.user.set(
+                        User(
+                            tmpUser.UID,
                             tmpUser.email,
                             tmpUser.name,
                             tmpUser.photoUrl,
@@ -134,7 +162,9 @@ class ProfileFragment : Fragment() {
                             view.et_goal_coffee.text.toString().toInt(),
                             view.et_goal_tea.text.toString().toInt(),
                             view.et_goal_step.text.toString().toInt(),
-                            tmpUser.isNotification))
+                            tmpUser.isNotification
+                        )
+                    )
                 }
                 FirestoreSource().updateUser(currentUser)
                 view.tv_goal_weight.setText(view.et_goal_weight.text.toString() + " kg")
@@ -146,7 +176,14 @@ class ProfileFragment : Fragment() {
                 view.layout_goals.visibility = View.VISIBLE
                 isEditGoals = false
             } else {
-                context?.let { it1 -> this.alertDialog(it1, "Hedeflerimi Kaydet", "Lütfen tüm boşlukları doldurun", "Tamam", null, null) }
+                context?.let { it1 -> this.alertDialog(
+                    it1,
+                    "Hedeflerimi Kaydet",
+                    "Lütfen tüm boşlukları doldurun",
+                    "Tamam",
+                    null,
+                    null
+                ) }
             }
 
         }
@@ -156,7 +193,9 @@ class ProfileFragment : Fragment() {
                 //TODO: firebase kaydet
                 val tmpUser = UserInfo.user.get()
                 if (tmpUser != null) {
-                    UserInfo.user.set(User(tmpUser.UID,
+                    UserInfo.user.set(
+                        User(
+                            tmpUser.UID,
                             tmpUser.email,
                             tmpUser.name,
                             tmpUser.photoUrl,
@@ -169,7 +208,9 @@ class ProfileFragment : Fragment() {
                             tmpUser.goalCoffee,
                             tmpUser.goalTea,
                             tmpUser.goalStep,
-                            tmpUser.isNotification))
+                            tmpUser.isNotification
+                        )
+                    )
                 }
                 Thread.sleep(1000)
                 FirestoreSource().updateUser(currentUser)
@@ -181,7 +222,14 @@ class ProfileFragment : Fragment() {
                 view.layout_edit_user_info.visibility = View.GONE
                 isEditUserInfo = false
             } else {
-                context?.let { it1 -> this.alertDialog(it1, "Bilgilerimi Kaydet", "Lütfen tüm boşlukları doldurun", "Tamam", null, null) }
+                context?.let { it1 -> this.alertDialog(
+                    it1,
+                    "Bilgilerimi Kaydet",
+                    "Lütfen tüm boşlukları doldurun",
+                    "Tamam",
+                    null,
+                    null
+                ) }
             }
 
         }
@@ -192,7 +240,9 @@ class ProfileFragment : Fragment() {
 
             if (sw_notification.isChecked) {
                 if (tmpUser != null) {
-                    UserInfo.user.set(User(tmpUser.UID,
+                    UserInfo.user.set(
+                        User(
+                            tmpUser.UID,
                             tmpUser.email,
                             tmpUser.name,
                             tmpUser.photoUrl,
@@ -205,12 +255,16 @@ class ProfileFragment : Fragment() {
                             tmpUser.goalCoffee,
                             tmpUser.goalTea,
                             tmpUser.goalStep,
-                            true))
+                            true
+                        )
+                    )
                 }
                 view.tv_notification.setText("Bildirimler açık")
             } else {
                 if (tmpUser != null) {
-                    UserInfo.user.set(User(tmpUser.UID,
+                    UserInfo.user.set(
+                        User(
+                            tmpUser.UID,
                             tmpUser.email,
                             tmpUser.name,
                             tmpUser.photoUrl,
@@ -223,7 +277,9 @@ class ProfileFragment : Fragment() {
                             tmpUser.goalCoffee,
                             tmpUser.goalTea,
                             tmpUser.goalStep,
-                            false))
+                            false
+                        )
+                    )
                 }
                 view.tv_notification.setText("Bildirimler kapalı")
             }
@@ -233,16 +289,6 @@ class ProfileFragment : Fragment() {
             isEditSettings = false
         }
 
-        view.tv_name_surname.text = user?.name
-        view.tv_email.text = user?.email
-        view.tv_goal_weight.text = user?.goalWeight.toString() + " kg"
-        view.tv_goal_coffee.text = user?.goalCoffee.toString() + " fincan"
-        view.tv_goal_step.text = user?.goalStep.toString() + " adım"
-        view.tv_goal_tea.text = user?.goalTea.toString() + " bardak"
-        view.tv_goal_water.text = user?.goalWater.toString() + " bardak"
-        view.tv_gender.text = user?.gender
-        view.tv_weight.text = user?.weight.toString() + " kg"
-        view.tv_height.text = user?.height.toString() + " cm"
 
         //Converted birthday from long to Date format.
         val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy")
@@ -259,8 +305,18 @@ class ProfileFragment : Fragment() {
         return view
     }
 
-    fun initViews(view: View) {
-        //TODO: Firebase'den gelenler ile doldur
+    fun initUser(view: View, user: User){
+        view.tv_name_surname.text = user?.name
+        view.tv_email.text = user?.email
+        view.tv_goal_weight.text = user?.goalWeight.toString() + " kg"
+        view.tv_goal_coffee.text = user?.goalCoffee.toString() + " fincan"
+        view.tv_goal_step.text = user?.goalStep.toString() + " adım"
+        view.tv_goal_tea.text = user?.goalTea.toString() + " bardak"
+        view.tv_goal_water.text = user?.goalWater.toString() + " bardak"
+        view.tv_gender.text = user?.gender
+        view.tv_weight.text = user?.weight.toString() + " kg"
+        view.tv_height.text = user?.height.toString() + " cm"
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -295,7 +351,7 @@ class ProfileFragment : Fragment() {
                 startActivityForResult(takePicture, 0)
             } else if (options[item] == "Galeriden Seç") {
                 val pickPhoto =
-                        Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                    Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
                 startActivityForResult(pickPhoto, 1)
             }
         })

@@ -63,6 +63,14 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
+                <ImageButton
+                    android:id="@+id/btn_log_out"
+                    android:layout_width="40dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="right"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:src="@drawable/icon_logout"/>
+
                 <androidx.cardview.widget.CardView
                     android:layout_width="100dp"
                     android:layout_height="100dp"
