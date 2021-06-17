@@ -8,5 +8,5 @@ data class Food(
         val carbohydrate: Double = 0.0,
         val fat: Double = 0.0,
         val protein: Double = 0.0,
-        val servingType: ServingType = ServingType(0, "")
+        val servingType: String
 )

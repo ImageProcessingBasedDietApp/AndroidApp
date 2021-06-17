@@ -255,15 +255,15 @@ class FirestoreSource {
                     for(document in documents){
                         foods.add(
                                 Food(
-                                        document.get("ID").toString().toInt(),
-                                        document.get("fileName").toString(),
-                                        document.get("name").toString(),
-                                        document.getString("calorie")!!.toDouble(),
-                                        document.getString("carbohydrate")!!.toDouble(),
-                                        document.getString("fat")!!.toDouble(),
-                                        document.getString("protein")!!.toDouble(),
-                                        ServingType(1, "Kase") //TODO:
-                            )
+                                    document.get("ID").toString().toInt(),
+                                    document.get("fileName").toString(),
+                                    document.get("name").toString(),
+                                    document.getString("calorie")!!.toDouble(),
+                                    document.getString("carbohydrate")!!.toDouble(),
+                                    document.getString("fat")!!.toDouble(),
+                                    document.getString("protein")!!.toDouble(),
+                                    document.getString("servingType")!!.toString()
+                                )
                         )
                         Log.d(TAG, "${document.id} => ${document.data}")
                     }
