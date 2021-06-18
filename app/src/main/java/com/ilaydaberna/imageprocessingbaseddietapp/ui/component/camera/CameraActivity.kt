@@ -98,9 +98,8 @@ class CameraActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_camera)
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
-        }
+        //ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
+
 
         // Request camera permissions
         if (allPermissionsGranted()) {
@@ -131,7 +130,7 @@ class CameraActivity : AppCompatActivity() {
         )
 
         btnBackToCamera.setOnClickListener {
-            Log.i("camera", "cameraaa")
+            Log.i("camera", "a")
             if (allPermissionsGranted()) {
                 layoutCamera.visibility = View.VISIBLE
                 //viewFinder.visibility = View.VISIBLE
