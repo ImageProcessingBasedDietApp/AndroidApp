@@ -40,6 +40,7 @@ class FollowFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_follow, container, false)
 
+
         view.btn_add_water.setOnClickListener() {
             val mDialogView = LayoutInflater.from(activity).inflate(R.layout.dialog_enter_int_value, null)
             val mBuilder = AlertDialog.Builder(activity).setView(mDialogView)
