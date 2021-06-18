@@ -24,14 +24,12 @@ import java.util.*
 
 class FollowFragment : Fragment() {
 
-    lateinit var user: User
     var cup_of_tea: Int = 0
     var cup_of_coffee: Int = 0
     var weight: Double = 0.0
     lateinit var weightText: String
     var newWeight: String? = ""
     val currentUser: FirebaseUser? = FirebaseSource().getAuth().currentUser
-    var isWeightChanged: Boolean = false
     var waterAmount: Int = 0
     var longDate: Long = 0
     var savedWater: Int? = 0
@@ -39,7 +37,7 @@ class FollowFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_follow, container, false)
-
+        checkWater()
 
         view.btn_add_water.setOnClickListener() {
             val mDialogView = LayoutInflater.from(activity).inflate(R.layout.dialog_enter_int_value, null)
@@ -60,11 +58,19 @@ class FollowFragment : Fragment() {
 
         //Handle the Weight Which is Entered
         view.iv_minus.setOnClickListener() {
-            clickedToDecreaseWeight()
+            val newWeight = if ((UserInfo.user.get()?.weight ?: 0.0) >= 0.1) {
+                ((UserInfo.user.get()?.weight ?: 0.0).toBigDecimal() - (0.1).toBigDecimal()).toDouble()
+            } else {
+                0.0
+            }
+
+            updateWeight(newWeight)
         }
 
         view.iv_plus.setOnClickListener() {
-            clickedToIncreaseWeight()
+            val newWeight = ((UserInfo.user.get()?.weight ?: 0.0).toBigDecimal() + (0.1).toBigDecimal()).toDouble()
+
+            updateWeight(newWeight)
         }
 
         view.tv_weight.setOnClickListener() {
@@ -132,37 +138,52 @@ class FollowFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        val c = Calendar.getInstance()
-        c.set(Calendar.HOUR, 0)
-        c.set(Calendar.MINUTE, 0)
-        c.set(Calendar.SECOND, 0)
-        c.set(Calendar.MILLISECOND, 0)
-        val d: Date = c.getTime()
-        val timestamp: Long = d.getTime()
-        longDate = timestamp
+//        val c = Calendar.getInstance()
+//        c.set(Calendar.HOUR, 0)
+//        c.set(Calendar.MINUTE, 0)
+//        c.set(Calendar.SECOND, 0)
+//        c.set(Calendar.MILLISECOND, 0)
+//        val d: Date = c.getTime()
+//        val timestamp: Long = d.getTime()
+//        longDate = timestamp
 
-        var liquid: Liquid? = null
-        Thread(Runnable {
-            user = UserInfo.user.get()!!
-            FirestoreSource().checkWater(currentUser, longDate)
+//        var liquid: Liquid? = null
+//        Thread(Runnable {
+//
+//            FirestoreSource().checkWater(currentUser, longDate)
+//
+//            liquid = LiquidInfo.liquid.get()!!
+//        }).start()
+//
+//        Thread.sleep(2000) // :D
 
-            liquid = LiquidInfo.liquid.get()!!
+    }
 
+    override fun onStop() {
+        super.onStop()
 
+        /*if (isWeightChanged) {
+            var weightDouble = weightText.toDouble()
+            UserInfo.user.get()?.weight = weightDouble
+            if (currentUser != null) {
+                FirestoreSource().saveWeight(currentUser, weightDouble, longDate)
+                UserInfo.user.get()?.let { FirestoreSource().saveUser(currentUser, it) }
+            }
+        }
 
-        }).start()
+        FirestoreSource().saveLiquid(currentUser, longDate, 0, cup_of_tea, cup_of_coffee)*/
+    }
 
-        Thread.sleep(2000)
-        weight = user.weight.toDouble()
-        weightText = weight.toString()
-        savedWater = liquid?.dailyWater
+    private fun refreshUI() {
+        weightText = (UserInfo.user.get()?.weight ?: 0.0).toString()
+        savedWater = LiquidInfo.liquid.get()?.dailyWater
 
         Log.i("Saved Water", savedWater.toString())
-        view?.tv_weight?.text = weight.toString()
+        view?.tv_weight?.text = weightText
         this.initWaterChart()
 
-            cup_of_coffee = liquid?.dailyCoffee!!
-            cup_of_tea = liquid?.dailyTea!!
+        cup_of_coffee = LiquidInfo.liquid.get()?.dailyCoffee!!
+        cup_of_tea = LiquidInfo.liquid.get()?.dailyTea!!
 
 
         view?.gl_tea?.removeAllViews()
@@ -203,78 +224,154 @@ class FollowFragment : Fragment() {
         view?.amount_of_coffee?.text = "Günlük içilen kahve miktarı = " + cup_of_coffee.toString() + " Bardak"
     }
 
-    override fun onStop() {
-        super.onStop()
+    fun initWaterChart() {
+        var percentage = 0
+        if (savedWater != null) {
+            percentage = (100 * savedWater!!) / (UserInfo.user.get()?.goalWater ?: 0)
+        } else {
+            savedWater = 0
+        }
 
-        if (isWeightChanged) {
-            var weightDouble = weightText.toDouble()
-            UserInfo.user.get()?.weight = weightDouble
-            if (currentUser != null) {
-                FirestoreSource().saveWeight(currentUser, weightDouble, longDate)
-                UserInfo.user.get()?.let { FirestoreSource().saveUser(currentUser, it) }
+        if (percentage < 100) {
+            view?.waterLevelView?.progressValue = percentage
+            view?.waterLevelView?.centerTitle = "%$percentage"
+        } else {
+            view?.waterLevelView?.centerTitle = "%100"
+            view?.waterLevelView?.progressValue = 100
+        }
+        view?.tv_water_target_amount?.text  = (UserInfo.user.get()?.goalWater ?: 0).toString() + " Bardak"
+        val remaining = (UserInfo.user.get()?.goalWater ?: 0) - savedWater!!
+        if (remaining > 0) {
+            view?.tv_water_remaining_amount?.text = remaining.toString() + " Bardak"
+        } else {
+            view?.tv_water_remaining_amount?.text = "Tamamladınız"
+        }
+    }
+
+    private fun checkWater() {
+        // TODO: add show loading
+        FirestoreSource.checkWaterNew(currentUser, getLongTimeStamp(),
+            successHandler = {
+                // TODO: add hide loading
+                refreshUI()
+            },
+            failHandler = {
+                // TODO: add hide loading
             }
-        }
-
-        FirestoreSource().saveLiquid(currentUser, longDate, 0, cup_of_tea, cup_of_coffee)
+        )
     }
 
-    fun clickedTeaMinus() {
-        if (cup_of_tea > 0) {
-            cup_of_tea -= 1
-        } else {
-            cup_of_tea = 0
-        }
-
-        val v = view?.gl_tea?.getChildAt(cup_of_tea) as ImageView
-        v.setImageResource(R.drawable.tea_empty)
-        view?.amount_of_tea?.text = "Günlük içilen çay miktarı = " + cup_of_tea.toString() + " Bardak"
+    private fun getLongTimeStamp() : Long {
+        val c = Calendar.getInstance()
+        c.set(Calendar.HOUR, 0)
+        c.set(Calendar.MINUTE, 0)
+        c.set(Calendar.SECOND, 0)
+        c.set(Calendar.MILLISECOND, 0)
+        val d: Date = c.time
+        return d.time
     }
 
-    fun clickedCoffeeMinus() {
-        if (cup_of_coffee > 0) {
-            cup_of_coffee -= 1
+    private fun clickedTeaMinus() {
+        var tempCupOfTea = cup_of_tea;
+        if (tempCupOfTea > 0) {
+            tempCupOfTea -= 1
         } else {
-            cup_of_coffee = 0
+            tempCupOfTea = 0
         }
 
-        val v = view?.gl_coffee?.getChildAt(cup_of_coffee) as ImageView
-        v.setImageResource(R.drawable.icon_turkish_coffee_empty)
-        view?.amount_of_coffee?.text = "Günlük içilen kahve miktarı = " + cup_of_coffee.toString() + " Bardak"
+        // TODO: add show loading
+        FirestoreSource.saveLiquidNew(currentUser, getLongTimeStamp(), waterAmount, tempCupOfTea, cup_of_coffee,
+            successHandler = {
+                // TODO: add hide loading
+                cup_of_tea = tempCupOfTea
+                val v = view?.gl_tea?.getChildAt(cup_of_tea) as ImageView
+                v.setImageResource(R.drawable.tea_empty)
+                view?.amount_of_tea?.text = "Günlük içilen çay miktarı = " + cup_of_tea.toString() + " Bardak"
+            },
+            failHandler = {
+                // TODO: add hide loading
+            }
+        )
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
-    fun clickedTeaPlus() {
-        if (cup_of_tea < 12) {
-            cup_of_tea += 1
+    private fun clickedTeaPlus() {
+        var tempCupOfTea = cup_of_tea;
+        if (tempCupOfTea < 12) {
+            tempCupOfTea += 1
         } else {
-            cup_of_tea = 12
+            tempCupOfTea = 12
         }
 
-        val v = view?.gl_tea?.getChildAt(cup_of_tea-1) as ImageView
-        v.setImageResource(R.drawable.tea_full)
-        view?.amount_of_tea?.text = "Günlük içilen çay miktarı = " + cup_of_tea.toString() + " Bardak"
+        // TODO: add show loading
+        FirestoreSource.saveLiquidNew(currentUser, getLongTimeStamp(), waterAmount, tempCupOfTea, cup_of_coffee,
+            successHandler = {
+                // TODO: add hide loading
+                cup_of_tea = tempCupOfTea
+                val v = view?.gl_tea?.getChildAt(cup_of_tea-1) as ImageView
+                v.setImageResource(R.drawable.tea_full)
+                view?.amount_of_tea?.text = "Günlük içilen çay miktarı = " + cup_of_tea.toString() + " Bardak"
+            },
+            failHandler = {
+                // TODO: add hide loading
+            }
+        )
     }
 
-    fun clickedCoffeePlus() {
-        if (cup_of_coffee < 12) {
-            cup_of_coffee += 1
+    private fun clickedCoffeeMinus() {
+        var tempCupOfCoffee = cup_of_coffee;
+        if (tempCupOfCoffee > 0) {
+            tempCupOfCoffee -= 1
         } else {
-            cup_of_coffee = 12
+            tempCupOfCoffee = 0
         }
 
-        val v = view?.gl_coffee?.getChildAt(cup_of_coffee-1) as ImageView
-        v.setImageResource(R.drawable.icon_turkish_coffee)
-        view?.amount_of_coffee?.text = "Günlük içilen kahve miktarı = " + cup_of_coffee.toString() + " Bardak"
+        // TODO: add show loading
+        FirestoreSource.saveLiquidNew(currentUser, getLongTimeStamp(), waterAmount, cup_of_tea, tempCupOfCoffee,
+            successHandler = {
+                // TODO: add hide loading
+                cup_of_coffee = tempCupOfCoffee
+                val v = view?.gl_coffee?.getChildAt(cup_of_coffee) as ImageView
+                v.setImageResource(R.drawable.icon_turkish_coffee_empty)
+                view?.amount_of_coffee?.text = "Günlük içilen kahve miktarı = " + cup_of_coffee.toString() + " Bardak"
+            },
+            failHandler = {
+                // TODO: add hide loading
+            }
+        )
     }
 
-    fun clickedWeightText() {
+    private fun clickedCoffeePlus() {
+        var tempCupOfCoffee = cup_of_coffee;
+        if (tempCupOfCoffee < 12) {
+            tempCupOfCoffee += 1
+        } else {
+            tempCupOfCoffee = 12
+        }
+
+        // TODO: add show loading
+        FirestoreSource.saveLiquidNew(currentUser, getLongTimeStamp(), waterAmount, cup_of_tea, tempCupOfCoffee,
+            successHandler = {
+                // TODO: add hide loading
+                cup_of_coffee = tempCupOfCoffee
+                val v = view?.gl_coffee?.getChildAt(cup_of_coffee-1) as ImageView
+                v.setImageResource(R.drawable.icon_turkish_coffee)
+                view?.amount_of_coffee?.text = "Günlük içilen kahve miktarı = " + cup_of_coffee.toString() + " Bardak"
+            },
+            failHandler = {
+                // TODO: add hide loading
+            }
+        )
+    }
+
+    private fun clickedWeightText() {
         val mDialogView = LayoutInflater.from(activity).inflate(R.layout.dialog_enter_weight, null)
         val mBuilder = AlertDialog.Builder(activity).setView(mDialogView)
         val mAlertDialog = mBuilder.show()
         mDialogView.np_dialog_weight_int.maxValue = 597
         mDialogView.np_dialog_weight_int.minValue = 0
-        mDialogView.np_dialog_weight_int.value = weight.toInt()
-        var decimal = weight - weight.toInt()
+        mDialogView.np_dialog_weight_int.value = (UserInfo.user.get()?.weight ?: 0.0).toInt()
+        var decimal = (UserInfo.user.get()?.weight ?: 0.0) - (UserInfo.user.get()?.weight ?: 0.0).toInt()
         decimal *= 10
 
         mDialogView.np_dialog_weight_decimal.maxValue = 9
@@ -285,75 +382,57 @@ class FollowFragment : Fragment() {
             mAlertDialog.dismiss()
             newWeight = mDialogView.np_dialog_weight_int.value.toString() + "." + mDialogView.np_dialog_weight_decimal.value.toString()
             view?.tv_weight?.text = newWeight
-            weight = newWeight.toString().toDouble()
-            weightText = newWeight.toString()
-            isWeightChanged = true
+            updateWeight(newWeight.toString().toDouble())
         }
-
     }
 
-    fun clickedToIncreaseWeight() {
-        weight += 0.1
-        var text: String = ""
-        text = if (weight in 0.0..9.9) {
-            DecimalFormat("0.0").format(weight)
-        } else if (weight in 9.99..99.9) {
-            DecimalFormat("00.0").format(weight)
-        } else {
-            DecimalFormat("000.0").format(weight)
+    private fun updateWeight(newWeight: Double) {
+        val oldWeight = (UserInfo.user.get()?.weight ?: 0.0)
+
+        UserInfo.user.get()?.weight = newWeight
+
+        UserInfo.user.get()?.let {
+            FirestoreSource.saveUserNew(currentUser, it,
+                successHandler = {
+                    var text: String = ""
+                    text = when {
+                        (UserInfo.user.get()?.weight ?: 0.0) in 0.0..9.9 -> {
+                            DecimalFormat("0.0").format((UserInfo.user.get()?.weight ?: 0.0))
+                        }
+                        (UserInfo.user.get()?.weight ?: 0.0) in 9.99..99.9 -> {
+                            DecimalFormat("00.0").format((UserInfo.user.get()?.weight ?: 0.0))
+                        }
+                        else -> {
+                            DecimalFormat("000.0").format((UserInfo.user.get()?.weight ?: 0.0))
+                        }
+                    }
+                    weightText = text
+                    view?.tv_weight?.text = text
+                    updateWeightTracking()
+                },
+                failHandler = {
+                    // TODO: add hide loading
+                    UserInfo.user.get()?.weight = oldWeight
+                }
+            )
         }
-        weightText = text
-        view?.tv_weight?.text = text
-        isWeightChanged = true
     }
 
-    fun clickedToDecreaseWeight() {
-        if (weight >= 0.1) {
-            weight -= 0.1
-        } else {
-            weight = 0.0
-        }
-
-        var text: String = ""
-        text = if (weight in 0.0..9.9) {
-            DecimalFormat("0.0").format(weight)
-        } else if (weight in 9.9..99.9) {
-            DecimalFormat("00.0").format(weight)
-        } else {
-            DecimalFormat("000.0").format(weight)
-        }
-        weightText = text
-        view?.tv_weight?.text = text
-        isWeightChanged = true
+    private fun updateWeightTracking() {
+        FirestoreSource.saveWeightNew(currentUser, (UserInfo.user.get()?.weight ?: 0.0), getLongTimeStamp(),
+            successHandler = {
+                // TODO: add hide loading
+            },
+            failHandler = {
+                // TODO: add hide loading
+            }
+        )
     }
 
-    fun showInformationDialog() {
+    private fun showInformationDialog() {
         val mDialogView = LayoutInflater.from(activity).inflate(R.layout.dialog_beverage_information, null)
         val mBuilder = AlertDialog.Builder(activity).setView(mDialogView)
         mBuilder.show()
     }
 
-    fun initWaterChart() {
-        var percentage = 0
-        if (savedWater != null) {
-            percentage = (100 * savedWater!!) / user.goalWater
-        } else {
-            savedWater = 0
-        }
-
-        if (percentage < 100) {
-            view?.waterLevelView?.progressValue = percentage
-            view?.waterLevelView?.centerTitle = "%" + percentage
-        } else {
-            view?.waterLevelView?.centerTitle = "%100"
-            view?.waterLevelView?.progressValue = 100
-        }
-        view?.tv_water_target_amount?.text  = user.goalWater.toString() + " Bardak"
-        val remaining = user.goalWater - savedWater!!
-        if (remaining > 0) {
-            view?.tv_water_remaining_amount?.text = remaining.toString() + " Bardak"
-        } else {
-            view?.tv_water_remaining_amount?.text = "Tamamladınız"
-        }
-    }
 }
