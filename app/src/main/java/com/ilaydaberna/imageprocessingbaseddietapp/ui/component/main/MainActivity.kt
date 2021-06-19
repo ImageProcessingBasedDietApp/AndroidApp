@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.View
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.postDelayed
@@ -52,17 +53,25 @@ class MainActivity : AppCompatActivity() {
 
         binding.btnAddMeal.setOnClickListener {
             this.startCameraActivity()
-
-
         }
 
     }
 
-    public fun hideBtnAddMeal(){
+    fun hideLoading(){
+        binding.layoutLoading.visibility = View.GONE
+        binding.btnAddMeal.isClickable = true
+    }
+
+    fun showLoading(){
+        binding.layoutLoading.visibility = View.VISIBLE
+        binding.btnAddMeal.isClickable = false
+    }
+
+    fun hideBtnAddMeal(){
         binding.btnAddMeal.visibility = View.GONE
     }
 
-    public fun showBtnAddMeal(){
+    fun showBtnAddMeal(){
         binding.btnAddMeal.visibility = View.VISIBLE
     }
 

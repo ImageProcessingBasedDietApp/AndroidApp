@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseUser
 import com.ilaydaberna.imageprocessingbaseddietapp.R
 import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.*
+import com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.MainActivity
 import kotlinx.android.synthetic.main.dialog_enter_int_value.view.*
 import kotlinx.android.synthetic.main.dialog_enter_weight.view.*
 import kotlinx.android.synthetic.main.dialog_enter_weight.view.btn_dialog_save
@@ -249,14 +250,14 @@ class FollowFragment : Fragment() {
     }
 
     private fun checkWater() {
-        // TODO: add show loading
+        (activity as MainActivity?)?.showLoading()
         FirestoreSource.checkWaterNew(currentUser, getLongTimeStamp(),
             successHandler = {
-                // TODO: add hide loading
+                (activity as MainActivity?)?.hideLoading()
                 refreshUI()
             },
             failHandler = {
-                // TODO: add hide loading
+                (activity as MainActivity?)?.hideLoading()
             }
         )
     }
@@ -279,17 +280,17 @@ class FollowFragment : Fragment() {
             tempCupOfTea = 0
         }
 
-        // TODO: add show loading
+        (activity as MainActivity?)?.showLoading()
         FirestoreSource.saveLiquidNew(currentUser, getLongTimeStamp(), waterAmount, tempCupOfTea, cup_of_coffee,
             successHandler = {
-                // TODO: add hide loading
+                (activity as MainActivity?)?.hideLoading()
                 cup_of_tea = tempCupOfTea
                 val v = view?.gl_tea?.getChildAt(cup_of_tea) as ImageView
                 v.setImageResource(R.drawable.tea_empty)
                 view?.amount_of_tea?.text = "Günlük içilen çay miktarı = " + cup_of_tea.toString() + " Bardak"
             },
             failHandler = {
-                // TODO: add hide loading
+                (activity as MainActivity?)?.hideLoading()
             }
         )
     }
@@ -303,17 +304,17 @@ class FollowFragment : Fragment() {
             tempCupOfTea = 12
         }
 
-        // TODO: add show loading
+        (activity as MainActivity?)?.showLoading()
         FirestoreSource.saveLiquidNew(currentUser, getLongTimeStamp(), waterAmount, tempCupOfTea, cup_of_coffee,
             successHandler = {
-                // TODO: add hide loading
+                (activity as MainActivity?)?.hideLoading()
                 cup_of_tea = tempCupOfTea
                 val v = view?.gl_tea?.getChildAt(cup_of_tea-1) as ImageView
                 v.setImageResource(R.drawable.tea_full)
                 view?.amount_of_tea?.text = "Günlük içilen çay miktarı = " + cup_of_tea.toString() + " Bardak"
             },
             failHandler = {
-                // TODO: add hide loading
+                (activity as MainActivity?)?.hideLoading()
             }
         )
     }
@@ -326,17 +327,17 @@ class FollowFragment : Fragment() {
             tempCupOfCoffee = 0
         }
 
-        // TODO: add show loading
+        (activity as MainActivity?)?.showLoading()
         FirestoreSource.saveLiquidNew(currentUser, getLongTimeStamp(), waterAmount, cup_of_tea, tempCupOfCoffee,
             successHandler = {
-                // TODO: add hide loading
+                (activity as MainActivity?)?.hideLoading()
                 cup_of_coffee = tempCupOfCoffee
                 val v = view?.gl_coffee?.getChildAt(cup_of_coffee) as ImageView
                 v.setImageResource(R.drawable.icon_turkish_coffee_empty)
                 view?.amount_of_coffee?.text = "Günlük içilen kahve miktarı = " + cup_of_coffee.toString() + " Bardak"
             },
             failHandler = {
-                // TODO: add hide loading
+                (activity as MainActivity?)?.hideLoading()
             }
         )
     }
@@ -349,17 +350,17 @@ class FollowFragment : Fragment() {
             tempCupOfCoffee = 12
         }
 
-        // TODO: add show loading
+        (activity as MainActivity?)?.showLoading()
         FirestoreSource.saveLiquidNew(currentUser, getLongTimeStamp(), waterAmount, cup_of_tea, tempCupOfCoffee,
             successHandler = {
-                // TODO: add hide loading
+                (activity as MainActivity?)?.hideLoading()
                 cup_of_coffee = tempCupOfCoffee
                 val v = view?.gl_coffee?.getChildAt(cup_of_coffee-1) as ImageView
                 v.setImageResource(R.drawable.icon_turkish_coffee)
                 view?.amount_of_coffee?.text = "Günlük içilen kahve miktarı = " + cup_of_coffee.toString() + " Bardak"
             },
             failHandler = {
-                // TODO: add hide loading
+                (activity as MainActivity?)?.hideLoading()
             }
         )
     }
@@ -411,7 +412,7 @@ class FollowFragment : Fragment() {
                     updateWeightTracking()
                 },
                 failHandler = {
-                    // TODO: add hide loading
+                    (activity as MainActivity?)?.hideLoading()
                     UserInfo.user.get()?.weight = oldWeight
                 }
             )
@@ -421,10 +422,10 @@ class FollowFragment : Fragment() {
     private fun updateWeightTracking() {
         FirestoreSource.saveWeightNew(currentUser, (UserInfo.user.get()?.weight ?: 0.0), getLongTimeStamp(),
             successHandler = {
-                // TODO: add hide loading
+                (activity as MainActivity?)?.hideLoading()
             },
             failHandler = {
-                // TODO: add hide loading
+                (activity as MainActivity?)?.hideLoading()
             }
         )
     }
