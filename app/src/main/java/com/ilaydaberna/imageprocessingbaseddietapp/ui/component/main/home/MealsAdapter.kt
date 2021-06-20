@@ -7,11 +7,11 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.ilaydaberna.imageprocessingbaseddietapp.R
 import com.ilaydaberna.imageprocessingbaseddietapp.databinding.ItemMealBinding
-import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.Meal
+import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.MealItem
 
 
-class MealsAdapter : ListAdapter<Meal, MealsAdapter.MealHolder>(DIFF_CALLBACK){
-    var itemClickListener: (Meal) -> Unit = {}
+class MealsAdapter : ListAdapter<MealItem, MealsAdapter.MealHolder>(DIFF_CALLBACK){
+    var itemClickListener: (MealItem) -> Unit = {}
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MealHolder {
         val binding = ItemMealBinding.inflate(
@@ -28,48 +28,48 @@ class MealsAdapter : ListAdapter<Meal, MealsAdapter.MealHolder>(DIFF_CALLBACK){
 
     class MealHolder(
             private val binding: ItemMealBinding,
-            private val itemClickListener: (Meal) -> Unit)
+            private val itemClickListener: (MealItem) -> Unit)
         : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(meal: Meal) {
+        fun bind(mealItem: MealItem) {
 
-            binding.tvMealType.text = meal.type.description
+            binding.tvMealType.text = mealItem.type
 
-            when(meal.type.id){
-                1 -> binding.ivMealType.setImageResource(R.drawable.breakfast)
-                2 -> binding.ivMealType.setImageResource(R.drawable.launch)
-                3 -> binding.ivMealType.setImageResource(R.drawable.dinner)
-                4 -> binding.ivMealType.setImageResource(R.drawable.snacks)
+            when(mealItem.type){
+                "Kahvaltı" -> binding.ivMealType.setImageResource(R.drawable.breakfast)
+                "Öğle Yemeği" -> binding.ivMealType.setImageResource(R.drawable.launch)
+                "Akşam Yemeği"-> binding.ivMealType.setImageResource(R.drawable.dinner)
+                "Ara Öğün" -> binding.ivMealType.setImageResource(R.drawable.snacks)
             }
 
-            if(meal.contents != null){
+            if(mealItem.contents != null && mealItem.contents.size != 0){
                 var i:Int = 1
-                var strContent: String = meal.contents!![0].name
-                while(i < meal.contents!!.size){
-                    strContent = strContent + ", "+ meal.contents!![i].name
+                var strContent: String? = mealItem.contents.get(i)?.name
+                while(i < mealItem.contents.size){
+                    strContent = strContent + ", "+ mealItem.contents[i]?.name
                     i = i + 1
                 }
                 binding.tvMealContent.text = strContent
-                binding.tvMealTotalCalorie.text = meal.totalCalorie.toString() + " kcal"
+                binding.tvMealTotalCalorie.text = mealItem.totalCalorie.toString() + " kcal"
             }
             else{
-                binding.tvMealTotalCalorie.text = "0 cal"
+                binding.tvMealTotalCalorie.text = "0 kcal"
                 binding.tvMealContent.text = " - "
             }
 
             binding.root.setOnClickListener {
-                itemClickListener(meal)
+                itemClickListener(mealItem)
             }
         }
     }
 
     companion object {
-        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Meal>() {
-            override fun areItemsTheSame(oldItem: Meal, newItem: Meal) =
-                    oldItem.date == newItem.date && oldItem.type == newItem.type
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<MealItem>() {
+            override fun areItemsTheSame(item: MealItem, newItem: MealItem) =
+                    item.type == newItem.type
 
-            override fun areContentsTheSame(oldItem: Meal, newItem: Meal) =
-                    oldItem == newItem
+            override fun areContentsTheSame(item: MealItem, newItem: MealItem) =
+                    item == newItem
         }
     }
 }
@@ -78,7 +78,7 @@ class MealsAdapter : ListAdapter<Meal, MealsAdapter.MealHolder>(DIFF_CALLBACK){
 
 
 /*
-class MealsAdapter(private val context: Context, private val dataSet: ArrayList<Meal>, private val foodList: List<Food>) : RecyclerView.Adapter<MealsAdapter.ViewHolder>() {
+class MealsAdapter(private val context: Context, private val dataSet: ArrayList<Meal>>) : RecyclerView.Adapter<MealsAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val ivMealType: ImageView

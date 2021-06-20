@@ -33,7 +33,7 @@ class UserFoodAdapter : ListAdapter<Food, UserFoodAdapter.UserFoodHolder>(DIFF_C
 
             binding.tvUserFoodName.text = food.name
             binding.tvUserFoodCalorie.text = food.calorie.toString() + " kcal"
-            binding.tvUserFoodServingValue.text = "1 " +food.servingType.description
+            binding.tvUserFoodServingValue.text = "1 " +food.servingType
             binding.tvUserFoodProtein.text = "Protein:\n"+food.protein.toString()+ " gr"
             binding.tvUserFoodFat.text = "Yağ:\n"+food.protein.toString()+ " gr"
             binding.tvUserFoodCarbohydrate.text = "Karbonhidrat:\n"+food.carbohydrate.toString()+ " gr"

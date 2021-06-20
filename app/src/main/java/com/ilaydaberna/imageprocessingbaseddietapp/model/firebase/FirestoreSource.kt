@@ -10,11 +10,14 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.getField
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import java.text.SimpleDateFormat
 
 class FirestoreSource {
+
     fun setUser(currentUser: FirebaseUser) {
         if (currentUser != null) {
             if (currentUser.uid != null) {
@@ -184,6 +187,64 @@ class FirestoreSource {
     }
 
     companion object {
+
+        fun getFoodById(foodID: String,successHandler: (Food?) -> Unit, failHandler: () -> Unit){
+            val docRef = Firebase.firestore.collection("Foods").document(foodID)
+            docRef.get().addOnSuccessListener { documentSnapshot ->
+                val food = documentSnapshot.toObject<Food>()
+                successHandler(food)
+            }
+        }
+
+        fun getUserMealsForToday(currentUser: FirebaseUser?, successHandler: (UserMeals) -> Unit, failHandler: () -> Unit){
+            if(currentUser != null) {
+                if(currentUser.uid != null) {
+                    val db = Firebase.firestore
+                    val docRef = db.collection("MealTest")
+                        .document("userID")
+                        .collection("19June2021")
+                        .get()
+                        .addOnSuccessListener {
+                            val userMeals = UserMeals (
+                                UserMeals.Meal(
+                                    it.documents[0].getField<Int>("totalCalorie"),
+                                    it.documents[0].getField<Int>("totalCarbohydrate"),
+                                    it.documents[0].getField<Int>("totalFat"),
+                                    it.documents[0].getField<Int>("totalProtein"),
+                                    it.documents[0]["contents"] as ArrayList<Map<String, Int>>?
+                                ),
+                                UserMeals.Meal(
+                                    it.documents[1].getField<Int>("totalCalorie"),
+                                    it.documents[1].getField<Int>("totalCarbohydrate"),
+                                    it.documents[1].getField<Int>("totalFat"),
+                                    it.documents[1].getField<Int>("totalProtein"),
+                                    it.documents[1]["contents"] as ArrayList<Map<String, Int>>?
+                                ),
+                                UserMeals.Meal(
+                                    it.documents[2].getField<Int>("totalCalorie"),
+                                    it.documents[2].getField<Int>("totalCarbohydrate"),
+                                    it.documents[2].getField<Int>("totalFat"),
+                                    it.documents[2].getField<Int>("totalProtein"),
+                                    it.documents[2]["contents"] as ArrayList<Map<String, Int>>?
+                                ),
+                                UserMeals.Meal(
+                                    it.documents[3].getField<Int>("totalCalorie"),
+                                    it.documents[3].getField<Int>("totalCarbohydrate"),
+                                    it.documents[3].getField<Int>("totalFat"),
+                                    it.documents[3].getField<Int>("totalProtein"),
+                                    it.documents[3]["contents"] as ArrayList<Map<String, Int>>?
+                                )
+                            )
+                            successHandler(userMeals)
+                            Log.i("getUserMealsForToday", "Success")
+                        }
+                        .addOnFailureListener {
+                            //TODO model oluşturup gönder
+                            Log.i("getUserMealsForToday", "Fail")
+                        }
+                }
+            }
+        }
 
         fun saveUserNew(currentUser: FirebaseUser?, userModel: User, successHandler: () -> Unit, failHandler: () -> Unit) {
             if (currentUser != null) {
@@ -414,7 +475,7 @@ class FirestoreSource {
                             document.getString("carbohydrate")!!.toDouble(),
                             document.getString("fat")!!.toDouble(),
                             document.getString("protein")!!.toDouble(),
-                            ServingType(1, "Kase") //TODO:
+                            "Tabak"
                         )
                     )
                     Log.d(TAG, "${document.id} => ${document.data}")

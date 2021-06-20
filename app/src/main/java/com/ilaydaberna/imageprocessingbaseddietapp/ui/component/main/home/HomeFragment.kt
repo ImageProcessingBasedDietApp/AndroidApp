@@ -9,13 +9,19 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.futured.donut.DonutSection
 import com.google.firebase.Timestamp
+import com.google.firebase.auth.FirebaseUser
 import com.ilaydaberna.imageprocessingbaseddietapp.R
 import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.*
+import com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.MainActivity
 import kotlinx.android.synthetic.main.fragment_home.view.*
+import kotlinx.coroutines.channels.consumesAll
 
 class HomeFragment : Fragment() {
 
     private val adapter = MealsAdapter()
+    val currentUser: FirebaseUser? = FirebaseSource().getAuth().currentUser
+    var mealItems = arrayListOf<MealItem>()
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -61,11 +67,11 @@ class HomeFragment : Fragment() {
         view.dv_daily_carbohydrate.submitData(listOf(sectionCarbohydrate))
 
         view.mv_drop_down.setOnClickListener {
-            if(view.layout_protein_fat_carbohydrate.visibility == View.GONE){
+            if(view.layout_protein_fat_carbohydrate.visibility == View.GONE) {
                 view.layout_protein_fat_carbohydrate.visibility = View.VISIBLE
                 view.mv_drop_down.setImageDrawable(resources.getDrawable(R.drawable.icon_arrow_up))
             }
-            else{
+            else {
                 view.layout_protein_fat_carbohydrate.visibility = View.GONE
                 view.mv_drop_down.setImageDrawable(resources.getDrawable(R.drawable.icon_arrow_down))
             }
@@ -73,40 +79,56 @@ class HomeFragment : Fragment() {
 
         //Meals
         view.rv_meal_list.adapter = adapter
-        getMeals()
+        getUserMeals()
 
         adapter.itemClickListener = {
             findNavController().navigate(R.id.actionToAddMealFragment)
         }
 
-
-
-        /* view.layout_breakfast.setOnClickListener {
-             findNavController().navigate(R.id.action_homeFragment_to_addMealFragment)
-             Toast.makeText(context, "Kahvaltı", Toast.LENGTH_SHORT).show()
-         }
-         view.layout_launch.setOnClickListener {
-             findNavController().navigate(R.id.action_homeFragment_to_addMealFragment)
-             Toast.makeText(context, "Öğle Yemeği", Toast.LENGTH_SHORT).show()
-         }
-         view.layout_dinner.setOnClickListener {
-             findNavController().navigate(R.id.action_homeFragment_to_addMealFragment)
-             Toast.makeText(context, "Akşam Yemeği", Toast.LENGTH_SHORT).show()
-         }
-         view.layout_snacks.setOnClickListener {
-             findNavController().navigate(R.id.action_homeFragment_to_addMealFragment)
-             Toast.makeText(context, "Atıştırmalık", Toast.LENGTH_SHORT).show()
-         }*/
-
         return view
     }
 
-    private fun getMeals(){
-        val meals = listOf<Meal>(
-                Meal(null, Timestamp.now(), 0, 0, 0, 0, MealType(1, "Kahvaltı")),
-                Meal(null, Timestamp.now(), 0, 0, 0, 0, MealType(2, "Öğle Yemeği")),
-                Meal(null, Timestamp.now(), 0, 0, 0, 0, MealType(3, "Akşam Yemeği")),
-                Meal(null, Timestamp.now(), 0, 0, 0, 0, MealType(4, "Atıştırmalık")))
-        adapter.submitList(meals)
+    private fun getUserFoods(contents: ArrayList<Map<String, Int>>): ArrayList<Food?> {
+        var mealContentFoods = arrayListOf<Food?>()
+        FirestoreSource.getFoodById(foodID = "0",
+            successHandler = {
+                 mealContentFoods.add(it)
+            },
+            failHandler = {
+
+            }
+        )
+        return mealContentFoods
+    }
+
+    private fun getMealItems(meals: UserMeals){
+        if(meals.breakfast != null){
+            mealItems.add(
+                MealItem(
+                    meals.breakfast?.totalCalorie?:0,
+                    meals.breakfast?.totalCarbohydrate?:0,
+                    meals.breakfast?.totalFat?:0,
+                    meals.breakfast?.totalProtein?:0,
+                    "Kahvaltı",
+                    meals.breakfast?.contents?.let { getUserFoods(it) }
+                )
+            )
+        }
+    }
+
+    private fun getUserMeals(){
+        (activity as MainActivity?)?.showLoading()
+        FirestoreSource.getUserMealsForToday(currentUser = currentUser,
+            successHandler = {
+                (activity as MainActivity?)?.hideLoading()
+                if(it != null){
+                    getMealItems(it)
+                }
+                adapter.submitList(mealItems)
+            },
+            failHandler = {
+                (activity as MainActivity?)?.hideLoading()
+            }
+        )
     }
 }
