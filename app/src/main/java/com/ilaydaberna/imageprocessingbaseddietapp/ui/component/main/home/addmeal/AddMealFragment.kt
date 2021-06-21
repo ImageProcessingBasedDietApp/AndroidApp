@@ -39,6 +39,10 @@ class AddMealFragment : Fragment() {
         view.rv_food_list.adapter = adapterFood
         view.rv_user_food.adapter = adapterUserFood
 
+        if(arguments != null){
+            view.tv_meal_title.text = (requireArguments().get("meal") as MealItem).type
+        }
+
         getFoods()
 
         adapterFood.itemClickListener = {

@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.databinding.ObservableField
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.futured.donut.DonutSection
@@ -16,11 +18,11 @@ import com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.MainActivit
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import kotlinx.coroutines.channels.consumesAll
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), HomeNavigator{
 
-    private val adapter = MealsAdapter()
+    private lateinit var adapter: MealsAdapter
     val currentUser: FirebaseUser? = FirebaseSource().getAuth().currentUser
-    var mealItems = arrayListOf<MealItem>()
+    var mealItems: ObservableField<ArrayList<MealItem>> = ObservableField(arrayListOf())
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -78,12 +80,10 @@ class HomeFragment : Fragment() {
         }
 
         //Meals
+        adapter = MealsAdapter(requireContext(), mealItems, this)
+        view.rv_meal_list.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         view.rv_meal_list.adapter = adapter
         getUserMeals()
-
-        adapter.itemClickListener = {
-            findNavController().navigate(R.id.actionToAddMealFragment)
-        }
 
         return view
     }
@@ -95,9 +95,11 @@ class HomeFragment : Fragment() {
             FirestoreSource.getFoodById(foodID = content.get("foodID").toString(),
                 successHandler = {
                     mealContentFoods.add(it)
+                    adapter.notifyDataSetChanged()
+                    (activity as MainActivity?)?.hideLoading()
                 },
                 failHandler = {
-
+                    (activity as MainActivity?)?.hideLoading()
                 }
             )
         }
@@ -105,8 +107,9 @@ class HomeFragment : Fragment() {
     }
 
     private fun getMealItems(meals: UserMeals){
+        var tempMealItems: ArrayList<MealItem> = arrayListOf()
         if(meals.breakfast != null){
-            mealItems.add(
+            tempMealItems.add(
                 MealItem(
                     meals.breakfast?.totalCalorie?:0,
                     meals.breakfast?.totalCarbohydrate?:0,
@@ -117,21 +120,69 @@ class HomeFragment : Fragment() {
                 )
             )
         }
+
+        if(meals.lunch != null){
+            tempMealItems.add(
+                    MealItem(
+                            meals.lunch?.totalCalorie?:0,
+                            meals.lunch?.totalCarbohydrate?:0,
+                            meals.lunch?.totalFat?:0,
+                            meals.lunch?.totalProtein?:0,
+                            "Öğle Yemeği",
+                            meals.lunch?.contents?.let { getUserFoods(it) }
+                    )
+            )
+        }
+
+        if(meals.dinner != null){
+            tempMealItems.add(
+                    MealItem(
+                            meals.dinner?.totalCalorie?:0,
+                            meals.dinner?.totalCarbohydrate?:0,
+                            meals.dinner?.totalFat?:0,
+                            meals.dinner?.totalProtein?:0,
+                            "Akşam Yemeği",
+                            meals.dinner?.contents?.let { getUserFoods(it) }
+                    )
+            )
+        }
+
+        if(meals.snacks != null){
+            tempMealItems.add(
+                    MealItem(
+                            meals.snacks?.totalCalorie?:0,
+                            meals.snacks?.totalCarbohydrate?:0,
+                            meals.snacks?.totalFat?:0,
+                            meals.snacks?.totalProtein?:0,
+                            "Atıştırmalıklar",
+                            meals.snacks?.contents?.let { getUserFoods(it) }
+                    )
+            )
+        }
+
+        mealItems.set(tempMealItems)
     }
 
     private fun getUserMeals(){
         (activity as MainActivity?)?.showLoading()
         FirestoreSource.getUserMealsForToday(currentUser = currentUser,
             successHandler = {
-                (activity as MainActivity?)?.hideLoading()
-                if(it != null){
-                    getMealItems(it)
-                }
-                adapter.submitList(mealItems)
+                getMealItems(it)
+                setDonutProgressViews(it)
+                //TODO: bi fonk oluşturup burdan çağır fonksiyon, ui'daki total zımbırtıları setlesin.
             },
             failHandler = {
                 (activity as MainActivity?)?.hideLoading()
             }
         )
+    }
+
+    private fun setDonutProgressViews(meals: UserMeals){
+        //TODO:
+    }
+
+    override fun openAddMealFragment(mealItem: MealItem) {
+        val bundle = bundleOf("meal" to mealItem)
+        findNavController().navigate(R.id.actionToAddMealFragment, bundle)
     }
 }

@@ -26,6 +26,7 @@
             android:src="@drawable/icon_arrow_back_green" />
 
         <TextView
+            android:id="@+id/tv_meal_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"

@@ -1,8 +1,10 @@
 package com.ilaydaberna.imageprocessingbaseddietapp.model.firebase
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
-
+@Parcelize
 data class Food(
         @SerializedName("ID")
         val id: Int = 0,
@@ -20,4 +22,4 @@ data class Food(
         val protein: Double = 0.0,
         @SerializedName("servingType")
         val servingType: String = ""
-)
+): Parcelable

@@ -12,6 +12,9 @@
         <action
             android:id="@+id/actionToAddMealFragment"
             app:destination="@id/addMealFragment">
+            <argument
+                android:name="meal"
+                app:argType="com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.MealItem" />
         </action>
     </fragment>
     <fragment
@@ -33,5 +36,6 @@
         android:id="@+id/addMealFragment"
         android:name="com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.home.addmeal.AddMealFragment"
         android:label="Öğün Ekle"
-        tools:layout="@layout/fragment_add_meal" />
+        tools:layout="@layout/fragment_add_meal"/>
+
 </navigation>

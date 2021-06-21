@@ -214,38 +214,48 @@ class FirestoreSource {
                         .collection("19June2021")
                         .get()
                         .addOnSuccessListener {
-                            val userMeals = UserMeals (
-                                UserMeals.Meal(
-                                    it.documents[0].getField<Int>("totalCalorie"),
-                                    it.documents[0].getField<Int>("totalCarbohydrate"),
-                                    it.documents[0].getField<Int>("totalFat"),
-                                    it.documents[0].getField<Int>("totalProtein"),
-                                    it.documents[0]["contents"] as ArrayList<Map<String, Int>>?
-                                ),
-                                UserMeals.Meal(
-                                    it.documents[1].getField<Int>("totalCalorie"),
-                                    it.documents[1].getField<Int>("totalCarbohydrate"),
-                                    it.documents[1].getField<Int>("totalFat"),
-                                    it.documents[1].getField<Int>("totalProtein"),
-                                    it.documents[1]["contents"] as ArrayList<Map<String, Int>>?
-                                ),
-                                UserMeals.Meal(
-                                    it.documents[2].getField<Int>("totalCalorie"),
-                                    it.documents[2].getField<Int>("totalCarbohydrate"),
-                                    it.documents[2].getField<Int>("totalFat"),
-                                    it.documents[2].getField<Int>("totalProtein"),
-                                    it.documents[2]["contents"] as ArrayList<Map<String, Int>>?
-                                ),
-                                UserMeals.Meal(
-                                    it.documents[3].getField<Int>("totalCalorie"),
-                                    it.documents[3].getField<Int>("totalCarbohydrate"),
-                                    it.documents[3].getField<Int>("totalFat"),
-                                    it.documents[3].getField<Int>("totalProtein"),
-                                    it.documents[3]["contents"] as ArrayList<Map<String, Int>>?
+                            if(!it.isEmpty){
+                                val userMeals = UserMeals (
+                                    //Breakfast
+                                    UserMeals.Meal(
+                                        it.documents[0].getField<Int>("totalCalorie"),
+                                        it.documents[0].getField<Int>("totalCarbohydrate"),
+                                        it.documents[0].getField<Int>("totalFat"),
+                                        it.documents[0].getField<Int>("totalProtein"),
+                                        it.documents[0]["contents"] as ArrayList<Map<String, Int>>?
+                                    ),
+                                    //Lunch
+                                    UserMeals.Meal(
+                                        it.documents[2].getField<Int>("totalCalorie"),
+                                        it.documents[2].getField<Int>("totalCarbohydrate"),
+                                        it.documents[2].getField<Int>("totalFat"),
+                                        it.documents[2].getField<Int>("totalProtein"),
+                                        it.documents[2]["contents"] as ArrayList<Map<String, Int>>?
+                                    ),
+                                    //Dinner
+                                    UserMeals.Meal(
+                                        it.documents[1].getField<Int>("totalCalorie"),
+                                        it.documents[1].getField<Int>("totalCarbohydrate"),
+                                        it.documents[1].getField<Int>("totalFat"),
+                                        it.documents[1].getField<Int>("totalProtein"),
+                                        it.documents[1]["contents"] as ArrayList<Map<String, Int>>?
+                                    ),
+                                    //Snacks
+                                    UserMeals.Meal(
+                                        it.documents[3].getField<Int>("totalCalorie"),
+                                        it.documents[3].getField<Int>("totalCarbohydrate"),
+                                        it.documents[3].getField<Int>("totalFat"),
+                                        it.documents[3].getField<Int>("totalProtein"),
+                                        it.documents[3]["contents"] as ArrayList<Map<String, Int>>?
+                                    )
                                 )
-                            )
-                            successHandler(userMeals)
-                            Log.i("getUserMealsForToday", "Success")
+                                successHandler(userMeals)
+                                Log.i("getUserMealsForToday", "Success")
+                            }
+                            else {
+                                //TODO: MEAL OLUŞTUR ve yeni kayırlar için "successHandler(userMeals)" çağır
+                                Log.i("getUserMealsForToday", "Fail")
+                            }
                         }
                         .addOnFailureListener {
                             //TODO boş model oluşturup gönder

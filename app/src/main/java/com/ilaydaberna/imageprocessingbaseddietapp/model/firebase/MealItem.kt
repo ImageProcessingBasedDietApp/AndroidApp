@@ -1,5 +1,9 @@
 package com.ilaydaberna.imageprocessingbaseddietapp.model.firebase
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 data class MealItem(
         var totalCalorie: Int = 0,
         val totalCarbohydrate: Int = 0,
@@ -7,4 +11,4 @@ data class MealItem(
         val totalProtein: Int = 0,
         val type: String = "",
         val contents: ArrayList<Food?>?
-)
+): Parcelable
