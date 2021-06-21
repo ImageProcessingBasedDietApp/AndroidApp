@@ -190,8 +190,17 @@ class FirestoreSource {
 
         fun getFoodById(foodID: String,successHandler: (Food?) -> Unit, failHandler: () -> Unit){
             val docRef = Firebase.firestore.collection("Foods").document(foodID)
-            docRef.get().addOnSuccessListener { documentSnapshot ->
-                val food = documentSnapshot.toObject<Food>()
+            docRef.get().addOnSuccessListener { document ->
+                val food = Food(
+                    document.get("ID").toString().toInt(),
+                    document.get("fileName").toString(),
+                    document.get("name").toString(),
+                    document.get("calorie").toString().toDouble(),
+                    document.get("carbohydrate").toString().toDouble(),
+                    document.get("fat").toString().toDouble(),
+                    document.get("protein").toString().toDouble(),
+                    document.get("servingType").toString()
+                )
                 successHandler(food)
             }
         }
@@ -239,7 +248,7 @@ class FirestoreSource {
                             Log.i("getUserMealsForToday", "Success")
                         }
                         .addOnFailureListener {
-                            //TODO model oluşturup gönder
+                            //TODO boş model oluşturup gönder
                             Log.i("getUserMealsForToday", "Fail")
                         }
                 }

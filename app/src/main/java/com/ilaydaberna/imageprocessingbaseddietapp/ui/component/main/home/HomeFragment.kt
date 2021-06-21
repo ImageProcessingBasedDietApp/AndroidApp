@@ -90,14 +90,17 @@ class HomeFragment : Fragment() {
 
     private fun getUserFoods(contents: ArrayList<Map<String, Int>>): ArrayList<Food?> {
         var mealContentFoods = arrayListOf<Food?>()
-        FirestoreSource.getFoodById(foodID = "0",
-            successHandler = {
-                 mealContentFoods.add(it)
-            },
-            failHandler = {
+        val i = 0
+        for (content in contents) {
+            FirestoreSource.getFoodById(foodID = content.get("foodID").toString(),
+                successHandler = {
+                    mealContentFoods.add(it)
+                },
+                failHandler = {
 
-            }
-        )
+                }
+            )
+        }
         return mealContentFoods
     }
 
