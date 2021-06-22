@@ -12,6 +12,6 @@ class UserMeals (
         val totalCarbohydrate: Int? = null,
         val totalFat: Int? = null,
         val totalProtein: Int? = null,
-        val contents: ArrayList<Map<String,Int>>?
+        val contents: ArrayList<Map<String,String>>?
     )
 }

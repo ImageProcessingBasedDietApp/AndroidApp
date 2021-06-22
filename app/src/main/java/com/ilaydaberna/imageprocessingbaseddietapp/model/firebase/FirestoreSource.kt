@@ -243,7 +243,7 @@ class FirestoreSource {
                                         it.documents[0].getField<Int>("totalCarbohydrate"),
                                         it.documents[0].getField<Int>("totalFat"),
                                         it.documents[0].getField<Int>("totalProtein"),
-                                        it.documents[0]["contents"] as ArrayList<Map<String, Int>>?
+                                        it.documents[0]["contents"] as ArrayList<Map<String, String>>?
                                     ),
                                     //Lunch
                                     UserMeals.Meal(
@@ -251,7 +251,7 @@ class FirestoreSource {
                                         it.documents[2].getField<Int>("totalCarbohydrate"),
                                         it.documents[2].getField<Int>("totalFat"),
                                         it.documents[2].getField<Int>("totalProtein"),
-                                        it.documents[2]["contents"] as ArrayList<Map<String, Int>>?
+                                        it.documents[2]["contents"] as ArrayList<Map<String, String>>?
                                     ),
                                     //Dinner
                                     UserMeals.Meal(
@@ -259,7 +259,7 @@ class FirestoreSource {
                                         it.documents[1].getField<Int>("totalCarbohydrate"),
                                         it.documents[1].getField<Int>("totalFat"),
                                         it.documents[1].getField<Int>("totalProtein"),
-                                        it.documents[1]["contents"] as ArrayList<Map<String, Int>>?
+                                        it.documents[1]["contents"] as ArrayList<Map<String, String>>?
                                     ),
                                     //Snacks
                                     UserMeals.Meal(
@@ -267,7 +267,7 @@ class FirestoreSource {
                                         it.documents[3].getField<Int>("totalCarbohydrate"),
                                         it.documents[3].getField<Int>("totalFat"),
                                         it.documents[3].getField<Int>("totalProtein"),
-                                        it.documents[3]["contents"] as ArrayList<Map<String, Int>>?
+                                        it.documents[3]["contents"] as ArrayList<Map<String, String>>?
                                     )
                                 )
                                 successHandler(userMeals)
