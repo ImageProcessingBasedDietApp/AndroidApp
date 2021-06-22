@@ -1,6 +1,7 @@
 package com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.home
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +18,8 @@ import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.*
 import com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.MainActivity
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import kotlinx.coroutines.channels.consumesAll
+import java.lang.Exception
+import java.util.stream.Collectors
 
 class HomeFragment : Fragment(), HomeNavigator{
 
@@ -88,22 +91,20 @@ class HomeFragment : Fragment(), HomeNavigator{
         return view
     }
 
-    private fun getUserFoods(contents: ArrayList<Map<String, Int>>): ArrayList<Food?> {
-        var mealContentFoods = arrayListOf<Food?>()
-        val i = 0
-        for (content in contents) {
-            FirestoreSource.getFoodById(foodID = content.get("foodID").toString(),
-                successHandler = {
-                    mealContentFoods.add(it)
-                    adapter.notifyDataSetChanged()
-                    (activity as MainActivity?)?.hideLoading()
-                },
-                failHandler = {
-                    (activity as MainActivity?)?.hideLoading()
+    private fun getUserFoods(contents: ArrayList<Map<String, String>>): List<Food?>? {
+        return FoodSingleton.food.get()?.stream()
+                ?.filter { food ->
+                    contents.stream()
+                            .anyMatch { content ->
+                                try {
+                                    content["foodID"]!!.toString() == food.id.toString()
+                                } catch (e: Exception) {
+                                    Log.i("", "")
+                                    false
+                                }
+                            }
                 }
-            )
-        }
-        return mealContentFoods
+                ?.collect(Collectors.toList())
     }
 
     private fun getMealItems(meals: UserMeals){
@@ -161,6 +162,7 @@ class HomeFragment : Fragment(), HomeNavigator{
         }
 
         mealItems.set(tempMealItems)
+        adapter.notifyDataSetChanged()
     }
 
     private fun getUserMeals(){
@@ -170,6 +172,7 @@ class HomeFragment : Fragment(), HomeNavigator{
                 getMealItems(it)
                 setDonutProgressViews(it)
                 //TODO: bi fonk oluşturup burdan çağır fonksiyon, ui'daki total zımbırtıları setlesin.
+                (activity as MainActivity?)?.hideLoading()
             },
             failHandler = {
                 (activity as MainActivity?)?.hideLoading()

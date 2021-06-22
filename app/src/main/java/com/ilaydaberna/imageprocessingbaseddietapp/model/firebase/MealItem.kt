@@ -10,5 +10,5 @@ data class MealItem(
         val totalFat: Int = 0,
         val totalProtein: Int = 0,
         val type: String = "",
-        val contents: ArrayList<Food?>?
+        val contents: List<Food?>?
 ): Parcelable
