@@ -37,6 +37,10 @@ fun String.isPasswordValid(): Boolean {
     return true
 }
 
+fun String.isAmountValid():Boolean{
+    return true
+}
+
 fun String.isNameSurnameValid():Boolean{
     if(!NAME_SURNAME_PATTERN.matcher(this).matches())
         return false

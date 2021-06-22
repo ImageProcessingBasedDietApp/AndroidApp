@@ -1,5 +1,8 @@
 package com.ilaydaberna.imageprocessingbaseddietapp.model.firebase
 
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.ktx.getField
+
 class UserMeals (
     var breakfast: Meal? = null,
     var lunch: Meal? = null,
@@ -16,12 +19,20 @@ class UserMeals (
     )
 
     companion object{
-        fun getEmptyUserMeals() = Meal(
+        fun getEmptyMeals() = Meal(
             0,
             0,
             0,
             0,
             arrayListOf()
+        )
+
+        fun getMeals(document: DocumentSnapshot) = Meal (
+                document.getField<Int>("totalCalorie"),
+                document.getField<Int>("totalCarbohydrate"),
+                document.getField<Int>("totalFat"),
+                document.getField<Int>("totalProtein"),
+                document["contents"] as ArrayList<Map<String, String>>?
         )
     }
 }

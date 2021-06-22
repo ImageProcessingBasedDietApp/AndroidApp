@@ -10,6 +10,7 @@ import androidx.core.os.bundleOf
 import androidx.databinding.ObservableField
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import app.futured.donut.DonutProgressView
 import app.futured.donut.DonutSection
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseUser
@@ -24,52 +25,23 @@ import java.util.stream.Collectors
 class HomeFragment : Fragment(), HomeNavigator{
 
     private lateinit var adapter: MealsAdapter
-    val currentUser: FirebaseUser? = FirebaseSource().getAuth().currentUser
-    var mealItems: ObservableField<ArrayList<MealItem>> = ObservableField(arrayListOf())
-
+    private val currentUser: FirebaseUser? = FirebaseSource().getAuth().currentUser
+    private var mealItems: ObservableField<ArrayList<MealItem>> = ObservableField(arrayListOf())
+    private lateinit var dailyCalorie: DonutProgressView
+    private lateinit var dailyProtein: DonutProgressView
+    private lateinit var dailyCarbohydrate: DonutProgressView
+    private lateinit var dailyFat: DonutProgressView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
         view.rv_meal_list.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-
-        //Donut Graph
-        val sectionCalorie = DonutSection(
-            name = "Alınan Kalori",
-            color = resources.getColor(R.color.green_500),
-            amount = 100f
-        )
-
-        view.dv_daily_calorie.cap = 1500f
-        view.dv_daily_calorie.submitData(listOf(sectionCalorie))
-
-        val sectionProtein = DonutSection(
-                name = "Alınan Protein",
-                color = resources.getColor(R.color.green_500),
-                amount = 100f
-        )
-
-        view.dv_daily_protein.cap = 1500f
-        view.dv_daily_protein.submitData(listOf(sectionProtein))
-
-        val sectionFat = DonutSection(
-                name = "Alınan Yağ",
-                color = resources.getColor(R.color.green_500),
-                amount = 100f
-        )
-
-        view.dv_daily_fat.cap = 1500f
-        view.dv_daily_fat.submitData(listOf(sectionFat))
-
-        val sectionCarbohydrate = DonutSection(
-                name = "Alınan KarbonHidrat",
-                color = resources.getColor(R.color.green_500),
-                amount = 100f
-        )
-
-        view.dv_daily_carbohydrate.cap = 1500f
-        view.dv_daily_carbohydrate.submitData(listOf(sectionCarbohydrate))
+        dailyCalorie = view.dv_daily_calorie
+        dailyProtein = view.dv_daily_protein
+        dailyCarbohydrate = view.dv_daily_fat
+        dailyFat = view.dv_daily_carbohydrate
+        setDonutProgressCapValues()
 
         view.mv_drop_down.setOnClickListener {
             if(view.layout_protein_fat_carbohydrate.visibility == View.GONE) {
@@ -117,7 +89,8 @@ class HomeFragment : Fragment(), HomeNavigator{
                     meals.breakfast?.totalFat?:0,
                     meals.breakfast?.totalProtein?:0,
                     "Kahvaltı",
-                    meals.breakfast?.contents?.let { getUserFoods(it) }
+                    meals.breakfast?.contents?.let { getUserFoods(it) },
+                    meals.breakfast?.contents
                 )
             )
         }
@@ -130,7 +103,8 @@ class HomeFragment : Fragment(), HomeNavigator{
                             meals.lunch?.totalFat?:0,
                             meals.lunch?.totalProtein?:0,
                             "Öğle Yemeği",
-                            meals.lunch?.contents?.let { getUserFoods(it) }
+                            meals.lunch?.contents?.let { getUserFoods(it) },
+                            meals.lunch?.contents
                     )
             )
         }
@@ -143,7 +117,8 @@ class HomeFragment : Fragment(), HomeNavigator{
                             meals.dinner?.totalFat?:0,
                             meals.dinner?.totalProtein?:0,
                             "Akşam Yemeği",
-                            meals.dinner?.contents?.let { getUserFoods(it) }
+                            meals.dinner?.contents?.let { getUserFoods(it) },
+                            meals.dinner?.contents
                     )
             )
         }
@@ -156,7 +131,8 @@ class HomeFragment : Fragment(), HomeNavigator{
                             meals.snacks?.totalFat?:0,
                             meals.snacks?.totalProtein?:0,
                             "Atıştırmalıklar",
-                            meals.snacks?.contents?.let { getUserFoods(it) }
+                            meals.snacks?.contents?.let { getUserFoods(it) },
+                            meals.snacks?.contents
                     )
             )
         }
@@ -171,7 +147,6 @@ class HomeFragment : Fragment(), HomeNavigator{
             successHandler = {
                 getMealItems(it)
                 setDonutProgressViews(it)
-                //TODO: bi fonk oluşturup burdan çağır fonksiyon, ui'daki total zımbırtıları setlesin.
                 (activity as MainActivity?)?.hideLoading()
             },
             failHandler = {
@@ -180,8 +155,51 @@ class HomeFragment : Fragment(), HomeNavigator{
         )
     }
 
+    private fun setDonutProgressCapValues(){
+        dailyCalorie.cap = 1500f
+        dailyProtein.cap = 1500f
+        dailyFat.cap = 1500f
+        dailyCarbohydrate.cap = 1500f
+    }
+
     private fun setDonutProgressViews(meals: UserMeals){
-        //TODO:
+        val totalCalorie = (meals.breakfast?.totalCalorie ?: 0) + (meals.lunch?.totalCalorie ?: 0) + (meals.dinner?.totalCalorie ?: 0) + (meals.snacks?.totalCalorie ?: 0)
+        val totalFat = (meals.breakfast?.totalFat ?: 0) + (meals.lunch?.totalFat ?: 0) + (meals.dinner?.totalFat ?: 0) + (meals.snacks?.totalFat ?: 0)
+        val totalProtein = (meals.breakfast?.totalProtein ?: 0) + (meals.lunch?.totalProtein ?: 0) + (meals.dinner?.totalProtein ?: 0) + (meals.snacks?.totalProtein ?: 0)
+        val totalCarbohydrate = (meals.breakfast?.totalCarbohydrate ?: 0) + (meals.lunch?.totalCarbohydrate ?: 0) + (meals.dinner?.totalCarbohydrate ?: 0) + (meals.snacks?.totalCarbohydrate ?: 0)
+
+        //Donut Graph
+        val sectionCalorie = DonutSection(
+                name = "Alınan Kalori",
+                color = resources.getColor(R.color.green_500),
+                amount = totalCalorie.toFloat()
+        )
+
+        dailyCalorie.submitData(listOf(sectionCalorie))
+
+        val sectionProtein = DonutSection(
+                name = "Alınan Protein",
+                color = resources.getColor(R.color.green_500),
+                amount = totalProtein.toFloat()
+        )
+
+        dailyProtein.submitData(listOf(sectionProtein))
+
+        val sectionFat = DonutSection(
+                name = "Alınan Yağ",
+                color = resources.getColor(R.color.green_500),
+                amount = totalFat.toFloat()
+        )
+
+        dailyFat.submitData(listOf(sectionFat))
+
+        val sectionCarbohydrate = DonutSection(
+                name = "Alınan KarbonHidrat",
+                color = resources.getColor(R.color.green_500),
+                amount = totalCarbohydrate.toFloat()
+        )
+
+        dailyCarbohydrate.submitData(listOf(sectionCarbohydrate))
     }
 
     override fun openAddMealFragment(mealItem: MealItem) {

@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseUser
 import com.ilaydaberna.imageprocessingbaseddietapp.R
 import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.FirebaseSource
@@ -49,7 +48,7 @@ class RegisterActivity : AppCompatActivity() {
             val mBuilder = AlertDialog.Builder(this).setView(mDialogView)
             val mAlertDialog = mBuilder.show()
 
-            mDialogView.btn_dialog_string_save.setOnClickListener {
+            mDialogView.btn_dialog_name_surname_save.setOnClickListener {
                 if(mDialogView.et_name_surname.text.isEmpty()){
                     mDialogView.et_name_surname.setError("Bu alan boş bırakılamaz")
                 }
@@ -72,7 +71,7 @@ class RegisterActivity : AppCompatActivity() {
             val mDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_enter_string_value, null)
             val mBuilder = AlertDialog.Builder(this).setView(mDialogView)
             val mAlertDialog = mBuilder.show()
-            mDialogView.btn_dialog_string_save.setOnClickListener {
+            mDialogView.btn_dialog_name_surname_save.setOnClickListener {
                 if(mDialogView.et_name_surname.text.isEmpty()){
                     mDialogView.et_name_surname.setError("Bu alan boş bırakılamaz")
                 }

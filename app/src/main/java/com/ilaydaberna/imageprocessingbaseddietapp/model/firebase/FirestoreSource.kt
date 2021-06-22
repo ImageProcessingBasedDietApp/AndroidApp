@@ -207,6 +207,32 @@ class FirestoreSource {
                     }
         }
 
+        fun updateUserMealsForToday (currentUser: FirebaseUser?, userMeal: UserMeals.Meal, mealType: String){
+            var simpleDateFormat = SimpleDateFormat("ddMMyyyy")
+            val todayStr: String  = simpleDateFormat.format(Date(System.currentTimeMillis()))
+            if(currentUser != null){
+                val db = Firebase.firestore
+                val docRef = db.collection("Meals")
+                        .document(currentUser.uid)
+                        .collection(todayStr)
+                        .document(mealType)
+                        .update(mapOf(
+                                "totalCalorie" to (userMeal.totalCalorie ?: 0),
+                                "totalCarbohydrate" to (userMeal.totalCarbohydrate ?: 0),
+                                "totalFat" to (userMeal.totalFat ?: 0),
+                                "totalProtein" to (userMeal.totalProtein ?: 0),
+                                "contents" to (userMeal.contents ?: arrayListOf())
+                        ))
+                        .addOnSuccessListener {
+                            //successHandler()
+                            Log.i("updateUserMealsForToday", "Success")
+                        }
+                        .addOnFailureListener {
+                            Log.i("updateUserMealsForToday", "Fail")
+                        }
+            }
+        }
+
         fun getUserMealsForToday(currentUser: FirebaseUser?, successHandler: (UserMeals) -> Unit, failHandler: () -> Unit){
             var simpleDateFormat = SimpleDateFormat("ddMMyyyy")
             val todayStr: String  = simpleDateFormat.format(Date(System.currentTimeMillis()))
@@ -222,37 +248,13 @@ class FirestoreSource {
                             if(!it.isEmpty){
                                 val userMeals = UserMeals (
                                     //Breakfast
-                                    UserMeals.Meal(
-                                        it.documents[0].getField<Int>("totalCalorie"),
-                                        it.documents[0].getField<Int>("totalCarbohydrate"),
-                                        it.documents[0].getField<Int>("totalFat"),
-                                        it.documents[0].getField<Int>("totalProtein"),
-                                        it.documents[0]["contents"] as ArrayList<Map<String, String>>?
-                                    ),
+                                    UserMeals.getMeals(it.documents[0]),
                                     //Lunch
-                                    UserMeals.Meal(
-                                        it.documents[2].getField<Int>("totalCalorie"),
-                                        it.documents[2].getField<Int>("totalCarbohydrate"),
-                                        it.documents[2].getField<Int>("totalFat"),
-                                        it.documents[2].getField<Int>("totalProtein"),
-                                        it.documents[2]["contents"] as ArrayList<Map<String, String>>?
-                                    ),
+                                    UserMeals.getMeals(it.documents[2]),
                                     //Dinner
-                                    UserMeals.Meal(
-                                        it.documents[1].getField<Int>("totalCalorie"),
-                                        it.documents[1].getField<Int>("totalCarbohydrate"),
-                                        it.documents[1].getField<Int>("totalFat"),
-                                        it.documents[1].getField<Int>("totalProtein"),
-                                        it.documents[1]["contents"] as ArrayList<Map<String, String>>?
-                                    ),
+                                    UserMeals.getMeals(it.documents[1]),
                                     //Snacks
-                                    UserMeals.Meal(
-                                        it.documents[3].getField<Int>("totalCalorie"),
-                                        it.documents[3].getField<Int>("totalCarbohydrate"),
-                                        it.documents[3].getField<Int>("totalFat"),
-                                        it.documents[3].getField<Int>("totalProtein"),
-                                        it.documents[3]["contents"] as ArrayList<Map<String, String>>?
-                                    )
+                                    UserMeals.getMeals(it.documents[3]),
                                 )
                                 successHandler(userMeals)
                                 Log.i("getUserMealsForToday", "Success")
@@ -260,18 +262,30 @@ class FirestoreSource {
                             else {
                                 val newUserMeals = UserMeals(
                                         //Breakfast
-                                        UserMeals.getEmptyUserMeals(),
+                                        UserMeals.getEmptyMeals(),
                                         //Lunch
-                                        UserMeals.getEmptyUserMeals(),
+                                        UserMeals.getEmptyMeals(),
                                         //Dinner
-                                        UserMeals.getEmptyUserMeals(),
+                                        UserMeals.getEmptyMeals(),
                                         //Snacks
-                                        UserMeals.getEmptyUserMeals()
+                                        UserMeals.getEmptyMeals()
                                 )
-                                db.collection("Meals").document(currentUser.uid).collection(todayStr).document("Breakfast").set(newUserMeals.breakfast!!)
-                                db.collection("Meals").document(currentUser.uid).collection(todayStr).document("Dinner").set(newUserMeals.dinner!!)
-                                db.collection("Meals").document(currentUser.uid).collection(todayStr).document("Lunch").set(newUserMeals.lunch!!)
-                                db.collection("Meals").document(currentUser.uid).collection(todayStr).document("Snacks").set(newUserMeals.snacks!!)
+                                db.collection("Meals").document(currentUser.uid)
+                                        .collection(todayStr)
+                                        .document("Breakfast")
+                                        .set(newUserMeals.breakfast!!)
+                                db.collection("Meals").document(currentUser.uid)
+                                        .collection(todayStr)
+                                        .document("Dinner")
+                                        .set(newUserMeals.dinner!!)
+                                db.collection("Meals").document(currentUser.uid)
+                                        .collection(todayStr)
+                                        .document("Lunch")
+                                        .set(newUserMeals.lunch!!)
+                                db.collection("Meals").document(currentUser.uid)
+                                        .collection(todayStr)
+                                        .document("Snacks")
+                                        .set(newUserMeals.snacks!!)
 
                                 successHandler(newUserMeals)
                                 Log.i("getUserMealsForToday", "Fail")
