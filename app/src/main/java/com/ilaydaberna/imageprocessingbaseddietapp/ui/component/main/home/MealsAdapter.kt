@@ -123,7 +123,7 @@ class MealsAdapter(private val context: Context,
         }
 
 
-        if(dataSet.get()!!.get(position).contents != null){
+        if(!dataSet.get()!!.get(position).contents.isNullOrEmpty()){
             var i:Int = 1
             var strContent: String = dataSet.get()!!.get(position).contents!![0]!!.name
             while(i < dataSet.get()!!.get(position).contents!!.size){

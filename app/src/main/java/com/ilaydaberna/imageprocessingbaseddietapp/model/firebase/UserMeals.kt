@@ -14,4 +14,14 @@ class UserMeals (
         val totalProtein: Int? = null,
         val contents: ArrayList<Map<String,String>>?
     )
+
+    companion object{
+        fun getEmptyUserMeals() = Meal(
+            0,
+            0,
+            0,
+            0,
+            arrayListOf()
+        )
+    }
 }
