@@ -5,17 +5,16 @@ import android.net.Uri
 import android.util.Log
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
-import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.getField
-import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.gson.Gson
 import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class FirestoreSource {
 
@@ -208,30 +207,15 @@ class FirestoreSource {
                     }
         }
 
-        fun getFoodById(foodID: String,successHandler: (Food?) -> Unit, failHandler: () -> Unit){
-            val docRef = Firebase.firestore.collection("Foods").document(foodID)
-            docRef.get().addOnSuccessListener { document ->
-                val food = Food(
-                    document.get("ID").toString().toInt(),
-                    document.get("fileName").toString(),
-                    document.get("name").toString(),
-                    document.get("calorie").toString().toDouble(),
-                    document.get("carbohydrate").toString().toDouble(),
-                    document.get("fat").toString().toDouble(),
-                    document.get("protein").toString().toDouble(),
-                    document.get("servingType").toString()
-                )
-                successHandler(food)
-            }
-        }
-
         fun getUserMealsForToday(currentUser: FirebaseUser?, successHandler: (UserMeals) -> Unit, failHandler: () -> Unit){
-            val todayStr: String = "19June2021"
+            var simpleDateFormat = SimpleDateFormat("ddMMyyyy")
+            val todayStr: String  = simpleDateFormat.format(Date(System.currentTimeMillis()))
+
             if(currentUser != null) {
                 if(currentUser.uid != null) {
                     val db = Firebase.firestore
-                    val docRef = db.collection("MealTest")
-                        .document("xyz")
+                    val docRef = db.collection("Meals")
+                        .document(currentUser.uid)
                         .collection(todayStr)
                         .get()
                         .addOnSuccessListener {
@@ -284,10 +268,10 @@ class FirestoreSource {
                                         //Snacks
                                         UserMeals.getEmptyUserMeals()
                                 )
-                                db.collection("MealTest").document("xyz").collection(todayStr).document("Breakfast").set(newUserMeals.breakfast!!)
-                                db.collection("MealTest").document("xyz").collection(todayStr).document("Dinner").set(newUserMeals.dinner!!)
-                                db.collection("MealTest").document("xyz").collection(todayStr).document("Lunch").set(newUserMeals.lunch!!)
-                                db.collection("MealTest").document("xyz").collection(todayStr).document("Snacks").set(newUserMeals.snacks!!)
+                                db.collection("Meals").document(currentUser.uid).collection(todayStr).document("Breakfast").set(newUserMeals.breakfast!!)
+                                db.collection("Meals").document(currentUser.uid).collection(todayStr).document("Dinner").set(newUserMeals.dinner!!)
+                                db.collection("Meals").document(currentUser.uid).collection(todayStr).document("Lunch").set(newUserMeals.lunch!!)
+                                db.collection("Meals").document(currentUser.uid).collection(todayStr).document("Snacks").set(newUserMeals.snacks!!)
 
                                 successHandler(newUserMeals)
                                 Log.i("getUserMealsForToday", "Fail")
@@ -478,30 +462,6 @@ class FirestoreSource {
         }
     }
 
-    fun initLiquid(currentUser: FirebaseUser?, date: Long) {
-        if (currentUser != null) {
-            if (currentUser.uid != null) {
-                val db = Firebase.firestore
-                val docRef = db.collection("LiquidTracking")
-                val liquid = hashMapOf(
-                    "dailyWater" to 0,
-                    "dailyCoffee" to 0,
-                    "dailyTea" to 0,
-                    "date" to date,
-                    "userID" to currentUser.uid
-                )
-                docRef.add(liquid)
-                    .addOnSuccessListener { documentReference ->
-                        Log.i(TAG, "DocumentSnapshot written with ID: ${documentReference.id}")
-                    }
-                    .addOnFailureListener { e ->
-                        Log.i(TAG, "Error adding document", e)
-                    }
-            }
-        }
-    }
-
-
     fun updateUser(currentUser: FirebaseUser?) {
         if (currentUser != null) {
             if (currentUser.uid != null) {
@@ -563,32 +523,6 @@ class FirestoreSource {
                     Log.d(TAG, "${document.id} => ${document.data}")
                 }
                 callback.onCallback(userWeights)
-            }
-            .addOnFailureListener { exception ->
-                Log.w(TAG, "Error getting documents: ", exception)
-
-            }
-    }
-
-
-    fun getLiquidTrackingValues(currentUser: FirebaseUser, callback: GetUserLiquidTrackingCallback){
-        val userLiquidValues = arrayListOf<LiquidTrackValue>()
-        val db = Firebase.firestore
-        db.collection("LiquidTracking")
-            .whereEqualTo("userID", currentUser.uid)
-            .get()
-            .addOnSuccessListener { documents ->
-                for(document in documents){
-                    val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy")
-                    val dateString = simpleDateFormat.format(document.get("date"))
-                    userLiquidValues.add(LiquidTrackValue(
-                        document.get("dailyWater").toString().toInt(),
-                        document.get("dailyTea").toString().toInt(),
-                        document.get("dailyCoffee").toString().toInt(),
-                        String.format("%s", dateString)))
-                    Log.d(TAG, "${document.id} => ${document.data}")
-                }
-                callback.onCallback(userLiquidValues)
             }
             .addOnFailureListener { exception ->
                 Log.w(TAG, "Error getting documents: ", exception)
