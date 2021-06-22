@@ -14,6 +14,7 @@ import com.google.firebase.firestore.ktx.getField
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import com.google.gson.Gson
 import java.text.SimpleDateFormat
 
 class FirestoreSource {
@@ -187,6 +188,25 @@ class FirestoreSource {
     }
 
     companion object {
+
+        fun getFoods(handler: (() -> Unit)? = null) {
+            val foods = Firebase.firestore.collection("Foods")
+                    .get()
+                    .addOnSuccessListener {
+                        result ->
+                        var foodList : ArrayList<Food> = arrayListOf()
+                        for (document in result) {
+                            foodList.add(Gson().fromJson(Gson().toJson(document.data), Food::class.java))
+                            Log.d(TAG, "${document.id} => ${document.data}")
+                        }
+                        FoodSingleton.food.set(foodList)
+                        handler?.invoke()
+                    }
+                    .addOnFailureListener { exception ->
+                        Log.d(TAG, "Error getting documents: ", exception)
+                        handler?.invoke()
+                    }
+        }
 
         fun getFoodById(foodID: String,successHandler: (Food?) -> Unit, failHandler: () -> Unit){
             val docRef = Firebase.firestore.collection("Foods").document(foodID)
