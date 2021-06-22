@@ -206,12 +206,13 @@ class FirestoreSource {
         }
 
         fun getUserMealsForToday(currentUser: FirebaseUser?, successHandler: (UserMeals) -> Unit, failHandler: () -> Unit){
+            val todayStr: String = "21June2021"
             if(currentUser != null) {
                 if(currentUser.uid != null) {
                     val db = Firebase.firestore
                     val docRef = db.collection("MealTest")
                         .document("userID")
-                        .collection("19June2021")
+                        .collection(todayStr)
                         .get()
                         .addOnSuccessListener {
                             if(!it.isEmpty){
@@ -253,7 +254,46 @@ class FirestoreSource {
                                 Log.i("getUserMealsForToday", "Success")
                             }
                             else {
-                                //TODO: MEAL OLUŞTUR ve yeni kayırlar için "successHandler(userMeals)" çağır
+                                val newUserMeals = UserMeals(
+                                        //Breakfast
+                                        UserMeals.Meal(
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                arrayListOf()
+                                        ),
+                                        //Lunch
+                                        UserMeals.Meal(
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                arrayListOf()
+                                        ),
+                                        //Dinner
+                                        UserMeals.Meal(
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                arrayListOf()
+                                        ),
+                                        //Snacks
+                                        UserMeals.Meal(
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                arrayListOf()
+                                        )
+                                )
+                                db.collection("MealTest").document("userID").collection(todayStr).document("Breakfast").set(newUserMeals.breakfast!!)
+                                db.collection("MealTest").document("userID").collection(todayStr).document("Dinner").set(newUserMeals.dinner!!)
+                                db.collection("MealTest").document("userID").collection(todayStr).document("Lunch").set(newUserMeals.lunch!!)
+                                db.collection("MealTest").document("userID").collection(todayStr).document("Snacks").set(newUserMeals.snacks!!)
+
+                                successHandler(newUserMeals)
                                 Log.i("getUserMealsForToday", "Fail")
                             }
                         }
