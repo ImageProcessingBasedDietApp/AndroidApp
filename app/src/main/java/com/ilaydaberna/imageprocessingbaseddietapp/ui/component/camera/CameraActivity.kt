@@ -208,7 +208,11 @@ class CameraActivity : AppCompatActivity() {
                                     mealType = mealType,
                                     successHandler = {
                                         startHomeActivity()
-                                    })
+                                    },
+                                    failHandler = {
+
+                                    }
+                            )
                         }, failHandler = {})
                     }
                     else{
@@ -273,7 +277,11 @@ class CameraActivity : AppCompatActivity() {
                                 mealType = mealType,
                                 successHandler = {
                                     startHomeActivity()
-                                })
+                                },
+                                failHandler = {
+
+                                }
+                        )
                     }, failHandler = {})
                 }
             }
@@ -333,7 +341,11 @@ class CameraActivity : AppCompatActivity() {
                                 mealType = mealType,
                                 successHandler = {
                                     startHomeActivity()
-                                })
+                                },
+                                failHandler = {
+
+                                }
+                        )
                     }, failHandler = {})
                 }
             }
@@ -370,6 +382,7 @@ class CameraActivity : AppCompatActivity() {
             permissions: Array<String>,
             grantResults: IntArray
     ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
             if (allPermissionsGranted()) {
                 startCamera()

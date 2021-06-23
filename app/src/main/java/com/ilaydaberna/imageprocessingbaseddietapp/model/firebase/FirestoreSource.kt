@@ -207,7 +207,7 @@ class FirestoreSource {
                     }
         }
 
-        fun updateUserMealForToday (currentUser: FirebaseUser?, userMeal: UserMeals.Meal, mealType: String, successHandler: () -> Unit){
+        fun updateUserMealForToday (currentUser: FirebaseUser?, userMeal: UserMeals.Meal, mealType: String, successHandler: () -> Unit, failHandler: () -> Unit){
             var simpleDateFormat = SimpleDateFormat("ddMMyyyy")
             val todayStr: String  = simpleDateFormat.format(Date(System.currentTimeMillis()))
             if(currentUser != null){
