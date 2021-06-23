@@ -10,7 +10,8 @@
     </data>
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/gradient_background">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -20,8 +21,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="460dp"
                 android:orientation="vertical"
-                tools:context=".ui.component.main.follow.FollowFragment"
-                android:background="@drawable/gradient_background">
+                tools:context=".ui.component.main.follow.FollowFragment">
 
                 <LinearLayout
                     android:id="@+id/topbar"
