@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.dialog_add_food_amount.view.*
 import kotlinx.android.synthetic.main.fragment_add_meal.view.*
 import java.text.DecimalFormat
 
-class AddMealFragment : Fragment() {
+class AddMealFragment : Fragment(), AddMealNavigator{
 
     private var adapterFood = FoodsAdapter()
     private lateinit var adapterUserFood: UserFoodAdapter
@@ -68,7 +68,7 @@ class AddMealFragment : Fragment() {
             userFoodList = userMealItem.contents as ArrayList<Food>
             userFoodAmount = (userMealItem.amounts?: arrayListOf()) as ArrayList<Map<String, String>>
 
-            adapterUserFood = UserFoodAdapter(context = requireContext(), userFoods = userFoodList, userFoodAmount = userFoodAmount)
+            adapterUserFood = UserFoodAdapter(this, userFoods = userFoodList, userFoodAmount = userFoodAmount)
             view.rv_user_food.adapter = adapterUserFood
             adapterUserFood.notifyDataSetChanged()
             setTotalView(view, userMealItem)
@@ -122,6 +122,38 @@ class AddMealFragment : Fragment() {
                 mDialogView.et_amount.setError("Geçerli bir değer giriniz")
             }
         }
+    }
+
+    override fun removeUserFood(food: Food, amount: Double) {
+        //todo remove
+        (activity as MainActivity?)?.showLoading()
+        userFoodList.remove(food)
+        userFoodAmount.remove(mapOf("foodID" to food.id.toString(), "amount" to amount.toString()))
+        totalCalorie -= food.calorie * amount
+        totalFat -= food.fat * amount
+        totalProtein -= food.protein * amount
+        totalCarbohydrate -= food.carbohydrate * amount
+
+        val thisMeal = UserMeals.Meal(
+                totalCalorie = totalCalorie.toInt(),
+                totalCarbohydrate = totalCarbohydrate.toInt(),
+                totalFat = totalFat.toInt(),
+                totalProtein = totalProtein.toInt(),
+                contents = userFoodAmount
+        )
+
+        FirestoreSource.updateUserMealForToday(currentUser = currentUser,
+                userMeal = thisMeal,
+                mealType = userMealItem.type,
+                successHandler = {
+                    updateTotalView()
+                    adapterUserFood.notifyDataSetChanged()
+                    (activity as MainActivity?)?.hideLoading()
+                },
+                failHandler = {
+                    (activity as MainActivity?)?.hideLoading()
+                }
+        )
     }
 
     private fun addUserFood(amount: Double, food: Food){

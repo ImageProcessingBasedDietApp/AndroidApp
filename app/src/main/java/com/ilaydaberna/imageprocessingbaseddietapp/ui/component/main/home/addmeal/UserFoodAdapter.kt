@@ -11,7 +11,7 @@ import com.ilaydaberna.imageprocessingbaseddietapp.R
 import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.Food
 import java.text.DecimalFormat
 
-class UserFoodAdapter(private val context: Context,
+class UserFoodAdapter(private val navigator: AddMealNavigator,
                       private val userFoods: ArrayList<Food>,
                       private val userFoodAmount : ArrayList<Map<String,String>>
 ) : RecyclerView.Adapter<UserFoodAdapter.ViewHolder>() {
@@ -45,7 +45,7 @@ class UserFoodAdapter(private val context: Context,
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        var amount = userFoodAmount[position]["amount"]?.toDouble()?.toInt().toString() + " "
+        var amount = userFoodAmount[position]["amount"]?.toDouble()?.toString() + " "
         var foodCalorie = userFoodAmount[position]["amount"]?.toDouble()?.times(userFoods.get(position).calorie)
         var foodProtein = userFoodAmount[position]["amount"]?.toDouble()?.times(userFoods.get(position).protein)
         var foodCarbohydrate = userFoodAmount[position]["amount"]?.toDouble()?.times(userFoods.get(position).carbohydrate)
@@ -59,8 +59,7 @@ class UserFoodAdapter(private val context: Context,
         viewHolder.tvUserFoodFat.text = "Yağ:\n"+ DecimalFormat("##.##").format(foodFat).toString()+ " gr"
 
         viewHolder.layoutItemUserFood.setOnClickListener {
-            //TODO
-            // navigator.openAddMealFragment(dataSet.get()!!.get(position))
+            navigator.removeUserFood(userFood = userFoods.get(position), userFoodAmount[position]["amount"]?.toDouble()?:1.0)
         }
     }
 
