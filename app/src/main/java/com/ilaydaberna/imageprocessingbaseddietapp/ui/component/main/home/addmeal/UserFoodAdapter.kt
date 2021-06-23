@@ -1,56 +1,67 @@
 package com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.home.addmeal
 
+import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.ilaydaberna.imageprocessingbaseddietapp.databinding.ItemUserFoodListBinding
+import com.ilaydaberna.imageprocessingbaseddietapp.R
 import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.Food
 
-class UserFoodAdapter : ListAdapter<Food, UserFoodAdapter.UserFoodHolder>(DIFF_CALLBACK){
-    var itemClickListener: (Food) -> Unit = {}
+class UserFoodAdapter(private val context: Context,
+                      private val userFoods: ArrayList<Food>,
+                      private val userFoodAmount : ArrayList<Map<String,String>>
+) : RecyclerView.Adapter<UserFoodAdapter.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserFoodHolder {
-        val binding = ItemUserFoodListBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
-        )
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val tvUserFoodName: TextView
+        val tvUserFoodCalorie: TextView
+        val tvUserFoodServingValue: TextView
+        val tvUserFoodProtein: TextView
+        val tvUserFoodFat: TextView
+        val tvUserFoodCarbohydrate: TextView
+        val layoutItemUserFood: LinearLayout
 
-        return UserFoodHolder(binding, itemClickListener)
-    }
+        init {
+            tvUserFoodName = view.findViewById(R.id.tv_user_food_name)
+            tvUserFoodCalorie = view.findViewById(R.id.tv_user_food_calorie)
+            tvUserFoodServingValue = view.findViewById(R.id.tv_user_food_serving_value)
+            tvUserFoodProtein = view.findViewById(R.id.tv_user_food_protein)
+            tvUserFoodFat = view.findViewById(R.id.tv_user_food_fat)
+            tvUserFoodCarbohydrate = view.findViewById(R.id.tv_user_food_carbohydrate)
+            layoutItemUserFood = view.findViewById(R.id.layout_item_user_food)
 
-    override fun onBindViewHolder(holder: UserFoodHolder, position: Int) =
-        holder.bind(getItem(position))
-
-    class UserFoodHolder(
-        private val binding: ItemUserFoodListBinding,
-        private val itemClickListener: (Food) -> Unit)
-        : RecyclerView.ViewHolder(binding.root) {
-
-        fun bind(food: Food) {
-
-            binding.tvUserFoodName.text = food.name
-            binding.tvUserFoodCalorie.text = food.calorie.toString() + " kcal"
-            binding.tvUserFoodServingValue.text = "1 " +food.servingType
-            binding.tvUserFoodProtein.text = "Protein:\n"+food.protein.toString()+ " gr"
-            binding.tvUserFoodFat.text = "Yağ:\n"+food.protein.toString()+ " gr"
-            binding.tvUserFoodCarbohydrate.text = "Karbonhidrat:\n"+food.carbohydrate.toString()+ " gr"
-
-            binding.root.setOnClickListener {
-                itemClickListener(food)
-            }
         }
     }
 
-    companion object {
-        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Food>() {
-            override fun areItemsTheSame(oldItem: Food, newItem: Food) =
-                oldItem.id == newItem.id
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(viewGroup.context)
+                .inflate(R.layout.item_user_food_list, viewGroup, false)
 
-            override fun areContentsTheSame(oldItem: Food, newItem: Food) =
-                oldItem == newItem
+        return ViewHolder(view)
+    }
+
+    override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
+
+        val amount: String = " "
+
+        viewHolder.tvUserFoodName.text = userFoods.get(position).name
+        viewHolder.tvUserFoodCalorie.text = userFoods.get(position).calorie.toString() + " kcal"
+        viewHolder.tvUserFoodServingValue.text = amount + userFoods.get(position).servingType
+        viewHolder.tvUserFoodProtein.text = "Protein:\n"+ userFoods.get(position).protein.toString()+ " gr"
+        viewHolder.tvUserFoodFat.text = "Yağ:\n"+ userFoods.get(position).protein.toString()+ " gr"
+        viewHolder.tvUserFoodCarbohydrate.text = "Karbonhidrat:\n"+ userFoods.get(position).carbohydrate.toString()+ " gr"
+
+        viewHolder.layoutItemUserFood.setOnClickListener {
+            //TODO
+            // navigator.openAddMealFragment(dataSet.get()!!.get(position))
         }
     }
+
+    override fun getItemCount() = userFoods.size
+
 }
+
+

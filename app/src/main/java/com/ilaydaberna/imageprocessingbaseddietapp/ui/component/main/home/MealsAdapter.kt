@@ -15,75 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ilaydaberna.imageprocessingbaseddietapp.R
 import com.ilaydaberna.imageprocessingbaseddietapp.databinding.ItemMealBinding
 import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.MealItem
-
-/*
-class MealsAdapter : ListAdapter<MealItem, MealsAdapter.MealHolder>(DIFF_CALLBACK){
-    var itemClickListener: (MealItem) -> Unit = {}
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MealHolder {
-        val binding = ItemMealBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-        )
-
-        return MealHolder(binding, itemClickListener)
-    }
-
-    override fun onBindViewHolder(holder: MealHolder, position: Int) =
-            holder.bind(getItem(position))
-
-    class MealHolder(
-            private val binding: ItemMealBinding,
-            private val itemClickListener: (MealItem) -> Unit)
-        : RecyclerView.ViewHolder(binding.root) {
-
-        fun bind(mealItem: MealItem) {
-
-            binding.tvMealType.text = mealItem.type
-
-            when(mealItem.type){
-                "Kahvaltı" -> binding.ivMealType.setImageResource(R.drawable.breakfast)
-                "Öğle Yemeği" -> binding.ivMealType.setImageResource(R.drawable.launch)
-                "Akşam Yemeği"-> binding.ivMealType.setImageResource(R.drawable.dinner)
-                "Ara Öğün" -> binding.ivMealType.setImageResource(R.drawable.snacks)
-            }
-
-            if(mealItem.contents != null && mealItem.contents.size != 0){
-                var i:Int = 1
-                var strContent: String? = mealItem.contents.get(i)?.name
-                while(i < mealItem.contents.size){
-                    strContent = strContent + ", "+ mealItem.contents[i]?.name
-                    i = i + 1
-                }
-                binding.tvMealContent.text = strContent
-                binding.tvMealTotalCalorie.text = mealItem.totalCalorie.toString() + " kcal"
-            }
-            else{
-                binding.tvMealTotalCalorie.text = "0 kcal"
-                binding.tvMealContent.text = " - "
-            }
-
-            binding.root.setOnClickListener {
-                itemClickListener(mealItem)
-            }
-        }
-    }
-
-    companion object {
-        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<MealItem>() {
-            override fun areItemsTheSame(item: MealItem, newItem: MealItem) =
-                    item.type == newItem.type
-
-            override fun areContentsTheSame(item: MealItem, newItem: MealItem) =
-                    item == newItem
-        }
-    }
-}
-*/
-
-
-
+import kotlinx.android.synthetic.main.fragment_add_meal.view.*
 
 class MealsAdapter(private val context: Context,
                    private val dataSet: ObservableField<ArrayList<MealItem>>,
@@ -115,13 +47,19 @@ class MealsAdapter(private val context: Context,
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         viewHolder.tvMealType.text = dataSet.get()!!.get(position).type
+
         when(dataSet.get()!!.get(position).type){
+            "Breakfast" -> viewHolder.tvMealType.text = "Kahvaltı"
+            "Lunch" -> viewHolder.tvMealType.text = "Öğle Yemeği"
+            "Dinner" -> viewHolder.tvMealType.text = "Akşam Yemeği"
+            "Snacks" -> viewHolder.tvMealType.text = "Ara Öğün"
+        }
+        when(viewHolder.tvMealType.text){
             "Kahvaltı" -> viewHolder.ivMealType.setImageDrawable(context.getDrawable(R.drawable.breakfast))
             "Öğle Yemeği"-> viewHolder.ivMealType.setImageDrawable(context.getDrawable(R.drawable.launch))
             "Akşam Yemeği"-> viewHolder.ivMealType.setImageDrawable(context.getDrawable(R.drawable.dinner))
-            "Atıştırmalıklar"-> viewHolder.ivMealType.setImageDrawable(context.getDrawable(R.drawable.snacks))
+            "Ara Öğün"-> viewHolder.ivMealType.setImageDrawable(context.getDrawable(R.drawable.snacks))
         }
-
 
         if(!dataSet.get()!!.get(position).contents.isNullOrEmpty()){
             var i:Int = 1

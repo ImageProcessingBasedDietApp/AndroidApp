@@ -207,7 +207,7 @@ class FirestoreSource {
                     }
         }
 
-        fun updateUserMealsForToday (currentUser: FirebaseUser?, userMeal: UserMeals.Meal, mealType: String){
+        fun updateUserMealForToday (currentUser: FirebaseUser?, userMeal: UserMeals.Meal, mealType: String, successHandler: () -> Unit){
             var simpleDateFormat = SimpleDateFormat("ddMMyyyy")
             val todayStr: String  = simpleDateFormat.format(Date(System.currentTimeMillis()))
             if(currentUser != null){
@@ -224,7 +224,7 @@ class FirestoreSource {
                                 "contents" to (userMeal.contents ?: arrayListOf())
                         ))
                         .addOnSuccessListener {
-                            //successHandler()
+                            successHandler.invoke()
                             Log.i("updateUserMealsForToday", "Success")
                         }
                         .addOnFailureListener {

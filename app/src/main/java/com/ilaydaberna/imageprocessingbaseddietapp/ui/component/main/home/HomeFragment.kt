@@ -88,7 +88,7 @@ class HomeFragment : Fragment(), HomeNavigator{
                     meals.breakfast?.totalCarbohydrate?:0,
                     meals.breakfast?.totalFat?:0,
                     meals.breakfast?.totalProtein?:0,
-                    "Kahvaltı",
+                    "Breakfast",
                     meals.breakfast?.contents?.let { getUserFoods(it) },
                     meals.breakfast?.contents
                 )
@@ -102,7 +102,7 @@ class HomeFragment : Fragment(), HomeNavigator{
                             meals.lunch?.totalCarbohydrate?:0,
                             meals.lunch?.totalFat?:0,
                             meals.lunch?.totalProtein?:0,
-                            "Öğle Yemeği",
+                            "Lunch",
                             meals.lunch?.contents?.let { getUserFoods(it) },
                             meals.lunch?.contents
                     )
@@ -116,7 +116,7 @@ class HomeFragment : Fragment(), HomeNavigator{
                             meals.dinner?.totalCarbohydrate?:0,
                             meals.dinner?.totalFat?:0,
                             meals.dinner?.totalProtein?:0,
-                            "Akşam Yemeği",
+                            "Dinner",
                             meals.dinner?.contents?.let { getUserFoods(it) },
                             meals.dinner?.contents
                     )
@@ -130,7 +130,7 @@ class HomeFragment : Fragment(), HomeNavigator{
                             meals.snacks?.totalCarbohydrate?:0,
                             meals.snacks?.totalFat?:0,
                             meals.snacks?.totalProtein?:0,
-                            "Atıştırmalıklar",
+                            "Snacks",
                             meals.snacks?.contents?.let { getUserFoods(it) },
                             meals.snacks?.contents
                     )
