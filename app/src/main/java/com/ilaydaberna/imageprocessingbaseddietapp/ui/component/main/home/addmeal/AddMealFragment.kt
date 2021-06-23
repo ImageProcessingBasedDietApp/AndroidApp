@@ -50,14 +50,22 @@ class AddMealFragment : Fragment() {
 
         if(arguments != null){
             userMealItem = (requireArguments().get("meal") as MealItem)
+
             when(userMealItem.type){
                 "Breakfast" -> view.tv_meal_title.text = "Kahvaltım"
                 "Lunch" -> view.tv_meal_title.text = "Öğle Yemeğim"
                 "Dinner" -> view.tv_meal_title.text = "Akşam Yemeğim"
                 "Snacks" -> view.tv_meal_title.text = "Ara Öğünüm"
             }
+
+            totalCalorie = userMealItem.totalCalorie.toDouble()
+            totalCarbohydrate = userMealItem.totalCarbohydrate.toDouble()
+            totalProtein = userMealItem.totalProtein.toDouble()
+            totalFat = userMealItem.totalFat.toDouble()
+
             userFoodList = userMealItem.contents as ArrayList<Food>
             userFoodAmount = (userMealItem.amounts?: listOf()) as ArrayList<Map<String, String>>
+
             adapterUserFood = UserFoodAdapter(context = requireContext(), userFoods = userFoodList, userFoodAmount = userFoodAmount)
             view.rv_user_food.adapter = adapterUserFood
             setTotalView(view, userMealItem)
