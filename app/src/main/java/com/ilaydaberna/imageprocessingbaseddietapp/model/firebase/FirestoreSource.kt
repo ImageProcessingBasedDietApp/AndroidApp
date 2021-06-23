@@ -233,6 +233,29 @@ class FirestoreSource {
             }
         }
 
+        fun getUserMeal(currentUser: FirebaseUser?, mealType: String, successHandler: (UserMeals.Meal) -> Unit, failHandler: () -> Unit){
+            var simpleDateFormat = SimpleDateFormat("ddMMyyyy")
+            val todayStr: String  = simpleDateFormat.format(Date(System.currentTimeMillis()))
+            if(currentUser != null) {
+                if (currentUser.uid != null) {
+                    val db = Firebase.firestore
+                    val docRef = db.collection("Meals")
+                            .document(currentUser.uid)
+                            .collection(todayStr)
+                            .document(mealType)
+                            .get()
+                            .addOnSuccessListener{
+                                val meal = UserMeals.getMeals(it)
+                                successHandler(meal)
+                            }
+                            .addOnFailureListener {
+                                failHandler()
+                            }
+
+                }
+            }
+        }
+
         fun getUserMealsForToday(currentUser: FirebaseUser?, successHandler: (UserMeals) -> Unit, failHandler: () -> Unit){
             var simpleDateFormat = SimpleDateFormat("ddMMyyyy")
             val todayStr: String  = simpleDateFormat.format(Date(System.currentTimeMillis()))
