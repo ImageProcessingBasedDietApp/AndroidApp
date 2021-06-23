@@ -40,7 +40,6 @@ class ProfileFragment : Fragment() {
     val firebaseAuth: FirebaseAuth? = FirebaseSource().getAuth()
     val currentUser: FirebaseUser? = firebaseAuth?.currentUser
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -143,8 +142,8 @@ class ProfileFragment : Fragment() {
         }
 
         view.button_save_goals.setOnClickListener {
-            if (!view.et_goal_coffee.isEmpty() && !view.et_goal_weight.isEmpty() && !view.et_goal_water.isEmpty() && !view.et_goal_tea.isEmpty() && !view.et_goal_step.isEmpty()) {
-                //TODO: firebase kaydet
+            if (!view.et_goal_coffee.isEmpty() && !view.et_goal_weight.isEmpty() && !view.et_goal_water.isEmpty()
+                    && !view.et_goal_tea.isEmpty() && !view.et_goal_step.isEmpty()) {
                 val tmpUser = UserInfo.user.get()
                 if (tmpUser != null) {
                     UserInfo.user.set(
@@ -190,7 +189,6 @@ class ProfileFragment : Fragment() {
 
         view.button_save_user_info.setOnClickListener {
             if (!view.et_height.isEmpty() && !view.et_weight.isEmpty() && !view.et_birthdate.isEmpty() && !view.et_gender.isEmpty()) {
-                //TODO: firebase kaydet
                 val tmpUser = UserInfo.user.get()
                 if (tmpUser != null) {
                     UserInfo.user.set(
@@ -235,9 +233,7 @@ class ProfileFragment : Fragment() {
         }
 
         view.button_save_settings.setOnClickListener {
-            //TODO: firebase kaydet
             val tmpUser = UserInfo.user.get()
-
             if (sw_notification.isChecked) {
                 if (tmpUser != null) {
                     UserInfo.user.set(
@@ -289,7 +285,6 @@ class ProfileFragment : Fragment() {
             isEditSettings = false
         }
 
-
         //Converted birthday from long to Date format.
         val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy")
         val dateString = simpleDateFormat.format(user?.birthdate)
@@ -308,15 +303,32 @@ class ProfileFragment : Fragment() {
     fun initUser(view: View, user: User){
         view.tv_name_surname.text = user?.name
         view.tv_email.text = user?.email
+
         view.tv_goal_weight.text = user?.goalWeight.toString() + " kg"
         view.tv_goal_coffee.text = user?.goalCoffee.toString() + " fincan"
         view.tv_goal_step.text = user?.goalStep.toString() + " adım"
         view.tv_goal_tea.text = user?.goalTea.toString() + " bardak"
         view.tv_goal_water.text = user?.goalWater.toString() + " bardak"
+
         view.tv_gender.text = user?.gender
         view.tv_weight.text = user?.weight.toString() + " kg"
         view.tv_height.text = user?.height.toString() + " cm"
 
+        view.et_goal_weight.setText(user?.goalWeight.toString())
+        view.et_goal_coffee.setText(user?.goalCoffee.toString())
+        view.et_goal_step.setText(user?.goalStep.toString())
+        view.et_goal_tea.setText(user?.goalTea.toString())
+        view.et_goal_water.setText(user?.goalWater.toString())
+
+        view.et_gender.setText(user?.gender)
+        view.et_weight.setText(user?.weight.toString())
+        view.et_height.setText(user?.height.toString())
+        val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy")
+        val dateString = simpleDateFormat.format(user?.birthdate)
+        val text = String.format("%s", dateString)
+        view.et_birthdate.setText(text)
+
+        view.sw_notification.isChecked = user?.isNotification
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -357,6 +369,5 @@ class ProfileFragment : Fragment() {
         })
         builder.show()
     }
-
 
 }
