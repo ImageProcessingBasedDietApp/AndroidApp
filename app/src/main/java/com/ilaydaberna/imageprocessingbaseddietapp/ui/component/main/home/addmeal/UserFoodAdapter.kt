@@ -44,9 +44,7 @@ class UserFoodAdapter(private val context: Context,
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-
-        val amount: String = " "
-
+        var amount = userFoodAmount[position]["amount"]?.toDouble()?.toInt().toString() + " "
         viewHolder.tvUserFoodName.text = userFoods.get(position).name
         viewHolder.tvUserFoodCalorie.text = userFoods.get(position).calorie.toString() + " kcal"
         viewHolder.tvUserFoodServingValue.text = amount + userFoods.get(position).servingType
