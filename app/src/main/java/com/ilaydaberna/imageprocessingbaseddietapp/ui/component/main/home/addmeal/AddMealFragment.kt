@@ -84,12 +84,12 @@ class AddMealFragment : Fragment() {
 
             override fun onQueryTextChange(newText: String): Boolean {
                 Log.d("SearchViewTextChanged", newText)
+                adapterFood.submitList(filteredFoods(query = newText))
                 return false
             }
 
             override fun onQueryTextSubmit(query: String): Boolean {
                 Log.d("onQueryTextSubmit", query)
-                adapterFood.submitList(filteredFoods(query = query))
                 return false
             }
 
@@ -180,6 +180,7 @@ class AddMealFragment : Fragment() {
                     filteredFoods.add(food)
                 }
             }
+
         }
         return filteredFoods
     }
