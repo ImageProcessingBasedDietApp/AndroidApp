@@ -3,13 +3,16 @@ package com.ilaydaberna.imageprocessingbaseddietapp.ui.component.camera
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Matrix
 import android.os.Bundle
 import android.util.Log
 import android.util.Size
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -23,14 +26,20 @@ import androidx.camera.view.PreviewView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.RecyclerView
+import androidx.navigation.findNavController
+import com.google.firebase.auth.FirebaseUser
 import com.ilaydaberna.imageprocessingbaseddietapp.R
 import com.ilaydaberna.imageprocessingbaseddietapp.ml.FoodClassificationModel
 import com.ilaydaberna.imageprocessingbaseddietapp.ml.PlateModel
+import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.*
 import com.ilaydaberna.imageprocessingbaseddietapp.util.YuvToRgbConverter
 import com.ilaydaberna.imageprocessingbaseddietapp.util.startHomeActivity
+import kotlinx.android.synthetic.main.dialog_add_food_amount.view.*
+import kotlinx.android.synthetic.main.dialog_add_food_amount.view.btn_dialog_amount_save
+import kotlinx.android.synthetic.main.dialog_add_meal_type.view.*
 import org.tensorflow.lite.support.image.TensorImage
 import java.util.concurrent.Executors
+import java.util.stream.Collectors
 
 // Constants
 private const val MAX_RESULT_DISPLAY = 3 // Maximum number of results displayed
@@ -44,7 +53,6 @@ typealias RecognitionListener = (recognition: List<Recognition>) -> Unit
 
 class CameraActivity : AppCompatActivity() {
 
-    // CameraX variables
     private lateinit var preview: Preview // Preview use case, fast, responsive view of the camera
     private lateinit var imageAnalyzer: ImageAnalysis // Analysis use case, for running ML code
     private lateinit var camera: Camera
@@ -52,6 +60,9 @@ class CameraActivity : AppCompatActivity() {
     private lateinit var imageCapture: ImageCapture
     private lateinit var cameraProvider: ProcessCameraProvider
     private var imageBitmap: Bitmap? = null
+    private var mealType: String = ""
+    private var foodArray = ArrayList<String>()
+    private val currentUser: FirebaseUser? = FirebaseSource().getAuth().currentUser
 
 
     // Views attachment
@@ -146,6 +157,62 @@ class CameraActivity : AppCompatActivity() {
                 )
             }
         }
+
+        btnRecognatedFood1.setOnClickListener {
+            val mDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_add_meal_type, null)
+            val mBuilder = AlertDialog.Builder(this).setView(mDialogView)
+            val mAlertDialog = mBuilder.show()
+            val values = arrayOf("Kahvaltı", "Öğle Yemeği", "Akşam Yemeği", "Ara Öğün")
+            mDialogView.np_meal_type.setMinValue(0)
+            mDialogView.np_meal_type.setMaxValue(values.size - 1)
+            mDialogView.np_meal_type.setWrapSelectorWheel(false)
+            mDialogView.np_meal_type.setDisplayedValues(values)
+
+            mDialogView.btn_dialog_amount_save.setOnClickListener {
+                //mealType = mDialogView.np_meal_type.value.toString() // 0 - 1 - 2 - 3
+                var mealType = ""
+                val tmpFood = foodArray[0]
+
+                when (mDialogView.np_meal_type.value) { // 0 - 1 - 2 - 3
+                    0 -> mealType = "Breakfast"
+                    1 -> mealType = "Lunch"
+                    2 -> mealType = "Dinner"
+                    3 -> mealType = "Snacks"
+                }
+                //TODO: Get amount of meal from user.
+                //TODO: Add food to the selected meal of user.
+                val selectedFood = getFoodByName("şehriye-çorbası")
+                FirestoreSource.getUserMeal(currentUser, mealType, successHandler = {
+                    val thisMeal = it
+
+                    thisMeal.contents?.add(mapOf("amount" to "1", "foodID" to selectedFood[0].id.toString()))
+                    thisMeal.totalCalorie = thisMeal.totalCalorie?.plus(selectedFood[0].calorie.toInt())
+                    thisMeal.totalCarbohydrate = thisMeal.totalCarbohydrate?.plus(selectedFood[0].carbohydrate.toInt())
+                    thisMeal.totalFat = thisMeal.totalFat?.plus(selectedFood[0].fat.toInt())
+                    thisMeal.totalProtein = thisMeal.totalProtein?.plus(selectedFood[0].protein.toInt())
+
+                    FirestoreSource.updateUserMealForToday(currentUser = currentUser,
+                            userMeal = thisMeal,
+                            mealType = mealType,
+                            successHandler = {
+                                startHomeActivity()
+                    })
+                }, failHandler = {})
+            }
+        }
+    }
+
+    private fun getFoodByName(foodName: String): List<Food> {
+        return FoodSingleton.food.get()?.stream()
+                ?.filter { food ->
+                    try {
+                        foodName == food.fileName
+                    } catch (e: java.lang.Exception) {
+                        Log.i("", "")
+                        false
+                    }
+                }
+                ?.collect(Collectors.toList())?: listOf()
     }
 
     /**
@@ -317,8 +384,10 @@ class CameraActivity : AppCompatActivity() {
                                 .probabilityAsCategoryList.apply{
                                 sortByDescending { it.score }
                             }.take(MAX_RESULT_DISPLAY)
+                        foodArray.clear()
                         for(foodOutput in foodOutputs){
                             foods.add(Recognition(foodOutput.label, foodOutput.score))
+                            foodArray.add(foodOutput.label)
                         }
                         btnRecognatedFood1.setText(foods[0].toString())
                         btnRecognatedFood2.setText(foods[1].toString())

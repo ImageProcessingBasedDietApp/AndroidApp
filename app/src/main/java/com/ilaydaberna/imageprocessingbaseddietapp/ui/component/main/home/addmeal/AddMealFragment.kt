@@ -64,7 +64,7 @@ class AddMealFragment : Fragment() {
             totalFat = userMealItem.totalFat.toDouble()
 
             userFoodList = userMealItem.contents as ArrayList<Food>
-            userFoodAmount = (userMealItem.amounts?: listOf()) as ArrayList<Map<String, String>>
+            userFoodAmount = (userMealItem.amounts?: arrayListOf()) as ArrayList<Map<String, String>>
 
             adapterUserFood = UserFoodAdapter(context = requireContext(), userFoods = userFoodList, userFoodAmount = userFoodAmount)
             view.rv_user_food.adapter = adapterUserFood

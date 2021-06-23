@@ -12,10 +12,10 @@ class UserMeals (
 
     class Meal(
         var totalCalorie: Int? = null,
-        val totalCarbohydrate: Int? = null,
-        val totalFat: Int? = null,
-        val totalProtein: Int? = null,
-        val contents: ArrayList<Map<String,String>>?
+        var totalCarbohydrate: Int? = null,
+        var totalFat: Int? = null,
+        var totalProtein: Int? = null,
+        var contents: ArrayList<Map<String,String>>?
     )
 
     companion object{
