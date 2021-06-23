@@ -13,7 +13,7 @@ import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.*
 import com.ilaydaberna.imageprocessingbaseddietapp.util.isAmountValid
 import kotlinx.android.synthetic.main.dialog_add_food_amount.view.*
 import kotlinx.android.synthetic.main.fragment_add_meal.view.*
-import kotlinx.android.synthetic.main.fragment_home.view.*
+import java.text.DecimalFormat
 
 class AddMealFragment : Fragment() {
 
@@ -67,8 +67,6 @@ class AddMealFragment : Fragment() {
 
         adapterFood.itemClickListener = {
             openAmountDialog(it)
-            //addUserFood(it)
-            //updateTotalView(view)
         }
 
        // adapterUserFood.itemClickListener = {
@@ -105,20 +103,6 @@ class AddMealFragment : Fragment() {
         }
     }
 
-    private fun setTotalView(view: View, meal: MealItem){
-        view.tv_user_meal_total_calorie.text = meal.totalCalorie.toString() +" kcal"
-        view.tv_user_meal_total_protein.text = meal.totalProtein.toString() +" gr"
-        view.tv_user_meal_total_carbohydrate.text = meal.totalCarbohydrate.toString() +" gr"
-        view.tv_user_meal_total_fat.text = meal.totalFat.toString() +" gr"
-    }
-
-    private fun updateTotalView(){
-        view?.tv_user_meal_total_calorie?.text = totalCalorie.toString() +" kcal"
-        view?.tv_user_meal_total_protein?.text = totalProtein.toString() +" gr"
-        view?.tv_user_meal_total_carbohydrate?.text = totalCarbohydrate.toString() +" gr"
-        view?.tv_user_meal_total_fat?.text = totalFat.toString() +" gr"
-    }
-
     private fun addUserFood(amount: Double, food: Food){
         userFoodList.add(food)
         userFoodAmount.add(mapOf("foodID" to food.id.toString(), "amount" to amount.toString()))
@@ -140,31 +124,22 @@ class AddMealFragment : Fragment() {
                 mealType = userMealItem.type,
                 successHandler = {
                     updateTotalView()
-
                     //todo userFood Adaptera gönder
-
         })
     }
 
-
-    private fun addUserFoodOld(amount: Double,food: Food){
-        //userFoodList = userFoodList + food
-        //    adapterUserFood.submitList(userFoodList)
-
-        totalCalorie += food.calorie
-        totalFat += food.fat
-        totalProtein += food.protein
-        totalCarbohydrate += food.carbohydrate
+    private fun setTotalView(view: View, meal: MealItem){
+        view.tv_user_meal_total_calorie.text = DecimalFormat("##.##").format(meal.totalCalorie) +" kcal"
+        view.tv_user_meal_total_protein.text = DecimalFormat("##.##").format(meal.totalProtein) +" gr"
+        view.tv_user_meal_total_carbohydrate.text = DecimalFormat("##.##").format(meal.totalCarbohydrate) +" gr"
+        view.tv_user_meal_total_fat.text = DecimalFormat("##.##").format(meal.totalFat) +" gr"
     }
 
-    private fun removeUserFood(food: Food){
-        //userFoodList = userFoodList - food
-      //  adapterUserFood.submitList(userFoodList)
-
-        totalCalorie -= food.calorie
-        totalFat -= food.fat
-        totalProtein -= food.protein
-        totalCarbohydrate -= food.carbohydrate
+    private fun updateTotalView(){
+        view?.tv_user_meal_total_calorie?.text = DecimalFormat("##.##").format(totalCalorie) +" kcal"
+        view?.tv_user_meal_total_protein?.text = DecimalFormat("##.##").format(totalProtein) +" gr"
+        view?.tv_user_meal_total_carbohydrate?.text = DecimalFormat("##.##").format(totalCarbohydrate) +" gr"
+        view?.tv_user_meal_total_fat?.text = DecimalFormat("##.##").format(totalFat) +" gr"
     }
 
     private fun getFoods(){

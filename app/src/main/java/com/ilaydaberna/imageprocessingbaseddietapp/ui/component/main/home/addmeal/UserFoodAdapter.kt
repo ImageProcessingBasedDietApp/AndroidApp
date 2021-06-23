@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.ilaydaberna.imageprocessingbaseddietapp.R
 import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.Food
+import java.text.DecimalFormat
 
 class UserFoodAdapter(private val context: Context,
                       private val userFoods: ArrayList<Food>,
@@ -45,12 +46,17 @@ class UserFoodAdapter(private val context: Context,
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         var amount = userFoodAmount[position]["amount"]?.toDouble()?.toInt().toString() + " "
+        var foodCalorie = userFoodAmount[position]["amount"]?.toDouble()?.times(userFoods.get(position).calorie)
+        var foodProtein = userFoodAmount[position]["amount"]?.toDouble()?.times(userFoods.get(position).protein)
+        var foodCarbohydrate = userFoodAmount[position]["amount"]?.toDouble()?.times(userFoods.get(position).carbohydrate)
+        var foodFat = userFoodAmount[position]["amount"]?.toDouble()?.times(userFoods.get(position).fat)
+
         viewHolder.tvUserFoodName.text = userFoods.get(position).name
-        viewHolder.tvUserFoodCalorie.text = userFoods.get(position).calorie.toString() + " kcal"
         viewHolder.tvUserFoodServingValue.text = amount + userFoods.get(position).servingType
-        viewHolder.tvUserFoodProtein.text = "Protein:\n"+ userFoods.get(position).protein.toString()+ " gr"
-        viewHolder.tvUserFoodFat.text = "Yağ:\n"+ userFoods.get(position).protein.toString()+ " gr"
-        viewHolder.tvUserFoodCarbohydrate.text = "Karbonhidrat:\n"+ userFoods.get(position).carbohydrate.toString()+ " gr"
+        viewHolder.tvUserFoodCalorie.text = DecimalFormat("##.##").format(foodCalorie).toString() + " kcal"
+        viewHolder.tvUserFoodCarbohydrate.text = "Karbonhidrat:\n"+ DecimalFormat("##.##").format(foodCarbohydrate).toString()+ " gr"
+        viewHolder.tvUserFoodProtein.text = "Protein:\n"+ DecimalFormat("##.##").format(foodProtein).toString()+ " gr"
+        viewHolder.tvUserFoodFat.text = "Yağ:\n"+ DecimalFormat("##.##").format(foodFat).toString()+ " gr"
 
         viewHolder.layoutItemUserFood.setOnClickListener {
             //TODO

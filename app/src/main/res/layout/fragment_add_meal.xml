@@ -65,6 +65,23 @@
             android:textStyle="bold"/>
 
         <TextView
+            android:id="@+id/textView6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Toplam Karbonhidrat"
+            android:gravity="center"
+            android:textColor="@color/green_700"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/tv_user_meal_total_carbohydrate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0 gr"
+            android:gravity="center"
+            android:textStyle="bold"/>
+
+        <TextView
             android:id="@+id/textView4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -72,6 +89,7 @@
             android:gravity="center"
             android:textColor="@color/green_700"
             android:textStyle="bold"/>
+
         <TextView
             android:id="@+id/tv_user_meal_total_protein"
             android:layout_width="match_parent"
@@ -88,6 +106,7 @@
             android:gravity="center"
             android:textColor="@color/green_700"
             android:textStyle="bold"/>
+
         <TextView
             android:id="@+id/tv_user_meal_total_fat"
             android:layout_width="match_parent"
@@ -96,21 +115,6 @@
             android:gravity="center"
             android:textStyle="bold"/>
 
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Toplam Karbonhidrat"
-            android:gravity="center"
-            android:textColor="@color/green_700"
-            android:textStyle="bold"/>
-        <TextView
-            android:id="@+id/tv_user_meal_total_carbohydrate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="0 gr"
-            android:gravity="center"
-            android:textStyle="bold"/>
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
