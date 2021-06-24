@@ -329,11 +329,7 @@ class FollowFragment : Fragment() {
 
         (activity as MainActivity?)?.showLoading()
         FirestoreSource.saveLiquidNew(
-            currentUser = currentUser,
-            date = getLongTimeStamp(),
-            waterAmount = 0,
-            teaAmount = cup_of_tea,
-            tempCupOfCoffee = tempCupOfCoffee,
+            currentUser, getLongTimeStamp(), 0, cup_of_tea, tempCupOfCoffee,
             successHandler = {
                 (activity as MainActivity?)?.hideLoading()
                 cup_of_coffee = tempCupOfCoffee
