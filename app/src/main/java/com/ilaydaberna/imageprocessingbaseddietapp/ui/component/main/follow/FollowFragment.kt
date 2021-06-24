@@ -13,7 +13,10 @@ import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseUser
 import com.ilaydaberna.imageprocessingbaseddietapp.R
-import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.*
+import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.FirebaseSource
+import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.FirestoreSource
+import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.LiquidInfo
+import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.UserInfo
 import com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.MainActivity
 import kotlinx.android.synthetic.main.dialog_enter_int_value.view.*
 import kotlinx.android.synthetic.main.dialog_enter_weight.view.*
@@ -53,7 +56,13 @@ class FollowFragment : Fragment() {
                 waterAmount = mDialogView.np_dialog_int.value
                 this.savedWater = savedWater?.plus(waterAmount)
                 this.initWaterChart()
-                FirestoreSource().saveLiquid(currentUser, longDate, waterAmount, cup_of_tea, cup_of_coffee)
+                FirestoreSource().saveLiquid(
+                    currentUser,
+                    getLongTimeStamp(),
+                    waterAmount,
+                    cup_of_tea,
+                    cup_of_coffee
+                )
             }
         }
 
@@ -135,44 +144,6 @@ class FollowFragment : Fragment() {
         }
 
         return view
-    }
-
-    override fun onResume() {
-        super.onResume()
-//        val c = Calendar.getInstance()
-//        c.set(Calendar.HOUR, 0)
-//        c.set(Calendar.MINUTE, 0)
-//        c.set(Calendar.SECOND, 0)
-//        c.set(Calendar.MILLISECOND, 0)
-//        val d: Date = c.getTime()
-//        val timestamp: Long = d.getTime()
-//        longDate = timestamp
-
-//        var liquid: Liquid? = null
-//        Thread(Runnable {
-//
-//            FirestoreSource().checkWater(currentUser, longDate)
-//
-//            liquid = LiquidInfo.liquid.get()!!
-//        }).start()
-//
-//        Thread.sleep(2000) // :D
-
-    }
-
-    override fun onStop() {
-        super.onStop()
-
-        /*if (isWeightChanged) {
-            var weightDouble = weightText.toDouble()
-            UserInfo.user.get()?.weight = weightDouble
-            if (currentUser != null) {
-                FirestoreSource().saveWeight(currentUser, weightDouble, longDate)
-                UserInfo.user.get()?.let { FirestoreSource().saveUser(currentUser, it) }
-            }
-        }
-
-        FirestoreSource().saveLiquid(currentUser, longDate, 0, cup_of_tea, cup_of_coffee)*/
     }
 
     private fun refreshUI() {
@@ -281,13 +252,15 @@ class FollowFragment : Fragment() {
         }
 
         (activity as MainActivity?)?.showLoading()
-        FirestoreSource.saveLiquidNew(currentUser, getLongTimeStamp(), waterAmount, tempCupOfTea, cup_of_coffee,
+        FirestoreSource.saveLiquidNew(
+            currentUser, getLongTimeStamp(), 0, tempCupOfTea, cup_of_coffee,
             successHandler = {
                 (activity as MainActivity?)?.hideLoading()
                 cup_of_tea = tempCupOfTea
                 val v = view?.gl_tea?.getChildAt(cup_of_tea) as ImageView
                 v.setImageResource(R.drawable.tea_empty)
-                view?.amount_of_tea?.text = "Günlük içilen çay miktarı = " + cup_of_tea.toString() + " Bardak"
+                view?.amount_of_tea?.text =
+                    "Günlük içilen çay miktarı = " + cup_of_tea.toString() + " Bardak"
             },
             failHandler = {
                 (activity as MainActivity?)?.hideLoading()
@@ -305,13 +278,15 @@ class FollowFragment : Fragment() {
         }
 
         (activity as MainActivity?)?.showLoading()
-        FirestoreSource.saveLiquidNew(currentUser, getLongTimeStamp(), waterAmount, tempCupOfTea, cup_of_coffee,
+        FirestoreSource.saveLiquidNew(
+            currentUser, getLongTimeStamp(), 0, tempCupOfTea, cup_of_coffee,
             successHandler = {
                 (activity as MainActivity?)?.hideLoading()
                 cup_of_tea = tempCupOfTea
-                val v = view?.gl_tea?.getChildAt(cup_of_tea-1) as ImageView
+                val v = view?.gl_tea?.getChildAt(cup_of_tea - 1) as ImageView
                 v.setImageResource(R.drawable.tea_full)
-                view?.amount_of_tea?.text = "Günlük içilen çay miktarı = " + cup_of_tea.toString() + " Bardak"
+                view?.amount_of_tea?.text =
+                    "Günlük içilen çay miktarı = " + cup_of_tea.toString() + " Bardak"
             },
             failHandler = {
                 (activity as MainActivity?)?.hideLoading()
@@ -328,13 +303,15 @@ class FollowFragment : Fragment() {
         }
 
         (activity as MainActivity?)?.showLoading()
-        FirestoreSource.saveLiquidNew(currentUser, getLongTimeStamp(), waterAmount, cup_of_tea, tempCupOfCoffee,
+        FirestoreSource.saveLiquidNew(
+            currentUser, getLongTimeStamp(), 0, cup_of_tea, tempCupOfCoffee,
             successHandler = {
                 (activity as MainActivity?)?.hideLoading()
                 cup_of_coffee = tempCupOfCoffee
                 val v = view?.gl_coffee?.getChildAt(cup_of_coffee) as ImageView
                 v.setImageResource(R.drawable.icon_turkish_coffee_empty)
-                view?.amount_of_coffee?.text = "Günlük içilen kahve miktarı = " + cup_of_coffee.toString() + " Bardak"
+                view?.amount_of_coffee?.text =
+                    "Günlük içilen kahve miktarı = " + cup_of_coffee.toString() + " Bardak"
             },
             failHandler = {
                 (activity as MainActivity?)?.hideLoading()
@@ -351,13 +328,15 @@ class FollowFragment : Fragment() {
         }
 
         (activity as MainActivity?)?.showLoading()
-        FirestoreSource.saveLiquidNew(currentUser, getLongTimeStamp(), waterAmount, cup_of_tea, tempCupOfCoffee,
+        FirestoreSource.saveLiquidNew(
+            currentUser, getLongTimeStamp(), 0, cup_of_tea, tempCupOfCoffee,
             successHandler = {
                 (activity as MainActivity?)?.hideLoading()
                 cup_of_coffee = tempCupOfCoffee
-                val v = view?.gl_coffee?.getChildAt(cup_of_coffee-1) as ImageView
+                val v = view?.gl_coffee?.getChildAt(cup_of_coffee - 1) as ImageView
                 v.setImageResource(R.drawable.icon_turkish_coffee)
-                view?.amount_of_coffee?.text = "Günlük içilen kahve miktarı = " + cup_of_coffee.toString() + " Bardak"
+                view?.amount_of_coffee?.text =
+                    "Günlük içilen kahve miktarı = " + cup_of_coffee.toString() + " Bardak"
             },
             failHandler = {
                 (activity as MainActivity?)?.hideLoading()
