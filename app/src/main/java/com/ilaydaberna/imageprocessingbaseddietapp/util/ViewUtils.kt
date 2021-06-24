@@ -11,7 +11,6 @@ import com.ilaydaberna.imageprocessingbaseddietapp.ui.component.login.LoginActiv
 import com.ilaydaberna.imageprocessingbaseddietapp.ui.component.login.RegisterActivity
 import com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.MainActivity
 import java.text.SimpleDateFormat
-import java.util.*
 
 
 fun Context.startHomeActivity() =
@@ -51,7 +50,7 @@ fun Fragment.alertDialog(context: Context, title: String, msg: String, positiveB
         }
     }
 
-    if(negativeBtn != null){
+    if (negativeBtn != null) {
         builder.setNegativeButton(android.R.string.no) { dialog, which ->
             dialog.dismiss()
         }
@@ -60,3 +59,5 @@ fun Fragment.alertDialog(context: Context, title: String, msg: String, positiveB
     builder.show()
 
 }
+
+fun Long.toDate() = String.format("%s", SimpleDateFormat("dd/MM/yyyy").format(this))

@@ -25,6 +25,7 @@ import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.UserInfo
 import com.ilaydaberna.imageprocessingbaseddietapp.util.alertDialog
 import com.ilaydaberna.imageprocessingbaseddietapp.util.isEmpty
 import com.ilaydaberna.imageprocessingbaseddietapp.util.startLoginActivity
+import com.ilaydaberna.imageprocessingbaseddietapp.util.toDate
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.fragment_profile.view.*
 import java.io.ByteArrayOutputStream
@@ -113,6 +114,7 @@ class ProfileFragment : Fragment() {
 
         view.et_birthdate.setOnClickListener {
             val c = Calendar.getInstance()
+            c.add(Calendar.YEAR, -15)
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
@@ -285,11 +287,7 @@ class ProfileFragment : Fragment() {
             isEditSettings = false
         }
 
-        //Converted birthday from long to Date format.
-        val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy")
-        val dateString = simpleDateFormat.format(user?.birthdate)
-        val text = String.format("%s", dateString)
-        view.tv_birthdate.text = text
+        view.tv_birthdate.text = (user?.birthdate ?: 0).toDate()
 
         if (user?.isNotification != null && user?.isNotification) {
             view.tv_notification.text = "Bildirimler Açık"
