@@ -3,6 +3,7 @@ package com.ilaydaberna.imageprocessingbaseddietapp.ui.component.login
 import androidx.lifecycle.ViewModel
 import com.ilaydaberna.imageprocessingbaseddietapp.model.repository.UserRepository
 import com.ilaydaberna.imageprocessingbaseddietapp.util.isEmailValid
+import com.ilaydaberna.imageprocessingbaseddietapp.util.isPasswordValid
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -66,23 +67,26 @@ class AuthViewModel (private val repository: UserRepository) : ViewModel() {
             authListener?.onFailure("Lütfen tüm alanları doldurunuz")
             return
         }
-        if(email!!.isEmailValid()){
+        if (email!!.isEmailValid()) {
             authListener?.onFailure("Lütfen geçerli bir email giriniz")
             return
         }
-        if(!password.equals(passwordCntrl)){
+        if (!password.equals(passwordCntrl)) {
             authListener?.onFailure("Şifreler uyuşmuyor")
+            return
+        }
+        if (!password!!.isPasswordValid()) {
             return
         }
         authListener?.onStarted()
         val disposable = repository.register(email!!, password!!)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    authListener?.onSuccessRegister()
-                }, {
-                    authListener?.onFailure("Bu mail zaten kayıtlı")
-                })
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                authListener?.onSuccessRegister()
+            }, {
+                authListener?.onFailure("Bu mail zaten kayıtlı")
+            })
         disposables.add(disposable)
     }
 

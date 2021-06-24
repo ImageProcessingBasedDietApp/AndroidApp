@@ -1,12 +1,5 @@
 package com.ilaydaberna.imageprocessingbaseddietapp.model.firebase
 
-import android.os.Parcelable
-import androidx.databinding.ObservableField
-import com.google.firebase.Timestamp
-import kotlinx.android.parcel.Parcelize
-import java.util.*
-
-
 data class User(
     var UID: String = "",
     var email: String = "",

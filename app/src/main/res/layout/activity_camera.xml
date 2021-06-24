@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/colorError"
-            android:visibility="visible"
+            android:visibility="gone"
             android:orientation="vertical">
 
                 <androidx.camera.view.PreviewView
@@ -27,68 +27,79 @@
                     android:layout_marginBottom="10dp" />
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/foodImage"
-            android:layout_width="match_parent"
-            android:layout_height="400dp"
-            android:visibility="gone"
-            app:srcCompat="@android:drawable/ic_menu_gallery" />
-
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/linearLayoutFoodButtons"
             android:orientation="vertical"
+            android:background="@drawable/gradient_background"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:visibility="gone">
+            android:layout_height="match_parent"
+            android:visibility="visible">
+
+                <ImageView
+                    android:id="@+id/foodImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="8dp"
+                    app:layout_constraintBottom_toTopOf="@+id/btnRecognatedFood1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@android:drawable/ic_menu_gallery" />
 
                 <Button
                     android:id="@+id/btnRecognatedFood1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:background="@drawable/button_corner_green"
                     android:text="Button"
-                    android:layout_marginTop="10dp"
-                    android:textColor="@color/white"
+                    android:textColor="@color/green_500"
                     android:textStyle="bold"
-                    app:strokeWidth="2dp"
-                    android:background="@drawable/button_default" />
+                    android:layout_margin="8dp"
+                    app:layout_constraintBottom_toTopOf="@+id/btnRecognatedFood2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
 
                 <Button
                     android:id="@+id/btnRecognatedFood2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:background="@drawable/button_corner_green"
                     android:text="Button"
-                    android:layout_marginTop="10dp"
-                    android:textColor="@color/white"
+                    android:textColor="@color/green_500"
                     android:textStyle="bold"
-                    app:strokeWidth="2dp"
-                    android:background="@drawable/button_default" />
+                    android:layout_margin="8dp"
+                    app:layout_constraintBottom_toTopOf="@+id/btnRecognatedFood3"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
 
                 <Button
                     android:id="@+id/btnRecognatedFood3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:background="@drawable/button_corner_green"
                     android:text="Button"
-                    android:layout_marginTop="10dp"
-                    android:textColor="@color/white"
+                    android:textColor="@color/green_500"
                     android:textStyle="bold"
-                    app:strokeWidth="2dp"
-                    android:background="@drawable/button_default" />
-        </LinearLayout>
+                    android:layout_margin="8dp"
+                    app:layout_constraintBottom_toTopOf="@+id/btnBackToCamera"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
 
-        <Button
-            android:id="@+id/btnBackToCamera"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Kameraya Geri Dön"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/button_red"
-            android:visibility="gone"
-            app:strokeWidth="2dp" />
-
+                <Button
+                    android:id="@+id/btnBackToCamera"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/button_corner_red"
+                    android:text="Kameraya Geri Dön"
+                    android:textColor="@color/wineRed"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

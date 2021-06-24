@@ -381,7 +381,6 @@ class FirestoreSource {
                             }
                         }
                         .addOnFailureListener {
-                            //TODO boş model oluşturup gönder
                             Log.i("getUserMealsForToday", "Fail")
                         }
                 }

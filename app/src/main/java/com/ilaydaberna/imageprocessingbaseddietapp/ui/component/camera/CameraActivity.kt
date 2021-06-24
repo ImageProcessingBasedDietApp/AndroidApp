@@ -5,7 +5,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Matrix
@@ -23,15 +22,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
-import androidx.navigation.findNavController
 import com.google.firebase.auth.FirebaseUser
 import com.ilaydaberna.imageprocessingbaseddietapp.R
 import com.ilaydaberna.imageprocessingbaseddietapp.ml.FoodClassificationModel
 import com.ilaydaberna.imageprocessingbaseddietapp.ml.PlateModel
-import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.*
+import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.FirebaseSource
+import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.FirestoreSource
+import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.Food
+import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.FoodSingleton
 import com.ilaydaberna.imageprocessingbaseddietapp.util.YuvToRgbConverter
 import com.ilaydaberna.imageprocessingbaseddietapp.util.isAmountValid
 import com.ilaydaberna.imageprocessingbaseddietapp.util.startHomeActivity
@@ -84,7 +86,7 @@ class CameraActivity : AppCompatActivity() {
     }
 
     private val recognatedFoodList by lazy {
-        findViewById<LinearLayout>(R.id.linearLayoutFoodButtons)
+        findViewById<ConstraintLayout>(R.id.linearLayoutFoodButtons)
     }
 
     private val btnRecognatedFood1 by lazy {

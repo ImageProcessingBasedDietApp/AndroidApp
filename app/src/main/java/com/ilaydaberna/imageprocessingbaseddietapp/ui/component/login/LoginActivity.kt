@@ -87,10 +87,6 @@ class LoginActivity : BaseActivity(), KodeinAware, AuthListener{
             Toast.makeText(applicationContext, "Google Register", Toast.LENGTH_LONG).show()
         }
 
-        binding.buttonFacebook.setOnClickListener {
-            Toast.makeText(applicationContext, "Facebook Register", Toast.LENGTH_LONG).show()
-        }
-
     }
 
     //AuthViewModelde işlem başlıyor. Progress bar görünür oluyor.
