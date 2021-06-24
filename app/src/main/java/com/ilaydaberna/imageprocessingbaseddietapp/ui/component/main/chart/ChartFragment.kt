@@ -23,8 +23,6 @@ import com.ilaydaberna.imageprocessingbaseddietapp.R
 import com.ilaydaberna.imageprocessingbaseddietapp.databinding.FragmentChartBinding
 import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.FirebaseSource
 import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.FirestoreSource
-import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.GetUserWeightTrackigCallBack
-import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.WeightTrackValue
 import com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.MainActivity
 
 
@@ -140,43 +138,45 @@ class ChartFragment : Fragment() {
         if (currentUser != null) {
             FirestoreSource.getWeightTrackingValues(
                 currentUser,
-                object : GetUserWeightTrackigCallBack {
-                    override fun onCallback(userWeights: ArrayList<WeightTrackValue>) {
-                        var i = 0F
-                        for (value in userWeights) {
-                            weightsValues.add(Entry(i, value.weight))
-                            weightXAxisValues.add(value.date)
-                            i += 1F
-                        }
-
-                        mChart.xAxis.valueFormatter = IndexAxisValueFormatter(weightXAxisValues)
-                        mChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
-
-                        set1 = LineDataSet(weightsValues, "Kilo")
-                        set1.setDrawIcons(false)
-                        set1.enableDashedLine(10f, 5f, 0f)
-                        set1.enableDashedHighlightLine(10f, 5f, 0f)
-                        set1.color = Color.DKGRAY
-                        set1.setCircleColor(Color.DKGRAY)
-                        set1.lineWidth = 1f
-                        set1.circleRadius = 3f
-                        set1.setDrawCircleHole(false)
-                        set1.valueTextSize = 9f
-                        set1.setDrawFilled(true)
-                        set1.formLineWidth = 1f
-                        set1.formLineDashEffect = DashPathEffect(floatArrayOf(10f, 5f), 0f)
-                        set1.formSize = 15f
-
-                        if (Utils.getSDKInt() >= 18) {
-                            set1.fillDrawable = resources.getDrawable(R.drawable.fade_green)
-                        } else {
-                            set1.fillColor = Color.DKGRAY
-                        }
-                        val dataSets: ArrayList<ILineDataSet> = ArrayList()
-                        dataSets.add(set1)
-                        val data = LineData(dataSets)
-                        mChart.data = data
+                successHandler = {
+                    var i = 0F
+                    for (value in it) {
+                        weightsValues.add(Entry(i, value.weight))
+                        weightXAxisValues.add(value.date)
+                        i += 1F
                     }
+
+                    mChart.xAxis.valueFormatter = IndexAxisValueFormatter(weightXAxisValues)
+                    mChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
+
+                    set1 = LineDataSet(weightsValues, "Kilo")
+                    set1.setDrawIcons(false)
+                    set1.enableDashedLine(10f, 5f, 0f)
+                    set1.enableDashedHighlightLine(10f, 5f, 0f)
+                    set1.color = Color.DKGRAY
+                    set1.setCircleColor(Color.DKGRAY)
+                    set1.lineWidth = 1f
+                    set1.circleRadius = 3f
+                    set1.setDrawCircleHole(false)
+                    set1.valueTextSize = 9f
+                    set1.setDrawFilled(true)
+                    set1.formLineWidth = 1f
+                    set1.formLineDashEffect = DashPathEffect(floatArrayOf(10f, 5f), 0f)
+                    set1.formSize = 15f
+
+                    if (Utils.getSDKInt() >= 18) {
+                        set1.fillDrawable = resources.getDrawable(R.drawable.fade_green)
+                    } else {
+                        set1.fillColor = Color.DKGRAY
+                    }
+                    val dataSets: ArrayList<ILineDataSet> = ArrayList()
+                    dataSets.add(set1)
+                    val data = LineData(dataSets)
+                    mChart.data = data
+
+                },
+                failHandler = {
+
                 })
         }
     }

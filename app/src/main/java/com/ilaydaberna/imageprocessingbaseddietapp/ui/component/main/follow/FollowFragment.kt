@@ -329,7 +329,11 @@ class FollowFragment : Fragment() {
 
         (activity as MainActivity?)?.showLoading()
         FirestoreSource.saveLiquidNew(
-            currentUser, getLongTimeStamp(), 0, cup_of_tea, tempCupOfCoffee,
+            currentUser = currentUser,
+            date = getLongTimeStamp(),
+            waterAmount = 0,
+            teaAmount = cup_of_tea,
+            tempCupOfCoffee = tempCupOfCoffee,
             successHandler = {
                 (activity as MainActivity?)?.hideLoading()
                 cup_of_coffee = tempCupOfCoffee
@@ -372,7 +376,9 @@ class FollowFragment : Fragment() {
         UserInfo.user.get()?.weight = newWeight
 
         UserInfo.user.get()?.let {
-            FirestoreSource.saveUserNew(currentUser, it,
+            FirestoreSource.saveUserNew(
+                currentUser = currentUser,
+                userModel = it,
                 successHandler = {
                     var text: String = ""
                     text = when {
@@ -399,7 +405,10 @@ class FollowFragment : Fragment() {
     }
 
     private fun updateWeightTracking() {
-        FirestoreSource.saveWeightNew(currentUser, (UserInfo.user.get()?.weight ?: 0.0), getLongTimeStamp(),
+        FirestoreSource.saveWeightNew(
+            currentUser = currentUser,
+            weight = (UserInfo.user.get()?.weight ?: 0.0),
+            date = getLongTimeStamp(),
             successHandler = {
                 (activity as MainActivity?)?.hideLoading()
             },

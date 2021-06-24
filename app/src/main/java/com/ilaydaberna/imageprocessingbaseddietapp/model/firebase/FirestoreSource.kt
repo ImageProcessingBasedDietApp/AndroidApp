@@ -188,7 +188,8 @@ class FirestoreSource {
 
         fun getWeightTrackingValues(
             currentUser: FirebaseUser,
-            callback: GetUserWeightTrackigCallBack
+            successHandler: (ArrayList<WeightTrackValue>) -> Unit,
+            failHandler: () -> Unit
         ) {
             val userWeights = arrayListOf<WeightTrackValue>()
             val db = Firebase.firestore
@@ -208,11 +209,11 @@ class FirestoreSource {
                         )
                         Log.d(TAG, "${document.id} => ${document.data}")
                     }
-                    callback.onCallback(userWeights)
+                    successHandler(userWeights)
                 }
                 .addOnFailureListener { exception ->
+                    failHandler()
                     Log.w(TAG, "Error getting documents: ", exception)
-
                 }
         }
 
