@@ -21,19 +21,16 @@ import java.text.DecimalFormat
 class AddMealFragment : Fragment(), AddMealNavigator{
 
     private var adapterFood = FoodsAdapter()
-    private lateinit var adapterUserFood: UserFoodAdapter
-
-    private var userFoodList = ArrayList<Food>()
-    private var userFoodAmount = ArrayList<Map<String, String>>()
-
-    private lateinit var userMealItem: MealItem
 
     private val currentUser: FirebaseUser? = FirebaseSource().getAuth().currentUser
-
+    private lateinit var adapterUserFood: UserFoodAdapter
+    private lateinit var userMealItem: MealItem
+    private var userFoodList = ArrayList<Food>()
+    private var userFoodAmount = ArrayList<Map<String, String>>()
     private var totalCalorie = 0.0
     private var totalProtein = 0.0
     private var totalFat = 0.0
-    private var totalCarbohydrate: Double = 0.0
+    private var totalCarbohydrate = 0.0
 
     lateinit var mView: View
 
@@ -129,60 +126,62 @@ class AddMealFragment : Fragment(), AddMealNavigator{
         (activity as MainActivity?)?.showLoading()
         userFoodList.remove(food)
         userFoodAmount.remove(mapOf("foodID" to food.id.toString(), "amount" to amount.toString()))
-        totalCalorie -= food.calorie * amount
-        totalFat -= food.fat * amount
-        totalProtein -= food.protein * amount
-        totalCarbohydrate -= food.carbohydrate * amount
+        totalCalorie -= (food.calorie * amount).toInt()
+        totalFat -= (food.fat * amount).toInt()
+        totalProtein -= (food.protein * amount).toInt()
+        totalCarbohydrate -= (food.carbohydrate * amount).toInt()
 
         val thisMeal = UserMeals.Meal(
-                totalCalorie = totalCalorie.toInt(),
-                totalCarbohydrate = totalCarbohydrate.toInt(),
-                totalFat = totalFat.toInt(),
-                totalProtein = totalProtein.toInt(),
-                contents = userFoodAmount
+            totalCalorie = totalCalorie.toInt(),
+            totalCarbohydrate = totalCarbohydrate.toInt(),
+            totalFat = totalFat.toInt(),
+            totalProtein = totalProtein.toInt(),
+            contents = userFoodAmount
         )
 
-        FirestoreSource.updateUserMealForToday(currentUser = currentUser,
-                userMeal = thisMeal,
-                mealType = userMealItem.type,
-                successHandler = {
-                    updateTotalView()
-                    adapterUserFood.notifyDataSetChanged()
-                    (activity as MainActivity?)?.hideLoading()
-                },
-                failHandler = {
-                    (activity as MainActivity?)?.hideLoading()
-                }
+        FirestoreSource.updateUserMealForToday(
+            currentUser = currentUser,
+            userMeal = thisMeal,
+            mealType = userMealItem.type,
+            successHandler = {
+                updateTotalView()
+                adapterUserFood.notifyDataSetChanged()
+                (activity as MainActivity?)?.hideLoading()
+            },
+            failHandler = {
+                (activity as MainActivity?)?.hideLoading()
+            }
         )
     }
 
-    private fun addUserFood(amount: Double, food: Food){
+    private fun addUserFood(amount: Double, food: Food) {
         (activity as MainActivity?)?.showLoading()
         userFoodList.add(food)
         userFoodAmount.add(mapOf("foodID" to food.id.toString(), "amount" to amount.toString()))
-        totalCalorie += food.calorie * amount
-        totalFat += food.fat * amount
-        totalProtein += food.protein * amount
-        totalCarbohydrate += food.carbohydrate * amount
+        totalCalorie += (food.calorie * amount).toInt()
+        totalFat += (food.fat * amount).toInt()
+        totalProtein += (food.protein * amount).toInt()
+        totalCarbohydrate += (food.carbohydrate * amount).toInt()
 
         val thisMeal = UserMeals.Meal(
-                totalCalorie = totalCalorie.toInt(),
-                totalCarbohydrate = totalCarbohydrate.toInt(),
-                totalFat = totalFat.toInt(),
-                totalProtein = totalProtein.toInt(),
-                contents = userFoodAmount
+            totalCalorie = totalCalorie.toInt(),
+            totalCarbohydrate = totalCarbohydrate.toInt(),
+            totalFat = totalFat.toInt(),
+            totalProtein = totalProtein.toInt(),
+            contents = userFoodAmount
         )
 
-        FirestoreSource.updateUserMealForToday(currentUser = currentUser,
-                userMeal = thisMeal,
-                mealType = userMealItem.type,
-                successHandler = {
-                    updateTotalView()
-                    (activity as MainActivity?)?.hideLoading()
-                },
-                failHandler = {
-                    (activity as MainActivity?)?.hideLoading()
-                }
+        FirestoreSource.updateUserMealForToday(
+            currentUser = currentUser,
+            userMeal = thisMeal,
+            mealType = userMealItem.type,
+            successHandler = {
+                updateTotalView()
+                (activity as MainActivity?)?.hideLoading()
+            },
+            failHandler = {
+                (activity as MainActivity?)?.hideLoading()
+            }
         )
     }
 
