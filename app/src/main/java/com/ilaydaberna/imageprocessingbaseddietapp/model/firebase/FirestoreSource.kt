@@ -8,13 +8,11 @@ import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.ktx.getField
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.gson.Gson
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 class FirestoreSource {
 
@@ -188,15 +186,82 @@ class FirestoreSource {
 
     companion object {
 
+        fun getWeightTrackingValues(
+            currentUser: FirebaseUser,
+            callback: GetUserWeightTrackigCallBack
+        ) {
+            val userWeights = arrayListOf<WeightTrackValue>()
+            val db = Firebase.firestore
+            db.collection("WeightTracking")
+                .whereEqualTo("userID", currentUser.uid)
+                .get()
+                .addOnSuccessListener { documents ->
+                    for (document in documents) {
+                        //Converted birthday from long to Date format.
+                        val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy")
+                        val dateString = simpleDateFormat.format(document.get("date"))
+                        userWeights.add(
+                            WeightTrackValue(
+                                String.format("%s", dateString),
+                                document.get("weightMeasure").toString().toFloat()
+                            )
+                        )
+                        Log.d(TAG, "${document.id} => ${document.data}")
+                    }
+                    callback.onCallback(userWeights)
+                }
+                .addOnFailureListener { exception ->
+                    Log.w(TAG, "Error getting documents: ", exception)
+
+                }
+        }
+
+        fun getUserLiquidsTrackingData(
+            currentUser: FirebaseUser?,
+            successHandler: (ArrayList<Liquid>) -> Unit,
+            failHandler: () -> Unit
+        ) {
+            val userLiquidTracking = arrayListOf<Liquid>()
+            val db = Firebase.firestore
+            db.collection("LiquidTracking")
+                .whereEqualTo("userID", currentUser?.uid)
+                .get()
+                .addOnSuccessListener { documents ->
+                    for (document in documents) {
+                        userLiquidTracking.add(
+                            Liquid(
+                                document.get("dailyWater").toString().toInt(),
+                                document.get("dailyTea").toString().toInt(),
+                                document.get("dailyCoffee").toString().toInt(),
+                                document.get("date").toString().toLong(),
+                                document.getString("userID").toString()
+                            )
+                        )
+                    }
+                    successHandler(userLiquidTracking)
+                    Log.i("getUserLiquidsTrackingData", "Success")
+
+                }
+                .addOnFailureListener {
+                    failHandler()
+                    Log.i("getUserLiquidsTrackingData", "Fail")
+                }
+
+        }
+
         fun getFoods(handler: (() -> Unit)? = null) {
             val foods = Firebase.firestore.collection("Foods")
-                    .get()
-                    .addOnSuccessListener {
-                        result ->
-                        var foodList : ArrayList<Food> = arrayListOf()
-                        for (document in result) {
-                            foodList.add(Gson().fromJson(Gson().toJson(document.data), Food::class.java))
-                            Log.d(TAG, "${document.id} => ${document.data}")
+                .get()
+                .addOnSuccessListener { result ->
+                    var foodList: ArrayList<Food> = arrayListOf()
+                    for (document in result) {
+                        foodList.add(
+                            Gson().fromJson(
+                                Gson().toJson(document.data),
+                                Food::class.java
+                            )
+                        )
+                        Log.d(TAG, "${document.id} => ${document.data}")
                         }
                         FoodSingleton.food.set(foodList)
                         handler?.invoke()
@@ -511,60 +576,4 @@ class FirestoreSource {
             }
         }
     }
-
-    fun getFoods(callback: GetFoodsCallback){
-        val foods = arrayListOf<Food>()
-        val db = Firebase.firestore
-        db.collection("Foods").get()
-            .addOnSuccessListener { documents ->
-                for(document in documents){
-                    foods.add(
-                        Food(
-                            document.get("ID").toString().toInt(),
-                            document.get("fileName").toString(),
-                            document.get("name").toString(),
-                            document.getString("calorie")!!.toDouble(),
-                            document.getString("carbohydrate")!!.toDouble(),
-                            document.getString("fat")!!.toDouble(),
-                            document.getString("protein")!!.toDouble(),
-                            "Tabak"
-                        )
-                    )
-                    Log.d(TAG, "${document.id} => ${document.data}")
-                }
-                callback.onCallback(foods)
-            }
-            .addOnFailureListener { exception ->
-                Log.w(TAG, "Error getting documents: ", exception)
-            }
-    }
-
-
-    fun getWeightTrackingValues(currentUser: FirebaseUser, callback: GetUserWeightTrackigCallBack) {
-        val userWeights = arrayListOf<WeightTrackValue>()
-        val db = Firebase.firestore
-        db.collection("WeightTracking")
-            .whereEqualTo("userID", currentUser.uid)
-            .get()
-            .addOnSuccessListener { documents ->
-                for (document in documents) {
-                    //Converted birthday from long to Date format.
-                    val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy")
-                    val dateString = simpleDateFormat.format(document.get("date"))
-                    userWeights.add(
-                        WeightTrackValue(
-                            String.format("%s", dateString),
-                            document.get("weightMeasure").toString().toFloat()
-                        )
-                    )
-                    Log.d(TAG, "${document.id} => ${document.data}")
-                }
-                callback.onCallback(userWeights)
-            }
-            .addOnFailureListener { exception ->
-                Log.w(TAG, "Error getting documents: ", exception)
-
-            }
-    }
-
 }

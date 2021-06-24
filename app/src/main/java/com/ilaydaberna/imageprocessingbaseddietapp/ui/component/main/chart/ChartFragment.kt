@@ -21,7 +21,11 @@ import com.github.mikephil.charting.utils.Utils
 import com.google.firebase.auth.FirebaseUser
 import com.ilaydaberna.imageprocessingbaseddietapp.R
 import com.ilaydaberna.imageprocessingbaseddietapp.databinding.FragmentChartBinding
-import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.*
+import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.FirebaseSource
+import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.FirestoreSource
+import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.GetUserWeightTrackigCallBack
+import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.WeightTrackValue
+import com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.MainActivity
 
 
 class ChartFragment : Fragment() {
@@ -30,10 +34,14 @@ class ChartFragment : Fragment() {
     private val binding get() = _binding!!
     val currentUser: FirebaseUser? = FirebaseSource().getAuth().currentUser
 
+    val teaData = arrayListOf<BarEntry>()
+    val waterData = arrayListOf<BarEntry>()
+    val coffeeData = arrayListOf<BarEntry>()
+
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         _binding = FragmentChartBinding.inflate(inflater, container, false)
         return binding.root
@@ -45,7 +53,7 @@ class ChartFragment : Fragment() {
         initializeBarChart(binding.teaBarChart, binding.teaSeekBar)
         initializeBarChart(binding.stepBarChart, binding.stepSeekBar)
         createWeightLineChart(binding.weightLineChart)
-
+        getUserLiquidTrackingData()
 
         binding.waterSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(
@@ -130,44 +138,46 @@ class ChartFragment : Fragment() {
         mChart.description.isEnabled = false
 
         if (currentUser != null) {
-            FirestoreSource().getWeightTrackingValues(currentUser, object : GetUserWeightTrackigCallBack {
-                override fun onCallback(userWeights: ArrayList<WeightTrackValue>) {
-                    var i = 0F
-                    for (value in userWeights) {
-                        weightsValues.add(Entry(i, value.weight))
-                        weightXAxisValues.add(value.date)
-                        i += 1F
+            FirestoreSource.getWeightTrackingValues(
+                currentUser,
+                object : GetUserWeightTrackigCallBack {
+                    override fun onCallback(userWeights: ArrayList<WeightTrackValue>) {
+                        var i = 0F
+                        for (value in userWeights) {
+                            weightsValues.add(Entry(i, value.weight))
+                            weightXAxisValues.add(value.date)
+                            i += 1F
+                        }
+
+                        mChart.xAxis.valueFormatter = IndexAxisValueFormatter(weightXAxisValues)
+                        mChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
+
+                        set1 = LineDataSet(weightsValues, "Kilo")
+                        set1.setDrawIcons(false)
+                        set1.enableDashedLine(10f, 5f, 0f)
+                        set1.enableDashedHighlightLine(10f, 5f, 0f)
+                        set1.color = Color.DKGRAY
+                        set1.setCircleColor(Color.DKGRAY)
+                        set1.lineWidth = 1f
+                        set1.circleRadius = 3f
+                        set1.setDrawCircleHole(false)
+                        set1.valueTextSize = 9f
+                        set1.setDrawFilled(true)
+                        set1.formLineWidth = 1f
+                        set1.formLineDashEffect = DashPathEffect(floatArrayOf(10f, 5f), 0f)
+                        set1.formSize = 15f
+
+                        if (Utils.getSDKInt() >= 18) {
+                            set1.fillDrawable = resources.getDrawable(R.drawable.fade_green)
+                        } else {
+                            set1.fillColor = Color.DKGRAY
+                        }
+                        val dataSets: ArrayList<ILineDataSet> = ArrayList()
+                        dataSets.add(set1)
+                        val data = LineData(dataSets)
+                        mChart.data = data
                     }
-
-                    mChart.xAxis.valueFormatter = IndexAxisValueFormatter(weightXAxisValues)
-                    mChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
-
-                    set1 = LineDataSet(weightsValues, "Kilo")
-                    set1.setDrawIcons(false)
-                    set1.enableDashedLine(10f, 5f, 0f)
-                    set1.enableDashedHighlightLine(10f, 5f, 0f)
-                    set1.color = Color.DKGRAY
-                    set1.setCircleColor(Color.DKGRAY)
-                    set1.lineWidth = 1f
-                    set1.circleRadius = 3f
-                    set1.setDrawCircleHole(false)
-                    set1.valueTextSize = 9f
-                    set1.setDrawFilled(true)
-                    set1.formLineWidth = 1f
-                    set1.formLineDashEffect = DashPathEffect(floatArrayOf(10f, 5f), 0f)
-                    set1.formSize = 15f
-
-                    if (Utils.getSDKInt() >= 18) {
-                        set1.fillDrawable = resources.getDrawable(R.drawable.fade_green)
-                    } else {
-                        set1.fillColor = Color.DKGRAY
-                    }
-                    val dataSets: ArrayList<ILineDataSet> = ArrayList()
-                    dataSets.add(set1)
-                    val data = LineData(dataSets)
-                    mChart.data = data
-                }
-            })
+                })
         }
     }
 
@@ -202,11 +212,11 @@ class ChartFragment : Fragment() {
 
         if (chart.data != null && chart.data.dataSetCount > 0) {
             set1 = chart.getData().getDataSetByIndex(0) as BarDataSet
-            set1.values = getWaterChartData(seekBarValue)
+            set1.values = waterData
             chart.getData().notifyDataChanged()
             chart.notifyDataSetChanged()
         } else {
-            set1 = BarDataSet(getWaterChartData(seekBarValue), "Data Set")
+            set1 = BarDataSet(waterData, "Data Set")
             set1.setColors(*ColorTemplate.PASTEL_COLORS)
             set1.setDrawValues(false)
             val dataSets = java.util.ArrayList<IBarDataSet>()
@@ -217,16 +227,6 @@ class ChartFragment : Fragment() {
         }
 
         chart.invalidate()
-    }
-
-    private fun getWaterChartData(seekBarValue: Int): ArrayList<BarEntry> {
-        val values = java.util.ArrayList<BarEntry>()
-        for (i in 1..seekBarValue) {
-            val multi = 20f
-            val `val` = (Math.random() * multi).toFloat() + multi / 3
-            values.add(BarEntry(i.toFloat(), `val`))
-        }
-        return values
     }
 
     private fun createCoffeeBarChart(chart: BarChart, seekBarValue: Int) {
@@ -234,11 +234,11 @@ class ChartFragment : Fragment() {
 
         if (chart.data != null && chart.data.dataSetCount > 0) {
             set1 = chart.data.getDataSetByIndex(0) as BarDataSet
-            set1.values = getCoffeeChartData(seekBarValue)
+            set1.values = coffeeData
             chart.getData().notifyDataChanged()
             chart.notifyDataSetChanged()
         } else {
-            set1 = BarDataSet(getCoffeeChartData(seekBarValue), "Data Set")
+            set1 = BarDataSet(coffeeData, "Data Set")
             set1.setColors(*ColorTemplate.PASTEL_COLORS)
             set1.setDrawValues(false)
             val dataSets = java.util.ArrayList<IBarDataSet>()
@@ -249,16 +249,6 @@ class ChartFragment : Fragment() {
         }
 
         chart.invalidate()
-    }
-
-    private fun getCoffeeChartData(seekBarValue: Int): ArrayList<BarEntry> {
-        val values = arrayListOf<BarEntry>()
-        for (i in 1..seekBarValue) {
-            val multi = 20f
-            val `val` = (Math.random() * multi).toFloat() + multi / 3
-            values.add(BarEntry(i.toFloat(), `val`))
-        }
-        return values
     }
 
     private fun createTeaBarChart(chart: BarChart, seekBarValue: Int) {
@@ -266,11 +256,11 @@ class ChartFragment : Fragment() {
 
         if (chart.data != null && chart.data.dataSetCount > 0) {
             set1 = chart.data.getDataSetByIndex(0) as BarDataSet
-            set1.values = getTeaChartData(seekBarValue)
+            set1.values = teaData
             chart.getData().notifyDataChanged()
             chart.notifyDataSetChanged()
         } else {
-            set1 = BarDataSet(getTeaChartData(seekBarValue), "Data Set")
+            set1 = BarDataSet(teaData, "Data Set")
             set1.setColors(*ColorTemplate.PASTEL_COLORS)
             set1.setDrawValues(false)
             val dataSets = java.util.ArrayList<IBarDataSet>()
@@ -283,14 +273,25 @@ class ChartFragment : Fragment() {
         chart.invalidate()
     }
 
-    private fun getTeaChartData(seekBarValue: Int): ArrayList<BarEntry> {
-        val values = arrayListOf<BarEntry>()
-        for (i in 1..seekBarValue) {
-            val multi = 20f
-            val `val` = (Math.random() * multi).toFloat() + multi / 3
-            values.add(BarEntry(i.toFloat(), `val`))
-        }
-        return values
+    private fun getUserLiquidTrackingData() {
+        (activity as MainActivity?)?.showLoading()
+
+        FirestoreSource.getUserLiquidsTrackingData(
+            currentUser = currentUser,
+            successHandler = { liquids ->
+                var i = 0F
+                for (liquid in liquids) {
+                    teaData.add(BarEntry(i, liquid.dailyTea.toFloat()))
+                    waterData.add(BarEntry(i, liquid.dailyWater.toFloat()))
+                    coffeeData.add(BarEntry(i, liquid.dailyCoffee.toFloat()))
+                    i += 1F
+                }
+                (activity as MainActivity?)?.hideLoading()
+            },
+            failHandler = {
+                (activity as MainActivity?)?.hideLoading()
+            }
+        )
     }
 
     private fun createStepBarChart(chart: BarChart, seekBarValue: Int) {
