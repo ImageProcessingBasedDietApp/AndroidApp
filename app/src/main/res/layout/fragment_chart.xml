@@ -98,10 +98,26 @@
 
                 </com.github.mikephil.charting.charts.BarChart>
 
-                <SeekBar
-                    android:id="@+id/waterSeekBar"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvWaterSeekbarValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/green_700"
+                        android:text="Son .. Gün" />
+
+                    <SeekBar
+                        android:id="@+id/waterSeekBar"
+                        android:layout_marginLeft="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
             </LinearLayout>
 
             <LinearLayout
@@ -131,10 +147,25 @@
 
                 </com.github.mikephil.charting.charts.BarChart>
 
-                <SeekBar
-                    android:id="@+id/teaSeekBar"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvTeaSeekbarValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/green_700"
+                        android:text="Son .. Gün" />
+
+                    <SeekBar
+                        android:id="@+id/teaSeekBar"
+                        android:layout_marginLeft="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -164,10 +195,25 @@
 
                 </com.github.mikephil.charting.charts.BarChart>
 
-                <SeekBar
-                    android:id="@+id/coffeeSeekBar"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvCoffeeSeekbarValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/green_700"
+                        android:text="Son .. Gün" />
+
+                    <SeekBar
+                        android:id="@+id/coffeeSeekBar"
+                        android:layout_marginLeft="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -197,10 +243,25 @@
 
                 </com.github.mikephil.charting.charts.BarChart>
 
-                <SeekBar
-                    android:id="@+id/stepSeekBar"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvStepSeekbarValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/green_700"
+                        android:text="Son .. Gün" />
+
+                    <SeekBar
+                        android:id="@+id/stepSeekBar"
+                        android:layout_marginLeft="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

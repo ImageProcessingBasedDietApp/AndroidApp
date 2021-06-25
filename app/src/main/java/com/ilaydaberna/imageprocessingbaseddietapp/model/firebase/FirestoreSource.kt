@@ -541,23 +541,24 @@ class FirestoreSource {
                     val db = Firebase.firestore
                     val docRef = db.collection("LiquidTracking")
                     val liquid = hashMapOf(
-                        "dailyWater" to 0,
-                        "dailyCoffee" to 0,
-                        "dailyTea" to 0,
-                        "date" to date,
-                        "userID" to currentUser.uid
+                            "dailyWater" to 0,
+                            "dailyCoffee" to 0,
+                            "dailyTea" to 0,
+                            "date" to date,
+                            "userID" to currentUser.uid
                     )
-                    docRef.add(liquid)
-                        .addOnSuccessListener { documentReference ->
-                            Log.i(TAG, "DocumentSnapshot written with ID: ${documentReference.id}")
-                            LiquidInfo.liquid.set(currentUser?.uid?.let { Liquid(0,0,0, date, it) })
-                            successHandler.invoke()
-                        }
-                        .addOnFailureListener { e ->
-                            Log.i(TAG, "Error adding document", e)
-                            // TODO: will be refactor
-                            LiquidInfo.liquid.set(currentUser?.uid?.let { Liquid(0,0,0, date, it) })
-                            successHandler.invoke()
+                    docRef.document(currentUser.uid + date.toString())
+                            .set(liquid)
+                            .addOnSuccessListener { documentReference ->
+                                Log.i(TAG, "DocumentSnapshot written with ID: ${documentReference}")
+                                LiquidInfo.liquid.set(currentUser?.uid?.let { Liquid(0, 0, 0, date, it) })
+                                successHandler.invoke()
+                            }
+                            .addOnFailureListener { e ->
+                                Log.i(TAG, "Error adding document", e)
+                                // TODO: will be refactor
+                                LiquidInfo.liquid.set(currentUser?.uid?.let { Liquid(0, 0, 0, date, it) })
+                                successHandler.invoke()
                         }
                 }
             }

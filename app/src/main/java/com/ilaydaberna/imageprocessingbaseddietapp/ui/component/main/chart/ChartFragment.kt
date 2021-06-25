@@ -32,26 +32,25 @@ class ChartFragment : Fragment() {
     private val binding get() = _binding!!
     val currentUser: FirebaseUser? = FirebaseSource().getAuth().currentUser
 
-    val teaData = arrayListOf<BarEntry>()
-    val waterData = arrayListOf<BarEntry>()
-    val coffeeData = arrayListOf<BarEntry>()
+    private val teaData = arrayListOf<BarEntry>()
+    private val waterData = arrayListOf<BarEntry>()
+    private val coffeeData = arrayListOf<BarEntry>()
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View {
         _binding = FragmentChartBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        initializeBarChart(binding.waterBarChart, binding.waterSeekBar)
-        initializeBarChart(binding.coffeeBarChart, binding.coffeeSeekBar)
-        initializeBarChart(binding.teaBarChart, binding.teaSeekBar)
-        initializeBarChart(binding.stepBarChart, binding.stepSeekBar)
-        createWeightLineChart(binding.weightLineChart)
+
         getUserLiquidTrackingData()
+        //TODO: initializeBarChart(binding.stepBarChart, binding.stepSeekBar, stepData )
+        createWeightLineChart(binding.weightLineChart)
+
 
         binding.waterSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(
@@ -59,7 +58,8 @@ class ChartFragment : Fragment() {
                     progress: Int, fromUser: Boolean
             ) {
                 // write custom code for progress is changed
-                createWaterBarChart(binding.waterBarChart, progress)
+                createAndUpdateBarChart(binding.waterBarChart, waterData, progress)
+                binding.tvWaterSeekbarValue.text = "Son $progress Gün"
             }
 
             override fun onStartTrackingTouch(seek: SeekBar) {
@@ -77,7 +77,8 @@ class ChartFragment : Fragment() {
                     progress: Int, fromUser: Boolean
             ) {
                 // write custom code for progress is changed
-                createCoffeeBarChart(binding.coffeeBarChart, progress)
+                createAndUpdateBarChart(binding.coffeeBarChart, coffeeData, progress)
+                binding.tvCoffeeSeekbarValue.text = "Son $progress Gün"
             }
 
             override fun onStartTrackingTouch(seek: SeekBar) {
@@ -95,7 +96,9 @@ class ChartFragment : Fragment() {
                     progress: Int, fromUser: Boolean
             ) {
                 // write custom code for progress is changed
-                createTeaBarChart(binding.teaBarChart, progress)
+                createAndUpdateBarChart(binding.teaBarChart, teaData, progress)
+                binding.tvTeaSeekbarValue.text = "Son $progress Gün"
+
             }
 
             override fun onStartTrackingTouch(seek: SeekBar) {
@@ -181,7 +184,7 @@ class ChartFragment : Fragment() {
         }
     }
 
-    private fun initializeBarChart(chart: BarChart, seekBarX: SeekBar) {
+    private fun initializeBarChart(chart: BarChart, seekBarX: SeekBar, dataset: ArrayList<BarEntry>) {
         chart.description.isEnabled = false
 
         // if more than 60 entries are displayed in the chart, no values will be
@@ -198,8 +201,13 @@ class ChartFragment : Fragment() {
         chart.axisLeft.setDrawGridLines(false)
 
         // setting data
-        seekBarX.setProgress(10)
-        seekBarX.max = 30
+        if (dataset.size < 60) {
+            seekBarX.max = dataset.size
+            seekBarX.setProgress(dataset.size)
+        } else {
+            seekBarX.max = 60
+            seekBarX.setProgress(60)
+        }
         seekBarX.min = 3
 
         // add a nice and smooth animation
@@ -207,60 +215,25 @@ class ChartFragment : Fragment() {
         chart.legend.isEnabled = false
     }
 
-    private fun createWaterBarChart(chart: BarChart, seekBarValue: Int) {
+    private fun createAndUpdateBarChart(chart: BarChart, dataset: ArrayList<BarEntry>, seekBarValue: Int) {
         var set1: BarDataSet
-
         if (chart.data != null && chart.data.dataSetCount > 0) {
-            set1 = chart.getData().getDataSetByIndex(0) as BarDataSet
-            set1.values = waterData
+            if (dataset.size < 60) {
+                if (chart.data.dataSetCount != seekBarValue) {
+                    set1 = chart.getData().getDataSetByIndex(0) as BarDataSet
+                    set1.values = dataset.subList(dataset.size - seekBarValue, dataset.size)
+                } else {
+                    set1 = chart.getData().getDataSetByIndex(0) as BarDataSet
+                    set1.values = dataset
+                }
+            } else {
+                set1 = chart.getData().getDataSetByIndex(0) as BarDataSet
+                set1.values = dataset.subList(dataset.size - 60, dataset.size)
+            }
             chart.getData().notifyDataChanged()
             chart.notifyDataSetChanged()
         } else {
-            set1 = BarDataSet(waterData, "Data Set")
-            set1.setColors(*ColorTemplate.PASTEL_COLORS)
-            set1.setDrawValues(false)
-            val dataSets = java.util.ArrayList<IBarDataSet>()
-            dataSets.add(set1)
-            val data = BarData(dataSets)
-            chart.setData(data)
-            chart.setFitBars(true)
-        }
-
-        chart.invalidate()
-    }
-
-    private fun createCoffeeBarChart(chart: BarChart, seekBarValue: Int) {
-        var set1: BarDataSet
-
-        if (chart.data != null && chart.data.dataSetCount > 0) {
-            set1 = chart.data.getDataSetByIndex(0) as BarDataSet
-            set1.values = coffeeData
-            chart.getData().notifyDataChanged()
-            chart.notifyDataSetChanged()
-        } else {
-            set1 = BarDataSet(coffeeData, "Data Set")
-            set1.setColors(*ColorTemplate.PASTEL_COLORS)
-            set1.setDrawValues(false)
-            val dataSets = java.util.ArrayList<IBarDataSet>()
-            dataSets.add(set1)
-            val data = BarData(dataSets)
-            chart.setData(data)
-            chart.setFitBars(true)
-        }
-
-        chart.invalidate()
-    }
-
-    private fun createTeaBarChart(chart: BarChart, seekBarValue: Int) {
-        var set1: BarDataSet
-
-        if (chart.data != null && chart.data.dataSetCount > 0) {
-            set1 = chart.data.getDataSetByIndex(0) as BarDataSet
-            set1.values = teaData
-            chart.getData().notifyDataChanged()
-            chart.notifyDataSetChanged()
-        } else {
-            set1 = BarDataSet(teaData, "Data Set")
+            set1 = BarDataSet(dataset, "Data Set")
             set1.setColors(*ColorTemplate.PASTEL_COLORS)
             set1.setDrawValues(false)
             val dataSets = java.util.ArrayList<IBarDataSet>()
@@ -277,20 +250,28 @@ class ChartFragment : Fragment() {
         (activity as MainActivity?)?.showLoading()
 
         FirestoreSource.getUserLiquidsTrackingData(
-            currentUser = currentUser,
-            successHandler = { liquids ->
-                var i = 0F
-                for (liquid in liquids) {
-                    teaData.add(BarEntry(i, liquid.dailyTea.toFloat()))
-                    waterData.add(BarEntry(i, liquid.dailyWater.toFloat()))
-                    coffeeData.add(BarEntry(i, liquid.dailyCoffee.toFloat()))
-                    i += 1F
+                currentUser = currentUser,
+                successHandler = { liquids ->
+                    var i = 1F
+                    for (liquid in liquids) {
+                        teaData.add(BarEntry(i, liquid.dailyTea.toFloat()))
+                        waterData.add(BarEntry(i, liquid.dailyWater.toFloat()))
+                        coffeeData.add(BarEntry(i, liquid.dailyCoffee.toFloat()))
+                        i += 1F
+                    }
+                    initializeBarChart(binding.waterBarChart, binding.waterSeekBar, waterData)
+                    initializeBarChart(binding.coffeeBarChart, binding.coffeeSeekBar, coffeeData)
+                    initializeBarChart(binding.teaBarChart, binding.teaSeekBar, teaData)
+
+                    createAndUpdateBarChart(binding.waterBarChart, waterData, waterData.size)
+                    createAndUpdateBarChart(binding.coffeeBarChart, coffeeData, coffeeData.size)
+                    createAndUpdateBarChart(binding.teaBarChart, teaData, teaData.size)
+
+                    (activity as MainActivity?)?.hideLoading()
+                },
+                failHandler = {
+                    (activity as MainActivity?)?.hideLoading()
                 }
-                (activity as MainActivity?)?.hideLoading()
-            },
-            failHandler = {
-                (activity as MainActivity?)?.hideLoading()
-            }
         )
     }
 
