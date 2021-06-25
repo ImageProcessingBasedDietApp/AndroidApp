@@ -163,176 +163,56 @@ class CameraActivity : AppCompatActivity() {
 
         btnRecognatedFood1.setOnClickListener {
             val selectedFood = getFoodByName(foodArray[0])
-            var amount: String = ""
-            val mDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_add_meal_type, null)
-            val mBuilder = AlertDialog.Builder(this).setView(mDialogView)
-            val mAlertDialog = mBuilder.show()
-            val values = arrayOf("Kahvaltı", "Öğle Yemeği", "Akşam Yemeği", "Ara Öğün")
-            mDialogView.np_meal_type.setMinValue(0)
-            mDialogView.np_meal_type.setMaxValue(values.size - 1)
-            mDialogView.np_meal_type.setWrapSelectorWheel(false)
-            mDialogView.np_meal_type.setDisplayedValues(values)
-
-            mDialogView.btn_dialog_amount_save.setOnClickListener {
-                var mealType = ""
-                when (mDialogView.np_meal_type.value) { // 0 - 1 - 2 - 3
-                    0 -> mealType = "Breakfast"
-                    1 -> mealType = "Lunch"
-                    2 -> mealType = "Dinner"
-                    3 -> mealType = "Snacks"
-                }
-
-                mAlertDialog.dismiss()
-                val mDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_add_food_amount, null)
-                val mBuilder = AlertDialog.Builder(this).setView(mDialogView)
-                val mAlertDialog = mBuilder.show()
-
-                mDialogView.tv_serving_type.text = selectedFood[0].servingType
-
-                mDialogView.btn_dialog_amount_save.setOnClickListener {
-                    if(mDialogView.et_amount.text.isEmpty()){
-                        mDialogView.et_amount.setError("Bu alan boş bırakılamaz")
-                    }
-                    else if(mDialogView.et_amount.text.toString().isAmountValid()){
-                        amount = mDialogView.et_amount.text.toString()
-                        FirestoreSource.getUserMeal(currentUser, mealType, successHandler = {
-                            val thisMeal = it
-                            val amountDouble = amount.toDouble()
-
-                            thisMeal.contents?.add(mapOf("amount" to amount, "foodID" to selectedFood[0].id.toString()))
-                            thisMeal.totalCalorie = thisMeal.totalCalorie?.plus((selectedFood[0].calorie * amountDouble).toInt())
-                            thisMeal.totalCarbohydrate = thisMeal.totalCarbohydrate?.plus((selectedFood[0].carbohydrate * amountDouble).toInt())
-                            thisMeal.totalFat = thisMeal.totalFat?.plus((selectedFood[0].fat * amountDouble).toInt())
-                            thisMeal.totalProtein = thisMeal.totalProtein?.plus((selectedFood[0].protein * amountDouble).toInt())
-
-                            FirestoreSource.updateUserMealForToday(currentUser = currentUser,
-                                    userMeal = thisMeal,
-                                    mealType = mealType,
-                                    successHandler = {
-                                        startHomeActivity()
-                                    },
-                                    failHandler = {
-
-                                    }
-                            )
-                        }, failHandler = {})
-                    }
-                    else{
-                        mDialogView.et_amount.setError("Geçerli bir değer giriniz")
-                    }
-                    mAlertDialog.dismiss()
-                }
-            }
+            updateUserMeal(selectedFood)
         }
 
         btnRecognatedFood2.setOnClickListener {
             val selectedFood = getFoodByName(foodArray[1])
-            var amount: String = ""
-            val mDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_add_meal_type, null)
-            val mBuilder = AlertDialog.Builder(this).setView(mDialogView)
-            val mAlertDialog = mBuilder.show()
-            val values = arrayOf("Kahvaltı", "Öğle Yemeği", "Akşam Yemeği", "Ara Öğün")
-            mDialogView.np_meal_type.setMinValue(0)
-            mDialogView.np_meal_type.setMaxValue(values.size - 1)
-            mDialogView.np_meal_type.setWrapSelectorWheel(false)
-            mDialogView.np_meal_type.setDisplayedValues(values)
-
-            mDialogView.btn_dialog_amount_save.setOnClickListener {
-                var mealType = ""
-                when (mDialogView.np_meal_type.value) { // 0 - 1 - 2 - 3
-                    0 -> mealType = "Breakfast"
-                    1 -> mealType = "Lunch"
-                    2 -> mealType = "Dinner"
-                    3 -> mealType = "Snacks"
-                }
-
-                mAlertDialog.dismiss()
-                val mDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_add_food_amount, null)
-                val mBuilder = AlertDialog.Builder(this).setView(mDialogView)
-                val mAlertDialog = mBuilder.show()
-
-                mDialogView.tv_serving_type.text = selectedFood[0].servingType
-
-                mDialogView.btn_dialog_amount_save.setOnClickListener {
-                    if(mDialogView.et_amount.text.isEmpty()){
-                        mDialogView.et_amount.setError("Bu alan boş bırakılamaz")
-                    }
-                    else if(mDialogView.et_amount.text.toString().isAmountValid()){
-                        amount = mDialogView.et_amount.text.toString()
-                    }
-                    else{
-                        mDialogView.et_amount.setError("Geçerli bir değer giriniz")
-                    }
-                    mAlertDialog.dismiss()
-                    FirestoreSource.getUserMeal(currentUser, mealType, successHandler = {
-                        val thisMeal = it
-                        val amountDouble = amount.toDouble()
-
-                        thisMeal.contents?.add(mapOf("amount" to amount, "foodID" to selectedFood[0].id.toString()))
-                        thisMeal.totalCalorie = thisMeal.totalCalorie?.plus((selectedFood[0].calorie * amountDouble).toInt())
-                        thisMeal.totalCarbohydrate = thisMeal.totalCarbohydrate?.plus((selectedFood[0].carbohydrate * amountDouble).toInt())
-                        thisMeal.totalFat = thisMeal.totalFat?.plus((selectedFood[0].fat * amountDouble).toInt())
-                        thisMeal.totalProtein = thisMeal.totalProtein?.plus((selectedFood[0].protein * amountDouble).toInt())
-
-                        FirestoreSource.updateUserMealForToday(currentUser = currentUser,
-                                userMeal = thisMeal,
-                                mealType = mealType,
-                                successHandler = {
-                                    startHomeActivity()
-                                },
-                                failHandler = {
-
-                                }
-                        )
-                    }, failHandler = {})
-                }
-            }
+            updateUserMeal(selectedFood)
         }
 
         btnRecognatedFood3.setOnClickListener {
             val selectedFood = getFoodByName(foodArray[2])
-            var amount: String = ""
-            val mDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_add_meal_type, null)
+            updateUserMeal(selectedFood)
+        }
+    }
+
+    private fun updateUserMeal(selectedFood: List<Food>) {
+        var amount = ""
+        val mDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_add_meal_type, null)
+        val mBuilder = AlertDialog.Builder(this).setView(mDialogView)
+        val mAlertDialog = mBuilder.show()
+        val values = arrayOf("Kahvaltı", "Öğle Yemeği", "Akşam Yemeği", "Ara Öğün")
+        mDialogView.np_meal_type.setMinValue(0)
+        mDialogView.np_meal_type.setMaxValue(values.size - 1)
+        mDialogView.np_meal_type.setWrapSelectorWheel(false)
+        mDialogView.np_meal_type.setDisplayedValues(values)
+
+        mDialogView.btn_dialog_amount_save.setOnClickListener {
+            var mealType = ""
+            when (mDialogView.np_meal_type.value) { // 0 - 1 - 2 - 3
+                0 -> mealType = "Breakfast"
+                1 -> mealType = "Lunch"
+                2 -> mealType = "Dinner"
+                3 -> mealType = "Snacks"
+            }
+            mAlertDialog.dismiss()
+            val mDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_add_food_amount, null)
             val mBuilder = AlertDialog.Builder(this).setView(mDialogView)
             val mAlertDialog = mBuilder.show()
-            val values = arrayOf("Kahvaltı", "Öğle Yemeği", "Akşam Yemeği", "Ara Öğün")
-            mDialogView.np_meal_type.setMinValue(0)
-            mDialogView.np_meal_type.setMaxValue(values.size - 1)
-            mDialogView.np_meal_type.setWrapSelectorWheel(false)
-            mDialogView.np_meal_type.setDisplayedValues(values)
+
+            mDialogView.tv_serving_type.text = selectedFood[0].servingType
 
             mDialogView.btn_dialog_amount_save.setOnClickListener {
-                var mealType = ""
-                when (mDialogView.np_meal_type.value) { // 0 - 1 - 2 - 3
-                    0 -> mealType = "Breakfast"
-                    1 -> mealType = "Lunch"
-                    2 -> mealType = "Dinner"
-                    3 -> mealType = "Snacks"
-                }
-
-                mAlertDialog.dismiss()
-                val mDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_add_food_amount, null)
-                val mBuilder = AlertDialog.Builder(this).setView(mDialogView)
-                val mAlertDialog = mBuilder.show()
-
-                mDialogView.tv_serving_type.text = selectedFood[0].servingType
-
-                mDialogView.btn_dialog_amount_save.setOnClickListener {
-                    if(mDialogView.et_amount.text.isEmpty()){
-                        mDialogView.et_amount.setError("Bu alan boş bırakılamaz")
-                    }
-                    else if(mDialogView.et_amount.text.toString().isAmountValid()){
-                        amount = mDialogView.et_amount.text.toString()
-                    }
-                    else{
-                        mDialogView.et_amount.setError("Geçerli bir değer giriniz")
-                    }
-                    mAlertDialog.dismiss()
+                if (mDialogView.et_amount.text.isEmpty()) {
+                    mDialogView.et_amount.setError("Bu alan boş bırakılamaz")
+                } else if (mDialogView.et_amount.text.toString().isAmountValid()) {
+                    amount = mDialogView.et_amount.text.toString()
                     FirestoreSource.getUserMeal(currentUser, mealType, successHandler = {
                         val thisMeal = it
                         val amountDouble = amount.toDouble()
 
-                        thisMeal.contents?.add(mapOf("amount" to amount, "foodID" to selectedFood[0].id.toString()))
+                        thisMeal.contents?.add(mapOf("amount" to amount.toDouble().toString(), "foodID" to selectedFood[0].id.toString()))
                         thisMeal.totalCalorie = thisMeal.totalCalorie?.plus((selectedFood[0].calorie * amountDouble).toInt())
                         thisMeal.totalCarbohydrate = thisMeal.totalCarbohydrate?.plus((selectedFood[0].carbohydrate * amountDouble).toInt())
                         thisMeal.totalFat = thisMeal.totalFat?.plus((selectedFood[0].fat * amountDouble).toInt())
@@ -349,7 +229,10 @@ class CameraActivity : AppCompatActivity() {
                                 }
                         )
                     }, failHandler = {})
+                } else {
+                    mDialogView.et_amount.setError("Geçerli bir değer giriniz")
                 }
+                mAlertDialog.dismiss()
             }
         }
     }

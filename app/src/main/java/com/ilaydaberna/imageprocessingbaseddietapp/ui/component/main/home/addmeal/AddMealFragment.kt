@@ -126,31 +126,31 @@ class AddMealFragment : Fragment(), AddMealNavigator{
         (activity as MainActivity?)?.showLoading()
         userFoodList.remove(food)
         userFoodAmount.remove(mapOf("foodID" to food.id.toString(), "amount" to amount.toString()))
-        totalCalorie -= (food.calorie * amount).toInt()
-        totalFat -= (food.fat * amount).toInt()
-        totalProtein -= (food.protein * amount).toInt()
-        totalCarbohydrate -= (food.carbohydrate * amount).toInt()
 
         val thisMeal = UserMeals.Meal(
-            totalCalorie = totalCalorie.toInt(),
-            totalCarbohydrate = totalCarbohydrate.toInt(),
-            totalFat = totalFat.toInt(),
-            totalProtein = totalProtein.toInt(),
-            contents = userFoodAmount
+                totalCalorie = totalCalorie.toInt() - (food.calorie * amount).toInt(),
+                totalCarbohydrate = totalCarbohydrate.toInt() - (food.carbohydrate * amount).toInt(),
+                totalFat = totalFat.toInt() - (food.fat * amount).toInt(),
+                totalProtein = totalProtein.toInt() - (food.protein * amount).toInt(),
+                contents = userFoodAmount
         )
 
         FirestoreSource.updateUserMealForToday(
-            currentUser = currentUser,
-            userMeal = thisMeal,
-            mealType = userMealItem.type,
-            successHandler = {
-                updateTotalView()
-                adapterUserFood.notifyDataSetChanged()
-                (activity as MainActivity?)?.hideLoading()
-            },
-            failHandler = {
-                (activity as MainActivity?)?.hideLoading()
-            }
+                currentUser = currentUser,
+                userMeal = thisMeal,
+                mealType = userMealItem.type,
+                successHandler = {
+                    totalCalorie -= (food.calorie * amount).toInt()
+                    totalFat -= (food.fat * amount).toInt()
+                    totalProtein -= (food.protein * amount).toInt()
+                    totalCarbohydrate -= (food.carbohydrate * amount).toInt()
+                    updateTotalView()
+                    adapterUserFood.notifyDataSetChanged()
+                    (activity as MainActivity?)?.hideLoading()
+                },
+                failHandler = {
+                    (activity as MainActivity?)?.hideLoading()
+                }
         )
     }
 
@@ -158,30 +158,31 @@ class AddMealFragment : Fragment(), AddMealNavigator{
         (activity as MainActivity?)?.showLoading()
         userFoodList.add(food)
         userFoodAmount.add(mapOf("foodID" to food.id.toString(), "amount" to amount.toString()))
-        totalCalorie += (food.calorie * amount).toInt()
-        totalFat += (food.fat * amount).toInt()
-        totalProtein += (food.protein * amount).toInt()
-        totalCarbohydrate += (food.carbohydrate * amount).toInt()
 
         val thisMeal = UserMeals.Meal(
-            totalCalorie = totalCalorie.toInt(),
-            totalCarbohydrate = totalCarbohydrate.toInt(),
-            totalFat = totalFat.toInt(),
-            totalProtein = totalProtein.toInt(),
-            contents = userFoodAmount
+                totalCalorie = (food.calorie * amount).toInt() + totalCalorie.toInt(),
+                totalCarbohydrate = (food.carbohydrate * amount).toInt() + totalCarbohydrate.toInt(),
+                totalFat = (food.fat * amount).toInt() + totalFat.toInt(),
+                totalProtein = (food.protein * amount).toInt() + totalProtein.toInt(),
+                contents = userFoodAmount
         )
 
         FirestoreSource.updateUserMealForToday(
-            currentUser = currentUser,
-            userMeal = thisMeal,
-            mealType = userMealItem.type,
-            successHandler = {
-                updateTotalView()
-                (activity as MainActivity?)?.hideLoading()
-            },
-            failHandler = {
-                (activity as MainActivity?)?.hideLoading()
-            }
+                currentUser = currentUser,
+                userMeal = thisMeal,
+                mealType = userMealItem.type,
+                successHandler = {
+                    totalCalorie += (food.calorie * amount).toInt()
+                    totalFat += (food.fat * amount).toInt()
+                    totalProtein += (food.protein * amount).toInt()
+                    totalCarbohydrate += (food.carbohydrate * amount).toInt()
+                    updateTotalView()
+                    adapterUserFood.notifyDataSetChanged()
+                    (activity as MainActivity?)?.hideLoading()
+                },
+                failHandler = {
+                    (activity as MainActivity?)?.hideLoading()
+                }
         )
     }
 
