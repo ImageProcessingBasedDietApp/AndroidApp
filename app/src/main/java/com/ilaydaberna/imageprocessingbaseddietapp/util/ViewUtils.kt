@@ -1,11 +1,13 @@
 package com.ilaydaberna.imageprocessingbaseddietapp.util
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import com.google.firebase.firestore.WriteBatch
+import com.ilaydaberna.imageprocessingbaseddietapp.R
 import com.ilaydaberna.imageprocessingbaseddietapp.ui.component.camera.CameraActivity
 import com.ilaydaberna.imageprocessingbaseddietapp.ui.component.login.LoginActivity
 import com.ilaydaberna.imageprocessingbaseddietapp.ui.component.login.RegisterActivity
@@ -59,5 +61,19 @@ fun Fragment.alertDialog(context: Context, title: String, msg: String, positiveB
     builder.show()
 
 }
+
+fun Activity.alertErrorDialog(context: Context, msg: String, positiveBtn: String) {
+    val builder = AlertDialog.Builder(context)
+    builder.setTitle("Tekrar Deneyiniz")
+    builder.setMessage(msg)
+    builder.setIcon(getDrawable(R.drawable.icon_error_green))
+
+    builder.setPositiveButton(positiveBtn) { dialog, which ->
+        dialog.dismiss()
+    }
+
+    builder.show()
+}
+
 
 fun Long.toDate() = String.format("%s", SimpleDateFormat("dd/MM/yyyy").format(this))

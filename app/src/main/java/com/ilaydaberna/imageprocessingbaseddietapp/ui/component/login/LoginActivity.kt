@@ -16,6 +16,7 @@ import com.ilaydaberna.imageprocessingbaseddietapp.R
 import com.ilaydaberna.imageprocessingbaseddietapp.databinding.ActivityLoginBinding
 import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.FirebaseSource
 import com.ilaydaberna.imageprocessingbaseddietapp.ui.base.BaseActivity
+import com.ilaydaberna.imageprocessingbaseddietapp.util.alertErrorDialog
 import com.ilaydaberna.imageprocessingbaseddietapp.util.startHomeActivity
 import com.ilaydaberna.imageprocessingbaseddietapp.util.startRegisterActivity
 import org.kodein.di.Kodein
@@ -120,7 +121,7 @@ class LoginActivity : BaseActivity(), KodeinAware, AuthListener{
     override fun onFailure(message: String) {
         binding.progressbar.visibility = View.GONE
         //ister dialog koy
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        alertErrorDialog(this, message, "Tamam")
     }
 
     private fun signInGoogle() {
@@ -141,7 +142,7 @@ class LoginActivity : BaseActivity(), KodeinAware, AuthListener{
                 firebaseAuthWithGoogle(account.idToken!!)
             } catch (e: ApiException) {
                 // Google Sign In failed, update UI appropriately
-                Log.w("firebaseAuthWithGoogle", "Google sign in failed", e)
+                alertErrorDialog(this, "Giriş yapılamadı", "Tamam")
             }
         }
     }
@@ -159,7 +160,7 @@ class LoginActivity : BaseActivity(), KodeinAware, AuthListener{
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w("firebaseAuthWithGoogle", "signInWithCredential:failure", task.exception)
-                    Toast.makeText(this, "Giriş yapılamadı", Toast.LENGTH_SHORT).show()
+                    alertErrorDialog(this, "Giriş yapılamadı", "Tamam")
                 }
             }
     }

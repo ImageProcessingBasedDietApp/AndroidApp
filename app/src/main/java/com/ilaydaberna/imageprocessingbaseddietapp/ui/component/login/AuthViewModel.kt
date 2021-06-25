@@ -68,7 +68,7 @@ class AuthViewModel (private val repository: UserRepository) : ViewModel() {
             return
         }
         if (email!!.isEmailValid()) {
-            authListener?.onFailure("Lütfen geçerli bir email giriniz")
+            authListener?.onFailure("Lütfen geçerli bir email adresi giriniz")
             return
         }
         if (!password.equals(passwordCntrl)) {
@@ -76,6 +76,7 @@ class AuthViewModel (private val repository: UserRepository) : ViewModel() {
             return
         }
         if (!password!!.isPasswordValid()) {
+            authListener?.onFailure("Lütfen en az 1 büyük harf, 1 küçük harf ve 1 rakamdan oluşan minimum 4 karakterli bir şifre giriniz")
             return
         }
         authListener?.onStarted()
