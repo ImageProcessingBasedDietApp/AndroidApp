@@ -17,6 +17,8 @@ import com.google.firebase.auth.FirebaseUser
 import com.ilaydaberna.imageprocessingbaseddietapp.R
 import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.*
 import com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.MainActivity
+import com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.home.addmeal.UserFoodAdapter
+import kotlinx.android.synthetic.main.fragment_add_meal.view.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import kotlinx.coroutines.channels.consumesAll
 import java.lang.Exception
@@ -31,6 +33,11 @@ class HomeFragment : Fragment(), HomeNavigator{
     private lateinit var dailyProtein: DonutProgressView
     private lateinit var dailyCarbohydrate: DonutProgressView
     private lateinit var dailyFat: DonutProgressView
+
+    var totalCalorie: Int = 0
+    var totalCarbohydrate: Int = 0
+    var totalProtein: Int = 0
+    var totalFat: Int = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -167,6 +174,11 @@ class HomeFragment : Fragment(), HomeNavigator{
         val totalFat = (meals.breakfast?.totalFat ?: 0) + (meals.lunch?.totalFat ?: 0) + (meals.dinner?.totalFat ?: 0) + (meals.snacks?.totalFat ?: 0)
         val totalProtein = (meals.breakfast?.totalProtein ?: 0) + (meals.lunch?.totalProtein ?: 0) + (meals.dinner?.totalProtein ?: 0) + (meals.snacks?.totalProtein ?: 0)
         val totalCarbohydrate = (meals.breakfast?.totalCarbohydrate ?: 0) + (meals.lunch?.totalCarbohydrate ?: 0) + (meals.dinner?.totalCarbohydrate ?: 0) + (meals.snacks?.totalCarbohydrate ?: 0)
+
+        view?.tv_daily_calorie_value?.text = totalCalorie.toString() + " kcal / " + UserInfo.user.get()?.dailyCalorie.toString() + " kcal"
+        view?.tv_daily_carbohydrate_value?.text =  totalCarbohydrate.toString() +" / " + UserInfo.user.get()?.dailyCarbohydrate.toString()
+        view?.tv_daily_protein_value?.text = totalProtein.toString() + " / " + UserInfo.user.get()?.dailyProtein.toString()
+        view?.tv_daily_fat_value?.text = totalFat.toString() + " / " + UserInfo.user.get()?.dailyFat.toString()
 
         //Donut Graph
         val sectionCalorie = DonutSection(

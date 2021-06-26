@@ -39,10 +39,15 @@ class FirestoreSource {
                     val goalTea = (document.data?.get("goalTea") as Number).toInt()
                     val goalStep = (document.data?.get("goalStep") as Number).toInt()
                     val isNotification = document.data?.get("notification") as Boolean
+                    val dailyCalorie = (document.data?.get("dailyCalorie") as Number).toInt()
+                    val dailyCarbohydrate = (document.data?.get("dailyCarbohydrate") as Number).toInt()
+                    val dailyFat = (document.data?.get("dailyFat") as Number).toInt()
+                    val dailyProtein = (document.data?.get("dailyProtein") as Number).toInt()
 
                     UserInfo.user.set(User(UID, email, name, photoUrl, gender,
                         birthdate, height, weight, goalWeight, goalWater, goalCoffee,
-                        goalTea, goalStep, isNotification))
+                        goalTea, goalStep, isNotification, dailyCalorie,
+                            dailyCarbohydrate, dailyProtein, dailyFat))
 
                 } else {
                     Log.i("TAG", "No such document")
