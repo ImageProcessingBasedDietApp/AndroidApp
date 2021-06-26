@@ -18,12 +18,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ImageProcessingBasedDietAppLight">
-        <activity android:name=".ui.component.main.MainActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.component.login.LoginActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.component.login.RegisterActivity"
-            android:screenOrientation="portrait"/>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/icon_app_white_notification" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/green_700" />
+
+        <activity
+            android:name=".ui.component.main.MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.component.login.LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.component.login.RegisterActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".ui.component.camera.CameraActivity" />
         <activity
             android:name=".ui.component.splash.SplashActivity"
@@ -34,6 +45,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
