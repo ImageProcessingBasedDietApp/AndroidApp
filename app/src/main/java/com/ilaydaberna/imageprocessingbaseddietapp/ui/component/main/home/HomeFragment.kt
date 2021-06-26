@@ -2,26 +2,21 @@ package com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.home
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.databinding.ObservableField
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.futured.donut.DonutProgressView
 import app.futured.donut.DonutSection
-import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseUser
 import com.ilaydaberna.imageprocessingbaseddietapp.R
 import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.*
 import com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.MainActivity
-import com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.home.addmeal.UserFoodAdapter
-import kotlinx.android.synthetic.main.fragment_add_meal.view.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
-import kotlinx.coroutines.channels.consumesAll
-import java.lang.Exception
 import java.util.stream.Collectors
 
 class HomeFragment : Fragment(), HomeNavigator{
@@ -162,29 +157,39 @@ class HomeFragment : Fragment(), HomeNavigator{
         )
     }
 
-    private fun setDonutProgressCapValues(){
-        dailyCalorie.cap = 1500f
-        dailyProtein.cap = 1500f
-        dailyFat.cap = 1500f
-        dailyCarbohydrate.cap = 1500f
+    private fun setDonutProgressCapValues() {
+        dailyCalorie.cap = UserInfo.user.get()?.dailyCalorie?.toFloat() ?: 1500F
+        dailyProtein.cap = UserInfo.user.get()?.dailyProtein?.toFloat() ?: 450F
+        dailyFat.cap = UserInfo.user.get()?.dailyFat?.toFloat() ?: 330F
+        dailyCarbohydrate.cap = UserInfo.user.get()?.dailyCarbohydrate?.toFloat() ?: 720F
     }
 
-    private fun setDonutProgressViews(meals: UserMeals){
-        val totalCalorie = (meals.breakfast?.totalCalorie ?: 0) + (meals.lunch?.totalCalorie ?: 0) + (meals.dinner?.totalCalorie ?: 0) + (meals.snacks?.totalCalorie ?: 0)
-        val totalFat = (meals.breakfast?.totalFat ?: 0) + (meals.lunch?.totalFat ?: 0) + (meals.dinner?.totalFat ?: 0) + (meals.snacks?.totalFat ?: 0)
-        val totalProtein = (meals.breakfast?.totalProtein ?: 0) + (meals.lunch?.totalProtein ?: 0) + (meals.dinner?.totalProtein ?: 0) + (meals.snacks?.totalProtein ?: 0)
-        val totalCarbohydrate = (meals.breakfast?.totalCarbohydrate ?: 0) + (meals.lunch?.totalCarbohydrate ?: 0) + (meals.dinner?.totalCarbohydrate ?: 0) + (meals.snacks?.totalCarbohydrate ?: 0)
+    private fun setDonutProgressViews(meals: UserMeals) {
+        val totalCalorie = (meals.breakfast?.totalCalorie ?: 0) + (meals.lunch?.totalCalorie
+            ?: 0) + (meals.dinner?.totalCalorie ?: 0) + (meals.snacks?.totalCalorie ?: 0)
+        val totalFat = (meals.breakfast?.totalFat ?: 0) + (meals.lunch?.totalFat
+            ?: 0) + (meals.dinner?.totalFat ?: 0) + (meals.snacks?.totalFat ?: 0)
+        val totalProtein = (meals.breakfast?.totalProtein ?: 0) + (meals.lunch?.totalProtein
+            ?: 0) + (meals.dinner?.totalProtein ?: 0) + (meals.snacks?.totalProtein ?: 0)
+        val totalCarbohydrate =
+            (meals.breakfast?.totalCarbohydrate ?: 0) + (meals.lunch?.totalCarbohydrate
+                ?: 0) + (meals.dinner?.totalCarbohydrate ?: 0) + (meals.snacks?.totalCarbohydrate
+                ?: 0)
 
-        view?.tv_daily_calorie_value?.text = totalCalorie.toString() + " kcal / " + UserInfo.user.get()?.dailyCalorie.toString() + " kcal"
-        view?.tv_daily_carbohydrate_value?.text =  totalCarbohydrate.toString() +" / " + UserInfo.user.get()?.dailyCarbohydrate.toString()
-        view?.tv_daily_protein_value?.text = totalProtein.toString() + " / " + UserInfo.user.get()?.dailyProtein.toString()
-        view?.tv_daily_fat_value?.text = totalFat.toString() + " / " + UserInfo.user.get()?.dailyFat.toString()
+        view?.tv_daily_calorie_value?.text =
+            totalCalorie.toString() + " kcal / \n" + UserInfo.user.get()?.dailyCalorie.toString() + " kcal"
+        view?.tv_daily_carbohydrate_value?.text =
+            totalCarbohydrate.toString() + " gr /\n " + UserInfo.user.get()?.dailyCarbohydrate.toString() + " gr"
+        view?.tv_daily_protein_value?.text =
+            totalProtein.toString() + " gr /\n " + UserInfo.user.get()?.dailyProtein.toString() + " gr"
+        view?.tv_daily_fat_value?.text =
+            totalFat.toString() + " gr /\n " + UserInfo.user.get()?.dailyFat.toString() + " gr"
 
         //Donut Graph
         val sectionCalorie = DonutSection(
-                name = "Alınan Kalori",
-                color = resources.getColor(R.color.green_500),
-                amount = totalCalorie.toFloat()
+            name = "Alınan Kalori",
+            color = resources.getColor(R.color.green_500),
+            amount = totalCalorie.toFloat()
         )
 
         dailyCalorie.submitData(listOf(sectionCalorie))
