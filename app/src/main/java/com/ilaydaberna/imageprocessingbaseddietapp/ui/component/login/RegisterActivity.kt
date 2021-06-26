@@ -34,6 +34,7 @@ class RegisterActivity : AppCompatActivity() {
     var goalStep:Int = 0
     var gender:String = ""
     var birthdate:Long = 0
+    var birthyear: Int = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?){
@@ -139,6 +140,7 @@ class RegisterActivity : AppCompatActivity() {
             val datePickerDialog =
                     this?.let { it1 ->
                         DatePickerDialog(it1, DatePickerDialog.OnDateSetListener{ mView, mYear, mMonth, mDay ->
+                            birthyear = mYear
                             tv_birthdate.setText(""+ mDay +"/" +( mMonth+1) + "/"+ mYear)
                             val calendar = Calendar.getInstance()
                             calendar.set(mYear, mMonth, mDay)
@@ -250,6 +252,13 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         button_register_save.setOnClickListener {
+            //var dailyCalorie: Int = 0,
+            //var dailyCarbohydrate: Int = 0,
+            //var dailyProtein: Int = 0,
+            //var dailyFat: Int = 0
+
+
+            val dailyCalorie = getDailyCalorie()
             //TODO: Firebase kaydet
             val currentUser: FirebaseUser? = FirebaseSource().getAuth().currentUser
             Thread(Runnable {
@@ -258,7 +267,9 @@ class RegisterActivity : AppCompatActivity() {
                         currentUser?.email?.let { it2 ->
                             User(
                                 it1, it2, nameSurname, "", gender, birthdate, height, weight,
-                                goalWeight, goalWater, goalCoffee, goalTea, goalStep, false )
+                                goalWeight, goalWater, goalCoffee, goalTea, goalStep, false,
+                                    dailyCalorie, getDailyCarbohydrate(dailyCalorie),
+                                    getDailyProtein(dailyCalorie), getDailyFat(dailyCalorie))
                         }
                     }
                 )
@@ -284,4 +295,28 @@ class RegisterActivity : AppCompatActivity() {
 
     }
 
+    private fun getDailyCalorie(): Int {
+        val calendar = Calendar.getInstance()
+        val currentYear = calendar[Calendar.YEAR]
+
+        var dailyCalorie = 0
+        if (gender == "Kadın") {
+            dailyCalorie = (655 + (9.6 * weight) + (1.8 * height) - (4.7 * (currentYear - birthyear))).toInt()
+        } else {
+            dailyCalorie = (66 + (13.7 * weight) + (5 * height) - (6.8 * (currentYear - birthyear))).toInt()
+        }
+        return dailyCalorie
+    }
+
+    private fun getDailyCarbohydrate(calorie: Int): Int {
+        return  ((calorie * 48) / 100)
+    }
+
+    private fun getDailyProtein(calorie: Int): Int {
+        return ((calorie * 30) / 100)
+    }
+
+    private fun getDailyFat(calorie: Int): Int {
+        return ((calorie * 22) / 100)
+    }
 }

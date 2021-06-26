@@ -14,6 +14,10 @@ data class User(
     var goalCoffee: Int = 0,
     var goalTea: Int = 0,
     var goalStep: Int = 0,
-    var isNotification: Boolean = false
+    var isNotification: Boolean = false,
+    var dailyCalorie: Int = 0,
+    var dailyCarbohydrate: Int = 0,
+    var dailyProtein: Int = 0,
+    var dailyFat: Int = 0
 )
 
