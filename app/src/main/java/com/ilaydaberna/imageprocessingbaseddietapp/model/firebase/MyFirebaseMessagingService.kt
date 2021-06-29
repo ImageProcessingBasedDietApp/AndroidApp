@@ -1,4 +1,4 @@
-package com.ilaydaberna.imageprocessingbaseddietapp
+package com.ilaydaberna.imageprocessingbaseddietapp.model.firebase
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -12,6 +12,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import com.ilaydaberna.imageprocessingbaseddietapp.R
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
 

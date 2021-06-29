@@ -36,6 +36,9 @@ class ChartFragment : Fragment() {
     private val waterData = arrayListOf<BarEntry>()
     private val coffeeData = arrayListOf<BarEntry>()
 
+    private val weightsValues = arrayListOf<Entry>()
+    private val weightXAxisValues = arrayListOf<String>()
+
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
@@ -49,7 +52,7 @@ class ChartFragment : Fragment() {
 
         getUserLiquidTrackingData()
         //TODO: initializeBarChart(binding.stepBarChart, binding.stepSeekBar, stepData )
-        createWeightLineChart(binding.weightLineChart)
+        getUserWeightTrackingData(binding.weightLineChart)
 
 
         binding.waterSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
@@ -130,57 +133,69 @@ class ChartFragment : Fragment() {
 
     }
 
-    private fun createWeightLineChart(mChart: LineChart) {
-        var set1: LineDataSet
-        val weightsValues = arrayListOf<Entry>()
-        val weightXAxisValues = arrayListOf<String>()
+
+    private fun initializeWeightChart(mChart: LineChart) {
         mChart.setTouchEnabled(true)
         mChart.setPinchZoom(false)
         mChart.description.isEnabled = false
+    }
 
+    private fun createAndUpdateWeightChart(mChart: LineChart, set1: LineDataSet) {
+        mChart.xAxis.valueFormatter = IndexAxisValueFormatter(weightXAxisValues)
+        mChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
+
+        set1.setDrawIcons(false)
+        set1.enableDashedLine(10f, 5f, 0f)
+        set1.enableDashedHighlightLine(10f, 5f, 0f)
+        set1.color = Color.DKGRAY
+        set1.setCircleColor(Color.DKGRAY)
+        set1.lineWidth = 1f
+        set1.circleRadius = 3f
+        set1.setDrawCircleHole(false)
+        set1.valueTextSize = 9f
+        set1.setDrawFilled(true)
+        set1.formLineWidth = 1f
+        set1.formLineDashEffect = DashPathEffect(floatArrayOf(10f, 5f), 0f)
+        set1.formSize = 15f
+
+        if (Utils.getSDKInt() >= 18) {
+            set1.fillDrawable = resources.getDrawable(R.drawable.fade_green)
+        } else {
+            set1.fillColor = Color.DKGRAY
+        }
+
+        val dataSets: ArrayList<ILineDataSet> = ArrayList()
+        dataSets.add(set1)
+        val data = LineData(dataSets)
+        mChart.data = data
+        mChart.invalidate()
+    }
+
+    private fun getUserWeightTrackingData(mChart: LineChart) {
+        var set1: LineDataSet
         if (currentUser != null) {
+            (activity as MainActivity?)?.showLoading()
             FirestoreSource.getWeightTrackingValues(
-                currentUser,
-                successHandler = {
-                    var i = 0F
-                    for (value in it) {
-                        weightsValues.add(Entry(i, value.weight))
-                        weightXAxisValues.add(value.date)
-                        i += 1F
-                    }
+                    currentUser,
+                    successHandler = {
+                        initializeWeightChart(mChart)
+                        var i = 0F
+                        for (value in it) {
+                            weightsValues.add(Entry(i, value.weight))
+                            weightXAxisValues.add(value.date)
+                            i += 1F
+                        }
 
-                    mChart.xAxis.valueFormatter = IndexAxisValueFormatter(weightXAxisValues)
-                    mChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
+                        mChart.xAxis.valueFormatter = IndexAxisValueFormatter(weightXAxisValues)
+                        mChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
 
-                    set1 = LineDataSet(weightsValues, "Kilo")
-                    set1.setDrawIcons(false)
-                    set1.enableDashedLine(10f, 5f, 0f)
-                    set1.enableDashedHighlightLine(10f, 5f, 0f)
-                    set1.color = Color.DKGRAY
-                    set1.setCircleColor(Color.DKGRAY)
-                    set1.lineWidth = 1f
-                    set1.circleRadius = 3f
-                    set1.setDrawCircleHole(false)
-                    set1.valueTextSize = 9f
-                    set1.setDrawFilled(true)
-                    set1.formLineWidth = 1f
-                    set1.formLineDashEffect = DashPathEffect(floatArrayOf(10f, 5f), 0f)
-                    set1.formSize = 15f
-
-                    if (Utils.getSDKInt() >= 18) {
-                        set1.fillDrawable = resources.getDrawable(R.drawable.fade_green)
-                    } else {
-                        set1.fillColor = Color.DKGRAY
-                    }
-                    val dataSets: ArrayList<ILineDataSet> = ArrayList()
-                    dataSets.add(set1)
-                    val data = LineData(dataSets)
-                    mChart.data = data
-
-                },
-                failHandler = {
-
-                })
+                        set1 = LineDataSet(weightsValues, "Kilo")
+                        createAndUpdateWeightChart(mChart, set1)
+                        (activity as MainActivity?)?.hideLoading()
+                    },
+                    failHandler = {
+                        (activity as MainActivity?)?.hideLoading()
+                    })
         }
     }
 
@@ -242,7 +257,6 @@ class ChartFragment : Fragment() {
             chart.setData(data)
             chart.setFitBars(true)
         }
-
         chart.invalidate()
     }
 

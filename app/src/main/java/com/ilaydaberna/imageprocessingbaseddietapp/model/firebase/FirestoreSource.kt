@@ -420,38 +420,14 @@ class FirestoreSource {
                 if (currentUser.uid != null) {
                     val db = Firebase.firestore
                     val docRef = db.collection("WeightTracking")
-                    val query = docRef.whereEqualTo("userID", currentUser.uid)
-                        .whereEqualTo("date", date)
-                        .get()
-                        .addOnSuccessListener { documents ->
-                            if (documents.size() == 0) {
-                                docRef.add(weight)
-                                    .addOnSuccessListener { documentReference ->
-                                        Log.i(TAG, "DocumentSnapshot written with ID: ${documentReference.id}")
-                                        successHandler.invoke()
-                                    }
-                                    .addOnFailureListener { e ->
-                                        Log.i(TAG, "Error adding document", e)
-                                        failHandler.invoke()
-                                    }
-                            } else {
-                                for (document in documents) {
-                                    docRef.document(document.id).set(weight)
-                                        .addOnSuccessListener { documentReference ->
-                                            Log.i(TAG, "DocumentSnapshot written with ID: ")
-                                            successHandler.invoke()
-                                        }
-                                        .addOnFailureListener { e ->
-                                            Log.i(TAG, "Error adding document", e)
-                                            failHandler.invoke()
-                                        }
-                                }
+                    docRef.document(currentUser.uid + date.toString())
+                            .set(weight)
+                            .addOnSuccessListener {
+                                successHandler.invoke()
                             }
-                        }
-                        .addOnFailureListener { exception ->
-                            Log.i(TAG, "Error getting documents: ", exception)
-                            failHandler.invoke()
-                        }
+                            .addOnFailureListener {
+                                failHandler.invoke()
+                            }
                 }
             }
         }
@@ -561,9 +537,7 @@ class FirestoreSource {
                             }
                             .addOnFailureListener { e ->
                                 Log.i(TAG, "Error adding document", e)
-                                // TODO: will be refactor
-                                LiquidInfo.liquid.set(currentUser?.uid?.let { Liquid(0, 0, 0, date, it) })
-                                successHandler.invoke()
+                                failHandler.invoke()
                         }
                 }
             }
