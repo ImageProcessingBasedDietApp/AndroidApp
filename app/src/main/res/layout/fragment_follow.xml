@@ -462,7 +462,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:gravity="center"
-                            android:text="9485 adım"
+                            tools:text="9485 adım"
                             android:textColor="@color/goodgrey"
                             android:textSize="30dp" />
 

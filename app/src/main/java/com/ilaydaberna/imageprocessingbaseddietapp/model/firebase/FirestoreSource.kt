@@ -191,15 +191,55 @@ class FirestoreSource {
 
     companion object {
 
+        fun createAndUpdateSteps(currentUser: FirebaseUser?, previousSteps: Int, totalSteps: Int, date: Long, successHandler: () -> Unit, failHandler: () -> Unit) {
+            val dailySteps = totalSteps - previousSteps
+            if (currentUser != null && currentUser.uid != null) {
+                val db = Firebase.firestore
+                val docRef = db.collection("StepTracking")
+                docRef.document(currentUser.uid + date.toString())
+                        .get()
+                        .addOnSuccessListener {
+                            if (it != null) {
+                                docRef.document(currentUser.uid + date.toString()).set(
+                                        hashMapOf(
+                                                "previousSteps" to previousSteps,
+                                                "totalSteps" to totalSteps,
+                                                "dailySteps" to dailySteps,
+                                                "date" to date,
+                                                "userID" to currentUser.uid
+                                        )
+                                ).addOnSuccessListener {
+                                    UserStepsInfo.userSteps.set(UserSteps(previousSteps, totalSteps, dailySteps, date, currentUser.uid))
+                                }
+                            } else {
+                                docRef.document(currentUser.uid + date.toString()).set(
+                                        hashMapOf(
+                                                "previousSteps" to totalSteps,
+                                                "totalSteps" to totalSteps,
+                                                "dailySteps" to 0,
+                                                "date" to date,
+                                                "userID" to currentUser.uid
+                                        )
+                                ).addOnSuccessListener {
+                                    UserStepsInfo.userSteps.set(UserSteps(totalSteps, totalSteps, 0, date, currentUser.uid))
+                                }
+                            }
+                        }
+                        .addOnFailureListener {
+                            Log.d(TAG, "get failed with ", it)
+                        }
+            }
+        }
+
         fun getWeightTrackingValues(
-            currentUser: FirebaseUser,
-            successHandler: (ArrayList<WeightTrackValue>) -> Unit,
-            failHandler: () -> Unit
+                currentUser: FirebaseUser,
+                successHandler: (ArrayList<WeightTrackValue>) -> Unit,
+                failHandler: () -> Unit
         ) {
             val userWeights = arrayListOf<WeightTrackValue>()
             val db = Firebase.firestore
             db.collection("WeightTracking")
-                .whereEqualTo("userID", currentUser.uid)
+                    .whereEqualTo("userID", currentUser.uid)
                 .get()
                 .addOnSuccessListener { documents ->
                     for (document in documents) {
