@@ -39,16 +39,17 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     override fun onSensorChanged(event: SensorEvent?) {
         if (running) {
             totalSteps = event!!.values[0]
-            val currentSteps = totalSteps.toInt() - (previousTotalSteps ?: totalSteps).toInt()
+            val currentSteps = totalSteps - UserStepsInfo.userSteps.get()!!.previousSteps
             UserStepsInfo.userSteps.set(currentUser?.let {
                 UserSteps(
-                        previousTotalSteps ?: 0,
-                        (totalSteps ?: 0) as Int,
+                        previousTotalSteps ?: 0F,
+                        totalSteps ?: 0F,
                         currentSteps,
                         getLongTimeStamp(),
                         it?.uid
                 )
             })
+            Log.i("Steps", currentSteps.toString())
         }
     }
 
@@ -71,7 +72,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     fun checkAndUpdateUserSteps() {
         showLoading()
         FirestoreSource.createAndUpdateSteps(currentUser, (previousTotalSteps
-                ?: 0).toInt(), totalSteps.toInt(), getLongTimeStamp(),
+                ?: 0F), totalSteps, getLongTimeStamp(),
                 successHandler = {
                     hideLoading()
                 },

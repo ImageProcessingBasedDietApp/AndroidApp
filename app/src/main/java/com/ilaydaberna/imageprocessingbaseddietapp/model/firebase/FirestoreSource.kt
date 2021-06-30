@@ -191,7 +191,7 @@ class FirestoreSource {
 
     companion object {
 
-        fun createAndUpdateSteps(currentUser: FirebaseUser?, previousSteps: Int, totalSteps: Int, date: Long, successHandler: () -> Unit, failHandler: () -> Unit) {
+        fun createAndUpdateSteps(currentUser: FirebaseUser?, previousSteps: Float, totalSteps: Float, date: Long, successHandler: () -> Unit, failHandler: () -> Unit) {
             val dailySteps = totalSteps - previousSteps
             if (currentUser != null && currentUser.uid != null) {
                 val db = Firebase.firestore
@@ -209,7 +209,7 @@ class FirestoreSource {
                                                 "userID" to currentUser.uid
                                         )
                                 ).addOnSuccessListener {
-                                    UserStepsInfo.userSteps.set(UserSteps(previousSteps, totalSteps, dailySteps, date, currentUser.uid))
+                                    UserStepsInfo.userSteps.set(UserSteps(previousSteps.toFloat(), totalSteps.toFloat(), dailySteps.toFloat(), date, currentUser.uid))
                                 }
                             } else {
                                 docRef.document(currentUser.uid + date.toString()).set(
@@ -221,7 +221,7 @@ class FirestoreSource {
                                                 "userID" to currentUser.uid
                                         )
                                 ).addOnSuccessListener {
-                                    UserStepsInfo.userSteps.set(UserSteps(totalSteps, totalSteps, 0, date, currentUser.uid))
+                                    UserStepsInfo.userSteps.set(UserSteps(totalSteps.toFloat(), totalSteps.toFloat(), 0F, date, currentUser.uid))
                                 }
                             }
                         }

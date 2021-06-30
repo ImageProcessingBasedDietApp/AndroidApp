@@ -40,8 +40,6 @@ class FollowFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_follow, container, false)
         checkWater()
 
-        view.tv_step.text = UserStepsInfo.userSteps.get()?.dailySteps.toString()
-
         view.btn_add_water.setOnClickListener() {
             val mDialogView = LayoutInflater.from(activity).inflate(R.layout.dialog_enter_int_value, null)
             val mBuilder = AlertDialog.Builder(activity).setView(mDialogView)
@@ -145,6 +143,11 @@ class FollowFragment : Fragment() {
         return view
     }
 
+    override fun onResume() {
+        super.onResume()
+        view?.tv_step?.text = UserStepsInfo.userSteps.get()?.dailySteps?.toInt().toString()
+    }
+
     private fun refreshUI() {
         weightText = (UserInfo.user.get()?.weight ?: 0.0).toString()
         savedWater = LiquidInfo.liquid.get()?.dailyWater
@@ -159,7 +162,7 @@ class FollowFragment : Fragment() {
 
         view?.gl_tea?.removeAllViews()
         for(i in 1..12) {
-            val iv = ImageView(context)
+            val iv = ImageView(requireContext())
             if (i <= cup_of_tea) {
                 iv.setImageResource(R.drawable.tea_full)
             } else {
@@ -175,7 +178,7 @@ class FollowFragment : Fragment() {
 
         view?.gl_coffee?.removeAllViews()
         for(i in 1..12) {
-            val iv = ImageView(context)
+            val iv = ImageView(requireContext())
             if (i <= cup_of_coffee) {
                 iv.setImageResource(R.drawable.icon_turkish_coffee)
             } else {
