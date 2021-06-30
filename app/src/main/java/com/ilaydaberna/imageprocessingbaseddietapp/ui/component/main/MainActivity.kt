@@ -32,54 +32,31 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     val currentUser: FirebaseUser? = FirebaseSource().getAuth().currentUser
 
     private var sensorManager: SensorManager? = null
-    private var running = false
-    private var totalSteps = 0f
-    private var previousTotalSteps = UserStepsInfo.userSteps.get()?.previousSteps
 
     override fun onSensorChanged(event: SensorEvent?) {
-        if (running) {
-            totalSteps = event!!.values[0]
-            val currentSteps = totalSteps - (UserStepsInfo.userSteps.get()?.previousSteps?: 0F)
-            UserStepsInfo.userSteps.set(currentUser?.let {
-                UserSteps(
-                        previousTotalSteps ?: 0F,
-                        totalSteps ?: 0F,
-                        currentSteps,
-                        getLongTimeStamp(),
-                        it?.uid
-                )
-            })
-            Log.i("Steps", currentSteps.toString())
+        var currentSteps = 0
+        var previousSteps = UserStepsInfo.userSteps.get()?.previousSteps?: 0
+        val totalSteps = event!!.values[0].toInt()
+        if (previousSteps == 0) {
+            previousSteps = totalSteps
+        } else {
+            currentSteps = totalSteps - previousSteps
         }
+        UserStepsInfo.userSteps.set(currentUser?.let {
+            UserSteps(
+                    previousSteps,
+                    totalSteps,
+                    currentSteps,
+                    getLongTimeStamp(),
+                    it.uid
+            )
+        })
+        FirestoreSource.createAndUpdateSteps(currentUser, previousSteps, totalSteps, getLongTimeStamp())
+        Log.i("Steps", currentSteps.toString())
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
 
-    }
-
-    override fun onResume() {
-        super.onResume()
-        running = true
-        val stepSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
-        if (stepSensor != null) {
-            sensorManager?.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_UI)
-        } else {
-            Log.i("StepCounter", "No sensor detected on this device.")
-        }
-        checkAndUpdateUserSteps()
-    }
-
-    fun checkAndUpdateUserSteps() {
-        showLoading()
-        FirestoreSource.createAndUpdateSteps(currentUser, (previousTotalSteps
-                ?: 0F), totalSteps, getLongTimeStamp(),
-                successHandler = {
-                    hideLoading()
-                },
-                failHandler = {
-                    hideLoading()
-
-                })
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -95,9 +72,16 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         var user = UserInfo.user.get()
         setupViews()
 
-        checkAndUpdateUserSteps()
-        sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
 
+        sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        FirestoreSource.checkUserStep(currentUser, getLongTimeStamp(), successHandler = {
+            val stepSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
+            if (stepSensor != null) {
+                sensorManager?.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_UI)
+            } else {
+                Log.i("StepCounter", "No sensor detected on this device.")
+            }
+        })
 
         binding.btnAddMeal.setOnClickListener {
             this.startCameraActivity()

@@ -191,7 +191,39 @@ class FirestoreSource {
 
     companion object {
 
-        fun createAndUpdateSteps(currentUser: FirebaseUser?, previousSteps: Float, totalSteps: Float, date: Long, successHandler: () -> Unit, failHandler: () -> Unit) {
+        fun checkUserStep(currentUser: FirebaseUser?, date: Long, successHandler: () -> Unit) {
+            if (currentUser != null && currentUser.uid != null) {
+                val db = Firebase.firestore
+                val docRef = db.collection("StepTracking")
+                docRef.document(currentUser.uid + date.toString())
+                        .get()
+                        .addOnSuccessListener {
+                            if (it != null) {
+                                UserStepsInfo.userSteps.set(UserSteps((it.data?.get("previousSteps") as Long).toInt(),
+                                        (it.data?.get("totalSteps") as Long).toInt(),
+                                        (it.data?.get("dailySteps") as Long).toInt(),
+                                        date,
+                                        currentUser.uid))
+                                successHandler.invoke()
+                            } else {
+                                docRef.document(currentUser.uid + date.toString()).set(
+                                        hashMapOf(
+                                                "previousSteps" to 0,
+                                                "totalSteps" to 0,
+                                                "dailySteps" to 0,
+                                                "date" to date,
+                                                "userID" to currentUser.uid
+                                        )
+                                ).addOnSuccessListener {
+                                    UserStepsInfo.userSteps.set(UserSteps(0, 0, 0, date, currentUser.uid))
+                                    successHandler.invoke()
+                                }
+                            }
+                        }
+            }
+        }
+
+        fun createAndUpdateSteps(currentUser: FirebaseUser?, previousSteps: Int, totalSteps: Int, date: Long) {
             val dailySteps = totalSteps - previousSteps
             if (currentUser != null && currentUser.uid != null) {
                 val db = Firebase.firestore
@@ -221,7 +253,7 @@ class FirestoreSource {
                                                 "userID" to currentUser.uid
                                         )
                                 ).addOnSuccessListener {
-                                    UserStepsInfo.userSteps.set(UserSteps(totalSteps, totalSteps, 0F, date, currentUser.uid))
+                                    UserStepsInfo.userSteps.set(UserSteps(totalSteps, totalSteps, 0, date, currentUser.uid))
                                 }
                             }
                         }
