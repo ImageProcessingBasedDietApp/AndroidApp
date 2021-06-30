@@ -13,6 +13,7 @@ import com.ilaydaberna.imageprocessingbaseddietapp.ui.component.login.LoginActiv
 import com.ilaydaberna.imageprocessingbaseddietapp.ui.component.login.RegisterActivity
 import com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.MainActivity
 import java.text.SimpleDateFormat
+import java.util.*
 
 
 fun Context.startHomeActivity() =
@@ -77,3 +78,13 @@ fun Activity.alertErrorDialog(context: Context, msg: String, positiveBtn: String
 
 
 fun Long.toDate() = String.format("%s", SimpleDateFormat("dd/MM/yyyy").format(this))
+
+fun getLongTimeStamp(): Long {
+    val c = Calendar.getInstance()
+    c.set(Calendar.HOUR, 0)
+    c.set(Calendar.MINUTE, 0)
+    c.set(Calendar.SECOND, 0)
+    c.set(Calendar.MILLISECOND, 0)
+    val d: Date = c.time
+    return d.time
+}

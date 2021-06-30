@@ -2,11 +2,6 @@ package com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.follow
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.content.Context
-import android.hardware.Sensor
-import android.hardware.SensorEvent
-import android.hardware.SensorEventListener
-import android.hardware.SensorManager
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -15,21 +10,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.GridLayout
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseUser
 import com.ilaydaberna.imageprocessingbaseddietapp.R
 import com.ilaydaberna.imageprocessingbaseddietapp.model.firebase.*
 import com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.MainActivity
+import com.ilaydaberna.imageprocessingbaseddietapp.util.getLongTimeStamp
 import kotlinx.android.synthetic.main.dialog_enter_int_value.view.*
 import kotlinx.android.synthetic.main.dialog_enter_weight.view.*
 import kotlinx.android.synthetic.main.dialog_enter_weight.view.btn_dialog_save
 import kotlinx.android.synthetic.main.fragment_follow.view.*
 import java.text.DecimalFormat
-import java.util.*
 
 
-class FollowFragment : Fragment(), SensorEventListener {
+class FollowFragment : Fragment() {
 
     private var cup_of_tea: Int = 0
     private var cup_of_coffee: Int = 0
@@ -41,59 +35,12 @@ class FollowFragment : Fragment(), SensorEventListener {
     private var longDate: Long = 0
     private var savedWater: Int? = 0
 
-    private var sensorManager: SensorManager? = null
-    private var running = false
-    private var totalSteps = 0f
-    private var previousTotalSteps = UserStepsInfo.userSteps.get()?.previousSteps
-    private lateinit var tvSteps: TextView
-
-
-    override fun onResume() {
-        super.onResume()
-        running = true
-        val stepSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
-        if (stepSensor != null) {
-            sensorManager?.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_UI)
-        } else {
-            Log.i("StepCounter", "No sensor detected on this device.")
-        }
-        checkAndUpdateUserSteps()
-    }
-
-    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
-
-    }
-
-    override fun onSensorChanged(event: SensorEvent?) {
-        if (running) {
-            totalSteps = event!!.values[0]
-            val currentSteps = totalSteps.toInt() - (previousTotalSteps ?: totalSteps).toInt()
-            tvSteps.text = "$currentSteps/${UserInfo.user.get()?.goalStep}"
-        }
-    }
-
-    fun checkAndUpdateUserSteps() {
-        (activity as MainActivity?)?.showLoading()
-        FirestoreSource.createAndUpdateSteps(currentUser, (previousTotalSteps
-                ?: 0).toInt(), totalSteps.toInt(), getLongTimeStamp(),
-                successHandler = {
-                    (activity as MainActivity?)?.hideLoading()
-                    refreshUI()
-                },
-                failHandler = {
-                    (activity as MainActivity?)?.hideLoading()
-
-                })
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_follow, container, false)
         checkWater()
-        checkAndUpdateUserSteps()
 
-        sensorManager = activity?.getSystemService(Context.SENSOR_SERVICE) as SensorManager
-        tvSteps = view.tv_step
+        view.tv_step.text = UserStepsInfo.userSteps.get()?.dailySteps.toString()
 
         view.btn_add_water.setOnClickListener() {
             val mDialogView = LayoutInflater.from(activity).inflate(R.layout.dialog_enter_int_value, null)
@@ -283,16 +230,6 @@ class FollowFragment : Fragment(), SensorEventListener {
                 (activity as MainActivity?)?.hideLoading()
             }
         )
-    }
-
-    private fun getLongTimeStamp() : Long {
-        val c = Calendar.getInstance()
-        c.set(Calendar.HOUR, 0)
-        c.set(Calendar.MINUTE, 0)
-        c.set(Calendar.SECOND, 0)
-        c.set(Calendar.MILLISECOND, 0)
-        val d: Date = c.time
-        return d.time
     }
 
     private fun clickedTeaMinus() {
