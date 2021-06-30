@@ -2,6 +2,11 @@ package com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.follow
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.content.Context
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -10,6 +15,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.GridLayout
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseUser
 import com.ilaydaberna.imageprocessingbaseddietapp.R
@@ -26,22 +32,56 @@ import java.text.DecimalFormat
 import java.util.*
 
 
-class FollowFragment : Fragment() {
+class FollowFragment : Fragment(), SensorEventListener {
 
-    var cup_of_tea: Int = 0
-    var cup_of_coffee: Int = 0
-    var weight: Double = 0.0
-    lateinit var weightText: String
-    var newWeight: String? = ""
-    val currentUser: FirebaseUser? = FirebaseSource().getAuth().currentUser
-    var waterAmount: Int = 0
-    var longDate: Long = 0
-    var savedWater: Int? = 0
+    private var cup_of_tea: Int = 0
+    private var cup_of_coffee: Int = 0
+    private var weight: Double = 0.0
+    private lateinit var weightText: String
+    private var newWeight: String? = ""
+    private val currentUser: FirebaseUser? = FirebaseSource().getAuth().currentUser
+    private var waterAmount: Int = 0
+    private var longDate: Long = 0
+    private var savedWater: Int? = 0
+
+    private var sensorManager: SensorManager? = null
+    private var running = false
+    private var totalSteps = 0f
+    private var previousTotalSteps = 0f
+    private lateinit var tvSteps: TextView
+
+
+    override fun onResume() {
+        super.onResume()
+        running = true
+        val stepSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
+        if (stepSensor != null) {
+            sensorManager?.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_UI)
+        } else {
+            Log.i("StepCounter", "No sensor detected on this device.")
+        }
+
+    }
+
+    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onSensorChanged(event: SensorEvent?) {
+        if (running) {
+            totalSteps = event!!.values[0]
+            val currentSteps = totalSteps.toInt() - previousTotalSteps.toInt()
+            tvSteps.text = "$currentSteps"
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_follow, container, false)
         checkWater()
+
+        sensorManager = activity?.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        tvSteps = view.tv_step
 
         view.btn_add_water.setOnClickListener() {
             val mDialogView = LayoutInflater.from(activity).inflate(R.layout.dialog_enter_int_value, null)
