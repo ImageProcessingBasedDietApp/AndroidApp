@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     override fun onSensorChanged(event: SensorEvent?) {
         if (running) {
             totalSteps = event!!.values[0]
-            val currentSteps = totalSteps - UserStepsInfo.userSteps.get()!!.previousSteps
+            val currentSteps = totalSteps - (UserStepsInfo.userSteps.get()?.previousSteps?: 0F)
             UserStepsInfo.userSteps.set(currentUser?.let {
                 UserSteps(
                         previousTotalSteps ?: 0F,
