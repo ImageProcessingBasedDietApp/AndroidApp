@@ -422,7 +422,13 @@ class CameraActivity : AppCompatActivity() {
                             }.take(MAX_RESULT_DISPLAY)
                         foodArray.clear()
                         for(foodOutput in foodOutputs){
-                            foods.add(Recognition(foodOutput.label, foodOutput.score))
+                            if (FoodSingleton.food.get() != null) {
+                                for (foodSingleton in FoodSingleton.food.get()!!) {
+                                    if (foodSingleton.fileName == foodOutput.label) {
+                                        foods.add(Recognition(foodSingleton.name, foodOutput.score))
+                                    }
+                                }
+                            }
                             foodArray.add(foodOutput.label)
                         }
                         btnRecognatedFood1.setText(foods[0].toString())
