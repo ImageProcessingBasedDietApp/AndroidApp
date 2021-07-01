@@ -211,8 +211,19 @@ class CameraActivity : AppCompatActivity() {
                     FirestoreSource.getUserMeal(currentUser, mealType, successHandler = {
                         val thisMeal = it
                         val amountDouble = amount.toDouble()
+                        if (thisMeal.contents != null) {
+                            var isContains = 0.0
+                            for (content in thisMeal.contents!!) {
+                                if (content["foodID"]!!.equals(selectedFood[0].id.toString())) {
+                                    isContains = content["amount"]?.toDouble() ?: 0.0
+                                    content.put("amount", (isContains + amountDouble).toString())
+                                }
+                            }
+                            if (isContains.equals(0.0)) { //var
+                                thisMeal.contents?.add(mutableMapOf("amount" to amount.toDouble().toString(), "foodID" to selectedFood[0].id.toString()))
+                            }
+                        }
 
-                        thisMeal.contents?.add(mutableMapOf("amount" to amount.toDouble().toString(), "foodID" to selectedFood[0].id.toString()))
                         thisMeal.totalCalorie = thisMeal.totalCalorie?.plus((selectedFood[0].calorie * amountDouble).toInt())
                         thisMeal.totalCarbohydrate = thisMeal.totalCarbohydrate?.plus((selectedFood[0].carbohydrate * amountDouble).toInt())
                         thisMeal.totalFat = thisMeal.totalFat?.plus((selectedFood[0].fat * amountDouble).toInt())
