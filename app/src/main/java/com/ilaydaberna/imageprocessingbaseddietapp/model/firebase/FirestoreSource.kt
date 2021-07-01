@@ -271,6 +271,38 @@ class FirestoreSource {
             }
         }
 
+        fun getStepTrackingValues(
+                currentUser: FirebaseUser?,
+                successHandler: (ArrayList<UserSteps>) -> Unit,
+                failHandler: () -> Unit
+        ) {
+            val userSteps = arrayListOf<UserSteps>()
+            val db = Firebase.firestore
+            db.collection("StepTracking")
+                    .whereEqualTo("userID", currentUser?.uid)
+                    .get()
+                    .addOnSuccessListener { documents ->
+                        for (document in documents) {
+                            userSteps.add(
+                                    UserSteps(
+                                            document.get("previousSteps").toString().toInt(),
+                                            document.get("totalSteps").toString().toInt(),
+                                            document.get("dailySteps").toString().toInt(),
+                                            document.get("date").toString().toLong(),
+                                            document.getString("userID").toString()
+                                    )
+                            )
+                        }
+                        successHandler(userSteps)
+                        Log.i("getStepTrackingValues", "Success")
+                    }
+                    .addOnFailureListener {
+                        failHandler()
+                        Log.i("getStepTrackingValues", "Fail")
+                    }
+
+        }
+
         fun getWeightTrackingValues(
                 currentUser: FirebaseUser,
                 successHandler: (ArrayList<WeightTrackValue>) -> Unit,

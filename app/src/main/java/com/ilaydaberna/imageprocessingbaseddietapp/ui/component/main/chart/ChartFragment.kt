@@ -35,6 +35,8 @@ class ChartFragment : Fragment() {
     private val teaData = arrayListOf<BarEntry>()
     private val waterData = arrayListOf<BarEntry>()
     private val coffeeData = arrayListOf<BarEntry>()
+    private val stepData = arrayListOf<BarEntry>()
+
 
     private val weightsValues = arrayListOf<Entry>()
     private val weightXAxisValues = arrayListOf<String>()
@@ -51,7 +53,7 @@ class ChartFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         getUserLiquidTrackingData()
-        //TODO: initializeBarChart(binding.stepBarChart, binding.stepSeekBar, stepData )
+        getUserStepTrackingData()
         getUserWeightTrackingData(binding.weightLineChart)
 
 
@@ -119,7 +121,8 @@ class ChartFragment : Fragment() {
                     progress: Int, fromUser: Boolean
             ) {
                 // write custom code for progress is changed
-                createStepBarChart(binding.stepBarChart, progress)
+                createAndUpdateBarChart(binding.stepBarChart, stepData, progress)
+                binding.tvStepSeekbarValue.text = "Son $progress Gün"
             }
 
             override fun onStartTrackingTouch(seek: SeekBar) {
@@ -258,6 +261,26 @@ class ChartFragment : Fragment() {
             chart.setFitBars(true)
         }
         chart.invalidate()
+    }
+
+    private fun getUserStepTrackingData() {
+        (activity as MainActivity?)?.showLoading()
+
+        FirestoreSource.getStepTrackingValues(
+                currentUser = currentUser,
+                successHandler = { steps ->
+                    var i = 1F
+                    for (step in steps) {
+                        stepData.add(BarEntry(i, (step.dailySteps ?: 0).toFloat()))
+                        i += 1F
+                    }
+                    initializeBarChart(binding.stepBarChart, binding.stepSeekBar, stepData)
+                    createAndUpdateBarChart(binding.stepBarChart, stepData, stepData.size)
+                    (activity as MainActivity?)?.hideLoading()
+                },
+                failHandler = {
+                    (activity as MainActivity?)?.hideLoading()
+                })
     }
 
     private fun getUserLiquidTrackingData() {
