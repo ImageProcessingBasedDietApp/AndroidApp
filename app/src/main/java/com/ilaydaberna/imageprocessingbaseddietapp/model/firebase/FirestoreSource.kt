@@ -198,12 +198,20 @@ class FirestoreSource {
                 docRef.document(currentUser.uid + date.toString())
                         .get()
                         .addOnSuccessListener {
-                            if (it != null) {
-                                UserStepsInfo.userSteps.set(UserSteps((it.data?.get("previousSteps") as Long).toInt(),
-                                        (it.data?.get("totalSteps") as Long).toInt(),
-                                        (it.data?.get("dailySteps") as Long).toInt(),
-                                        date,
-                                        currentUser.uid))
+                            if (it != null && it.data != null) {
+                                if (it.data?.get("previousSteps") is Double) {
+                                    UserStepsInfo.userSteps.set(UserSteps((it.data?.get("previousSteps") as Double).toInt(),
+                                            (it.data?.get("totalSteps") as Double).toInt(),
+                                            (it.data?.get("dailySteps") as Double).toInt(),
+                                            date,
+                                            currentUser.uid))
+                                } else {
+                                    UserStepsInfo.userSteps.set(UserSteps((it.data?.get("previousSteps") as Long).toInt(),
+                                            (it.data?.get("totalSteps") as Long).toInt(),
+                                            (it.data?.get("dailySteps") as Long).toInt(),
+                                            date,
+                                            currentUser.uid))
+                                }
                                 successHandler.invoke()
                             } else {
                                 docRef.document(currentUser.uid + date.toString()).set(
