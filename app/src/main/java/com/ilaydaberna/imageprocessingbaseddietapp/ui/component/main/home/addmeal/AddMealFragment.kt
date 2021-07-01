@@ -26,7 +26,7 @@ class AddMealFragment : Fragment(), AddMealNavigator{
     private lateinit var adapterUserFood: UserFoodAdapter
     private lateinit var userMealItem: MealItem
     private var userFoodList = ArrayList<Food>()
-    private var userFoodAmount = ArrayList<Map<String, String>>()
+    private var userFoodAmount = ArrayList<MutableMap<String, String>>()
     private var totalCalorie = 0.0
     private var totalProtein = 0.0
     private var totalFat = 0.0
@@ -63,7 +63,8 @@ class AddMealFragment : Fragment(), AddMealNavigator{
             totalFat = userMealItem.totalFat.toDouble()
 
             userFoodList = userMealItem.contents as ArrayList<Food>
-            userFoodAmount = (userMealItem.amounts?: arrayListOf()) as ArrayList<Map<String, String>>
+            userFoodAmount = (userMealItem.amounts
+                    ?: arrayListOf()) as ArrayList<MutableMap<String, String>>
 
             adapterUserFood = UserFoodAdapter(this, userFoods = userFoodList, userFoodAmount = userFoodAmount)
             view.rv_user_food.adapter = adapterUserFood
@@ -122,16 +123,15 @@ class AddMealFragment : Fragment(), AddMealNavigator{
     }
 
     override fun removeUserFood(food: Food, amount: Double) {
-        //todo remove
         (activity as MainActivity?)?.showLoading()
         userFoodList.remove(food)
         userFoodAmount.remove(mapOf("foodID" to food.id.toString(), "amount" to amount.toString()))
 
         val thisMeal = UserMeals.Meal(
-                totalCalorie = totalCalorie.toInt() - (food.calorie * amount).toInt(),
-                totalCarbohydrate = totalCarbohydrate.toInt() - (food.carbohydrate * amount).toInt(),
-                totalFat = totalFat.toInt() - (food.fat * amount).toInt(),
-                totalProtein = totalProtein.toInt() - (food.protein * amount).toInt(),
+                totalCalorie = if ((totalCalorie.toInt() - (food.calorie * amount).toInt()) < 0) 0 else (totalCalorie.toInt() - (food.calorie * amount).toInt()),
+                totalCarbohydrate = if ((totalCarbohydrate.toInt() - (food.carbohydrate * amount).toInt()) < 0) 0 else (totalCarbohydrate.toInt() - (food.carbohydrate * amount).toInt()),
+                totalFat = if ((totalFat.toInt() - (food.fat * amount).toInt()) < 0) 0 else (totalFat.toInt() - (food.fat * amount).toInt()),
+                totalProtein = if ((totalProtein.toInt() - (food.protein * amount).toInt()) < 0) 0 else (totalProtein.toInt() - (food.protein * amount).toInt()),
                 contents = userFoodAmount
         )
 
@@ -140,10 +140,10 @@ class AddMealFragment : Fragment(), AddMealNavigator{
                 userMeal = thisMeal,
                 mealType = userMealItem.type,
                 successHandler = {
-                    totalCalorie -= (food.calorie * amount).toInt()
-                    totalFat -= (food.fat * amount).toInt()
-                    totalProtein -= (food.protein * amount).toInt()
-                    totalCarbohydrate -= (food.carbohydrate * amount).toInt()
+                    totalCalorie = if ((totalCalorie - (food.calorie * amount).toInt()) < 0) 0.0 else (totalCalorie - (food.calorie * amount).toInt())
+                    totalFat = if ((totalFat - (food.fat * amount).toInt()) < 0) 0.0 else (totalFat - (food.fat * amount).toInt())
+                    totalProtein = if ((totalProtein - (food.protein * amount).toInt()) < 0) 0.0 else (totalProtein - (food.protein * amount).toInt())
+                    totalCarbohydrate = if ((totalCarbohydrate - (food.carbohydrate * amount).toInt()) < 0) 0.0 else (totalCarbohydrate - (food.carbohydrate * amount).toInt())
                     updateTotalView()
                     adapterUserFood.notifyDataSetChanged()
                     (activity as MainActivity?)?.hideLoading()
@@ -156,9 +156,15 @@ class AddMealFragment : Fragment(), AddMealNavigator{
 
     private fun addUserFood(amount: Double, food: Food) {
         (activity as MainActivity?)?.showLoading()
-        userFoodList.add(food)
-        userFoodAmount.add(mapOf("foodID" to food.id.toString(), "amount" to amount.toString()))
 
+        if (userFoodList.contains(food)) {
+            val newAmount = amount + (userFoodAmount[userFoodList.indexOf(food)].get("amount")
+                    ?: "0.0").toDouble()
+            userFoodAmount[userFoodList.indexOf(food)].put("amount", newAmount.toString())
+        } else {
+            userFoodList.add(food)
+            userFoodAmount.add(mutableMapOf("foodID" to food.id.toString(), "amount" to amount.toString()))
+        }
         val thisMeal = UserMeals.Meal(
                 totalCalorie = (food.calorie * amount).toInt() + totalCalorie.toInt(),
                 totalCarbohydrate = (food.carbohydrate * amount).toInt() + totalCarbohydrate.toInt(),

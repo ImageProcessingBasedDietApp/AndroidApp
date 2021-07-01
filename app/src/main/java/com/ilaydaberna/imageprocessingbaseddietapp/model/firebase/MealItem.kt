@@ -11,5 +11,5 @@ data class MealItem(
         val totalProtein: Int = 0,
         val type: String = "",
         val contents: List<Food?>?,
-        val amounts: ArrayList<Map<String,String>>?
+        val amounts: ArrayList<MutableMap<String, String>>?
 ): Parcelable

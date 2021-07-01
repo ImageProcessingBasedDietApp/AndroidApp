@@ -65,7 +65,7 @@ class HomeFragment : Fragment(), HomeNavigator{
         return view
     }
 
-    private fun getUserFoods(contents: ArrayList<Map<String, String>>): List<Food?>? {
+    private fun getUserFoods(contents: ArrayList<MutableMap<String, String>>): List<Food?>? {
         return FoodSingleton.food.get()?.stream()
                 ?.filter { food ->
                     contents.stream()

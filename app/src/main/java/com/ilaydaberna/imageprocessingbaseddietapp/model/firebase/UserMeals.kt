@@ -11,11 +11,11 @@ class UserMeals (
 ) {
 
     class Meal(
-        var totalCalorie: Int? = null,
-        var totalCarbohydrate: Int? = null,
-        var totalFat: Int? = null,
-        var totalProtein: Int? = null,
-        var contents: ArrayList<Map<String,String>>?
+            var totalCalorie: Int? = null,
+            var totalCarbohydrate: Int? = null,
+            var totalFat: Int? = null,
+            var totalProtein: Int? = null,
+            var contents: ArrayList<MutableMap<String, String>>?
     )
 
     companion object{
@@ -27,12 +27,12 @@ class UserMeals (
             arrayListOf()
         )
 
-        fun getMeals(document: DocumentSnapshot) = Meal (
+        fun getMeals(document: DocumentSnapshot) = Meal(
                 document.getField<Int>("totalCalorie"),
                 document.getField<Int>("totalCarbohydrate"),
                 document.getField<Int>("totalFat"),
                 document.getField<Int>("totalProtein"),
-                document["contents"] as ArrayList<Map<String, String>>?
+                document["contents"] as ArrayList<MutableMap<String, String>>?
         )
     }
 }

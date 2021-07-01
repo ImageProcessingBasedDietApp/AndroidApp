@@ -1,6 +1,5 @@
 package com.ilaydaberna.imageprocessingbaseddietapp.ui.component.main.home.addmeal
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,7 @@ import java.text.DecimalFormat
 
 class UserFoodAdapter(private val navigator: AddMealNavigator,
                       private val userFoods: ArrayList<Food>,
-                      private val userFoodAmount : ArrayList<Map<String,String>>
+                      private val userFoodAmount: ArrayList<MutableMap<String, String>>
 ) : RecyclerView.Adapter<UserFoodAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
